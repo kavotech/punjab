@@ -304,7 +304,7 @@ export function DashboardHome({
             <HoStat label="Net Position" value={<CountUp value={netPosition} prefix="£" decimals={2} />} delta="payments minus expenses" up={netPosition >= 0} />
           </div>
 
-          <div className="ho-card" style={{ marginBottom: 18 }}>
+          <div className="ho-card ho-hero-card" style={{ marginBottom: 18 }}>
             <div className="ho-card-head">
               <span className="ho-card-title">Total Business Done</span>
               <button className="db-section-btn" onClick={() => onNavigate?.("invoices")}>View Invoices →</button>

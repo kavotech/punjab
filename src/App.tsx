@@ -18,6 +18,7 @@ import { AppDialogs } from './components/AppDialogs'
 import { SuccessToastStack } from './components/SuccessToastStack'
 import { supabase } from './lib/supabase'
 import { showAppError } from './lib/appDialogs'
+import { SystemDeveloperBootScreen } from './components/SystemDeveloperBootScreen'
 
 // Blanket coverage for the ~30+ action handlers across the app that don't
 // individually handle their errors (fired with `void`) - anything that
@@ -92,6 +93,20 @@ function App() {
   const [user, setUser] = useState<User | null>(() => loadStoredUser())
   const [modeReady, setModeReady] = useState(() => !loadStoredUser())
   const [error, setError] = useState('')
+
+  // System-Developer-only: a fixed 10-second welcome/loading screen on cold
+  // load, a reload, or right after signing in. Resets whenever the signed-in
+  // account changes (covers a fresh sign-in without a full page reload) and
+  // on initial mount (covers a cold load/reload). Every other role keeps the
+  // plain, fast "Preparing your workspace" screen below with no added delay.
+  const [devBootActive, setDevBootActive] = useState(false)
+  useEffect(() => {
+    if (!user?.isSystemDeveloper) { setDevBootActive(false); return }
+    setDevBootActive(true)
+    const timer = setTimeout(() => setDevBootActive(false), 10_000)
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, user?.isSystemDeveloper])
   const [showSwitcher, setShowSwitcher] = useState(false)
   const [rememberPrompt, setRememberPrompt] = useState<{
     role: 'admin' | 'customer'; displayName: string; usernameOrEmail: string; password: string
@@ -193,7 +208,10 @@ function App() {
     )
   }
 
-  if (user && !modeReady) {
+  if (user && (!modeReady || devBootActive)) {
+    if (user.isSystemDeveloper) {
+      return <SystemDeveloperBootScreen name={user.displayName.trim().split(/\s+/)[0] || user.displayName} />
+    }
     return <div className="portal-boot"><img src="/logo.png" alt="" /><strong>Preparing your workspace</strong><span>Loading the correct data environment...</span></div>
   }
 
