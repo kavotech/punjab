@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import type { ActivityLog, Customer, Invoice } from "../../types"
 import { invoiceOutstanding } from "../../lib/creditNotes"
-import { DivergingBarChart, DonutChart, DonutLegend, ProgressBar, ChartSkeleton, EmptyChart } from "../../components/charts/DashboardCharts"
+import { DivergingBarChart, SimpleBarChart, DonutChart, DonutLegend, ProgressBar, ChartSkeleton, EmptyChart } from "../../components/charts/DashboardCharts"
 import { getDashboardAnalytics, resolveDateRange, type DashboardAnalytics, type DateRangeKey } from "../../lib/dashboardAnalytics"
 import { showAppError } from "../../lib/appDialogs"
 
@@ -109,6 +109,18 @@ export function DashboardAnalyticsTab({ customers = [], invoices = [], activity 
       .sort((a, b) => a.period.localeCompare(b.period))
       .slice(-12)
       .map(d => ({ ...d, period: d.period.length > 7 ? d.period.slice(5) : d.period }))
+  }, [data])
+
+  const shortPeriod = (period: string) => period.length > 7 ? period.slice(5) : period
+  const customerGrowthData = useMemo(() => {
+    if (!data) return []
+    return [...data.customerGrowth].sort((a, b) => a.period.localeCompare(b.period)).slice(-12)
+      .map(d => ({ period: shortPeriod(d.period), value: Number(d.value) || 0 }))
+  }, [data])
+  const creditNotesTimeData = useMemo(() => {
+    if (!data) return []
+    return [...data.creditNotesOverTime].sort((a, b) => a.period.localeCompare(b.period)).slice(-12)
+      .map(d => ({ period: shortPeriod(d.period), value: Number(d.value) || 0 }))
   }, [data])
 
   const donutSegments = useMemo(() => {
@@ -340,6 +352,66 @@ export function DashboardAnalyticsTab({ customers = [], invoices = [], activity 
               ))}
               {activity.length === 0 && <EmptyChart height={80} label="No recent activity" />}
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ══ MORE ANALYTICS (below the main grid) ══ */}
+      <div className="fp-more-head">
+        <h3 className="fp-section-title">More Analytics</h3>
+      </div>
+      <div className="fp-more-grid">
+        <div className="fp-card fp-pad">
+          <div className="fp-card-head">
+            <h3 className="fp-card-title">Customer Growth</h3>
+            <span className="fp-card-sub">New customers over time</span>
+          </div>
+          {loading && !data
+            ? <ChartSkeleton height={200} />
+            : <SimpleBarChart data={customerGrowthData} color="#1f7a3a" seriesLabel="New customers" format={n => Math.round(n).toLocaleString("en-GB")} />}
+        </div>
+
+        <div className="fp-card fp-pad">
+          <div className="fp-card-head">
+            <h3 className="fp-card-title">Credit Notes Over Time</h3>
+            <span className="fp-card-sub">Value issued per period</span>
+          </div>
+          {loading && !data
+            ? <ChartSkeleton height={200} />
+            : <SimpleBarChart data={creditNotesTimeData} color="#e05c2a" seriesLabel="Credit notes" format={n => gbp(n, 0)} />}
+        </div>
+
+        <div className="fp-card fp-pad">
+          <div className="fp-card-head">
+            <h3 className="fp-card-title">Credit Notes by Customer</h3>
+            <button className="fp-link" onClick={() => onNavigate?.("credit-notes")}>View all</button>
+          </div>
+          <div className="fp-ranked">
+            {loading && !data ? <ChartSkeleton height={150} /> : (data?.creditNotesByCustomer ?? []).slice(0, 5).map((c, i) => (
+              <div key={c.customerId} className="fp-ranked-row">
+                <span className="fp-ranked-idx">{i + 1}</span>
+                <span className="fp-ranked-name">{c.name}</span>
+                <span className="fp-ranked-value">{gbp(c.value, 0)}</span>
+              </div>
+            ))}
+            {!loading && !(data?.creditNotesByCustomer ?? []).length && <EmptyChart height={90} label="No credit notes in this period" />}
+          </div>
+        </div>
+
+        <div className="fp-card fp-pad">
+          <div className="fp-card-head">
+            <h3 className="fp-card-title">Credited Products</h3>
+            <span className="fp-card-sub">Most returned or credited</span>
+          </div>
+          <div className="fp-ranked">
+            {loading && !data ? <ChartSkeleton height={150} /> : (data?.creditedProducts ?? []).slice(0, 5).map((p, i) => (
+              <div key={p.product} className="fp-ranked-row">
+                <span className="fp-ranked-idx">{i + 1}</span>
+                <span className="fp-ranked-name">{p.product}<em>{p.qty} units</em></span>
+                <span className="fp-ranked-value">{gbp(p.value, 0)}</span>
+              </div>
+            ))}
+            {!loading && !(data?.creditedProducts ?? []).length && <EmptyChart height={90} label="No credited products in this period" />}
           </div>
         </div>
       </div>

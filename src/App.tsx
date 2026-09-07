@@ -20,6 +20,14 @@ import { supabase } from './lib/supabase'
 import { showAppError } from './lib/appDialogs'
 import { SystemDeveloperBootScreen } from './components/SystemDeveloperBootScreen'
 
+// Private, greeting-only display name for the System Developer boot screen
+// (see SYSTEM_DEVELOPER_GREETING_NAMES usage below) - deliberately not
+// stored in admin_staff.name, which every other admin sees (as "System
+// Developer") in Admin Users, activity logs, "invited by", etc.
+const SYSTEM_DEVELOPER_GREETING_NAMES: Record<string, string> = {
+  'info@kavotech.uk': 'Oliver Alinaitwe',
+}
+
 // Blanket coverage for the ~30+ action handlers across the app that don't
 // individually handle their errors (fired with `void`) - anything that
 // slips through still surfaces as a coded 801 error instead of failing
@@ -210,7 +218,13 @@ function App() {
 
   if (user && (!modeReady || devBootActive)) {
     if (user.isSystemDeveloper) {
-      return <SystemDeveloperBootScreen name={user.displayName.trim().split(/\s+/)[0] || user.displayName} />
+      // The personalised greeting is intentionally kept out of
+      // admin_staff.name (which every other admin sees as "System
+      // Developer" in Admin Users, activity logs, etc.) - this lookup only
+      // ever runs on this account's own boot screen, for this account's own
+      // session, so the real name is never exposed to anyone else's view.
+      const greetingName = SYSTEM_DEVELOPER_GREETING_NAMES[user.email.toLowerCase()] ?? user.displayName
+      return <SystemDeveloperBootScreen name={greetingName} />
     }
     return <div className="portal-boot"><img src="/logo.png" alt="" /><strong>Preparing your workspace</strong><span>Loading the correct data environment...</span></div>
   }

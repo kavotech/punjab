@@ -139,6 +139,60 @@ export function ProgressBar({ pct, color = FP_BLUE }: { pct: number; color?: str
   )
 }
 
+/** Single-series vertical bar chart - Customer Growth, Credit Notes Over
+    Time, etc. Same visual language as DivergingBarChart (shared CSS
+    classes) but one series growing up from a flat baseline, with a
+    configurable value formatter/label since not every series here is
+    currency (customer counts aren't). */
+export function SimpleBarChart({ data, height = 200, color = FP_BLUE, format = (n: number) => n.toLocaleString("en-GB"), seriesLabel = "Value" }: {
+  data: Array<{ period: string; value: number }>
+  height?: number
+  color?: string
+  format?: (n: number) => string
+  seriesLabel?: string
+}) {
+  const [hover, setHover] = useState<number | null>(null)
+  if (!data.length) return <EmptyChart height={height} />
+
+  const max = Math.max(...data.map(d => d.value), 1)
+  const plotH = height - 34
+  const colW = 100 / data.length
+  const barW = Math.min(60, colW * 0.42)
+  const ticks = [max, max / 2, 0]
+
+  return (
+    <div className="fp-chart-outer">
+      <div className="fp-chart-axis">
+        {ticks.map(t => <span key={t}>{format(t)}</span>)}
+      </div>
+      <div className="fp-chart-plot" style={{ height }} onMouseLeave={() => setHover(null)}>
+        {ticks.map((t, i) => (
+          <div key={t} className="fp-chart-gridline" style={{ top: `${(i / (ticks.length - 1)) * plotH}px` }} />
+        ))}
+        {data.map((d, i) => {
+          const barH = (d.value / max) * plotH
+          return (
+            <div
+              key={d.period} className="fp-chart-col"
+              style={{ left: `${i * colW}%`, width: `${colW}%` }}
+              onMouseEnter={() => setHover(i)}
+            >
+              <div className="fp-chart-bar-up" style={{ height: Math.max(d.value > 0 ? 3 : 0, barH), bottom: 0, width: `${barW}%`, background: color, borderRadius: "5px 5px 0 0" }} />
+              <span className="fp-chart-xlabel" style={{ top: `${plotH + 10}px` }}>{d.period}</span>
+            </div>
+          )
+        })}
+        {hover !== null && (
+          <div className="fp-tooltip" style={{ left: `${(hover + 0.5) * colW}%` }}>
+            <div className="fp-tooltip-title">{data[hover].period}</div>
+            <div className="fp-tooltip-row"><span>{seriesLabel}</span><strong>{format(data[hover].value)}</strong></div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export function EmptyChart({ height = 120, label = "No data for this period" }: { height?: number; label?: string }) {
   return <div className="fp-empty" style={{ height }}>{label}</div>
 }
