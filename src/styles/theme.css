@@ -452,6 +452,19 @@ p, li { line-height: 1.55; }
   .tb-search { display: none; }
 }
 @media (max-width: 760px) {
+  /* Users & Team: one card per person on a phone instead of a wide table. */
+  .table-wrap .adm-table { min-width: 0; }
+  .adm-table thead { display: none; }
+  .adm-table, .adm-table tbody, .adm-table tr { display: block; width: 100%; }
+  .adm-table tbody tr { padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  .adm-table tbody tr:last-child { border-bottom: 0; }
+  :is(.app-layout, .modal-backdrop) .adm-table tbody tr td {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 7px 0; border: 0; white-space: normal !important;
+  }
+  :is(.app-layout, .modal-backdrop) .adm-table tbody tr:hover td { background: transparent; }
+  .adm-table td[data-label]::before { content: attr(data-label); font-size: 15px; font-weight: 700; color: var(--ink-3); }
+  .adm-table td[data-label] > div { text-align: right; }
   /* Filter boxes and dropdowns take the full width on a phone. */
   :is(.app-layout, .modal-backdrop) :is(input.search-input:not([type="date"]), select.search-input) { flex: 1 1 100% !important; width: 100%; min-width: 0 !important; }
   .topbar { height: 70px; padding: 0 14px; gap: 10px; }

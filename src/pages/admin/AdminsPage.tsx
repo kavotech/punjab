@@ -204,15 +204,14 @@ export function AdminsPage({
         </div>
         <div style={{ padding: 0 }}>
           <div className="table-wrap">
-            <table>
+            <table className="adm-table">
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Job Title</th>
                   <th>Role</th>
                   <th>Permissions</th>
                   <th>Status</th>
-                  <th style={{ width: 120 }}>Actions</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -241,11 +240,13 @@ export function AdminsPage({
                           </div>
                         </div>
                       </td>
-                      <td style={{ color: "#6b7280" }}>{admin.jobTitle || "—"}</td>
-                      <td>
-                        <span className="badge badge-blue">{admin.role}</span>
+                      <td data-label="Role">
+                        <div>
+                          <span className="badge badge-blue">{admin.role}</span>
+                          {admin.jobTitle && <small className="cell-sub">{admin.jobTitle}</small>}
+                        </div>
                       </td>
-                      <td>
+                      <td data-label="Permissions">
                         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                           <div className="adm-perm-bar">
                             <div className="adm-perm-fill" style={{ width: `${(permCount/ALL_PERMISSIONS.length)*100}%` }} />
@@ -253,7 +254,7 @@ export function AdminsPage({
                           <span style={{ fontSize: 14.5, color: "#6b7280" }}>{permCount}/{ALL_PERMISSIONS.length}</span>
                         </div>
                       </td>
-                      <td>
+                      <td data-label="Status">
                         {isPending ? (
                           <span className="ps-badge" style={{ background: "#fef3c7", color: "#b45309" }}>Pending Invitation</span>
                         ) : (
@@ -282,8 +283,8 @@ export function AdminsPage({
                           </label>
                         )}
                       </td>
-                      <td>
-                        <div style={{ display: "flex", gap: 6 }}>
+                      <td data-label="Actions" style={{ whiteSpace: "nowrap" }}>
+                        <div style={{ display: "flex", gap: 6, flexWrap: "nowrap" }}>
                           {!admin.isSuperAdmin && (
                             <>
                               <button className="ps-action-btn" title="Edit Permissions" onClick={() => setEditing({ ...admin })}>
