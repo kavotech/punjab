@@ -51,8 +51,8 @@ export function InvoiceNumbersPage({ orders, onSave }: {
     <div className="stack">
       <div>
         <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Invoice Numbers</h2>
-        <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Invoice Numbers</h2>
+        <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
           At the end of each trading day, enter the company's official invoice numbers against the sales created that day.
         </p>
       </div>
@@ -76,7 +76,7 @@ export function InvoiceNumbersPage({ orders, onSave }: {
                 {customers.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </label>
-            <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, marginTop: 18 }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 15.5, marginTop: 18 }}>
               <input type="checkbox" checked={missingOnly} onChange={e => setMissingOnly(e.target.checked)} />
               Missing invoice numbers only
             </label>
@@ -102,7 +102,7 @@ export function InvoiceNumbersPage({ orders, onSave }: {
                   <td>
                     <input type="text" placeholder="e.g. INV-59382" value={valueFor(o)}
                       onChange={e => setDraft(o.id, e.target.value)}
-                      style={{ padding: "6px 10px", border: "1.5px solid var(--border)", borderRadius: 8, fontFamily: "inherit", fontSize: 13, width: 160 }} />
+                      style={{ padding: "6px 10px", border: "1.5px solid var(--border)", borderRadius: 8, fontFamily: "inherit", fontSize: 15.5, width: 160 }} />
                   </td>
                   <td>
                     <Button className="btn-sm" onClick={() => saveOne(o)} disabled={savingId === o.id}>

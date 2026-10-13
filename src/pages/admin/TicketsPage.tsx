@@ -66,8 +66,8 @@ export function TicketsPage({
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
         <div>
           <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0d2b1e' }}>Support Tickets</h2>
-          <p style={{ fontSize: 13.5, color: '#6b7a70', marginTop: 3 }}>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: '#0d2b1e' }}>Support Tickets</h2>
+          <p style={{ fontSize: 16, color: '#6b7a70', marginTop: 3 }}>
             Tickets move forward — start working, then resolve. Closed tickets are final.
           </p>
         </div>
@@ -106,11 +106,11 @@ export function TicketsPage({
                   <tr key={t.id} className="ps-row cd-row-clickable" onClick={() => setDetail(t)}>
                     <td>
                       <strong>{t.subject}</strong>
-                      <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 2 }}>{t.message.slice(0, 60)}{t.message.length > 60 ? '…' : ''}</div>
+                      <div style={{ fontSize: 14.5, color: '#9ca3af', marginTop: 2 }}>{t.message.slice(0, 60)}{t.message.length > 60 ? '…' : ''}</div>
                     </td>
                     <td style={{ color: '#6b7280', textTransform: 'capitalize' }}>{t.createdByRole}{t.customerId ? ` · ${t.customerId}` : ''}</td>
                     <td><span className="ps-badge" style={{ background: meta.bg, color: meta.color }}>{t.status}</span></td>
-                    <td style={{ color: '#6b7280', fontSize: 13 }}>{t.createdAt}</td>
+                    <td style={{ color: '#6b7280', fontSize: 15.5 }}>{t.createdAt}</td>
                     <td onClick={e => e.stopPropagation()}>
                       {step
                         ? <Button className="btn-sm" onClick={() => advance(t)} disabled={busy}>{step.label}</Button>
@@ -125,7 +125,7 @@ export function TicketsPage({
             <div style={{ padding: '48px 24px', textAlign: 'center', color: '#9ca3af' }}>
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#c3c9d2" strokeWidth="1.6" style={{ marginBottom: 8 }}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
               <div style={{ fontWeight: 600, marginBottom: 4, color: '#374151' }}>No tickets found</div>
-              <div style={{ fontSize: 13 }}>Support tickets from customers and staff will appear here.</div>
+              <div style={{ fontSize: 15.5 }}>Support tickets from customers and staff will appear here.</div>
             </div>
           )}
         </div>
@@ -151,10 +151,10 @@ export function TicketsPage({
               <span>Status</span>
               <span className="ps-badge" style={{ background: STATUS_META[detail.status].bg, color: STATUS_META[detail.status].color }}>{detail.status}</span>
             </div>
-            <p style={{ fontSize: 12, color: '#9ca3af', marginBottom: 6 }}>
+            <p style={{ fontSize: 14.5, color: '#9ca3af', marginBottom: 6 }}>
               Raised {detail.createdAt} by {detail.createdByRole}{detail.customerId ? ` (customer ${detail.customerId})` : ''}
             </p>
-            <p style={{ fontSize: 13.5, color: '#374151', lineHeight: 1.6, background: '#fafbfc', border: '1px solid var(--border-light)', borderRadius: 10, padding: 14 }}>
+            <p style={{ fontSize: 16, color: '#374151', lineHeight: 1.6, background: '#fafbfc', border: '1px solid var(--border-light)', borderRadius: 10, padding: 14 }}>
               {detail.message || 'No message provided.'}
             </p>
             {detail.status === 'Closed' && (

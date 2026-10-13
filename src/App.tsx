@@ -19,14 +19,7 @@ import { SuccessToastStack } from './components/SuccessToastStack'
 import { supabase } from './lib/supabase'
 import { showAppError } from './lib/appDialogs'
 import { SystemDeveloperBootScreen } from './components/SystemDeveloperBootScreen'
-
-// Private, greeting-only display name for the System Developer boot screen
-// (see SYSTEM_DEVELOPER_GREETING_NAMES usage below) - deliberately not
-// stored in admin_staff.name, which every other admin sees (as "System
-// Developer") in Admin Users, activity logs, "invited by", etc.
-const SYSTEM_DEVELOPER_GREETING_NAMES: Record<string, string> = {
-  'info@kavotech.uk': 'Oliver Alinaitwe',
-}
+import { greetingNameFor } from './lib/greetingName'
 
 // Blanket coverage for the ~30+ action handlers across the app that don't
 // individually handle their errors (fired with `void`) - anything that
@@ -66,16 +59,16 @@ class ErrorBoundary extends Component<{ children: ReactNode; isSystemDeveloper?:
                 <line x1="12" y1="17" x2="12.01" y2="17"/>
               </svg>
             </div>
-            <h2 style={{ fontSize: 20, fontWeight: 800, color: '#111827', marginBottom: 8 }}>Something went wrong</h2>
-            <p style={{ fontSize: 13.5, color: '#6b7280', marginBottom: 20 }}>
+            <h2 style={{ fontSize: 22, fontWeight: 800, color: '#111827', marginBottom: 8 }}>Something went wrong</h2>
+            <p style={{ fontSize: 16, color: '#6b7280', marginBottom: 20 }}>
               {showTechnical ? this.state.error : 'Unable to complete this action right now. Please try again shortly.'}
             </p>
             {showTechnical && (
-              <p style={{ fontSize: 12.5, color: '#9ca3af' }}>
+              <p style={{ fontSize: 15, color: '#9ca3af' }}>
                 If Supabase tables are not set up yet, run <strong>src/lib/schema.sql</strong> in your Supabase SQL editor first.
               </p>
             )}
-            <button onClick={() => this.setState({ error: null })} style={{ marginTop: 20, padding: '9px 20px', background: '#22913f', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 700, cursor: 'pointer', fontSize: 14 }}>
+            <button onClick={() => this.setState({ error: null })} style={{ marginTop: 20, padding: '9px 20px', background: '#22913f', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 700, cursor: 'pointer', fontSize: 16 }}>
               Try Again
             </button>
           </div>
@@ -218,13 +211,7 @@ function App() {
 
   if (user && (!modeReady || devBootActive)) {
     if (user.isSystemDeveloper) {
-      // The personalised greeting is intentionally kept out of
-      // admin_staff.name (which every other admin sees as "System
-      // Developer" in Admin Users, activity logs, etc.) - this lookup only
-      // ever runs on this account's own boot screen, for this account's own
-      // session, so the real name is never exposed to anyone else's view.
-      const greetingName = SYSTEM_DEVELOPER_GREETING_NAMES[user.email.toLowerCase()] ?? user.displayName
-      return <SystemDeveloperBootScreen name={greetingName} />
+      return <SystemDeveloperBootScreen name={greetingNameFor(user)} />
     }
     return <div className="portal-boot"><img src="/logo.png" alt="" /><strong>Preparing your workspace</strong><span>Loading the correct data environment...</span></div>
   }

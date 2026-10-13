@@ -97,8 +97,8 @@ export function SuppliersPage({
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
         <div>
           <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Suppliers</h2>
-          <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Suppliers</h2>
+          <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
             Manage the suppliers used throughout the Produce Buying Desk.
           </p>
         </div>
@@ -108,7 +108,7 @@ export function SuppliersPage({
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         {([["directory", "Directory"], ["analytics", "Supplier Analytics"]] as [Tab, string][]).map(([key, label]) => (
           <button key={key} type="button" onClick={() => setTab(key)}
-            style={{ padding: "8px 14px", borderRadius: 10, cursor: "pointer", border: tab === key ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: tab === key ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 13, color: tab === key ? "#14532d" : "#374151" }}>
+            style={{ padding: "8px 14px", borderRadius: 10, cursor: "pointer", border: tab === key ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: tab === key ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 15.5, color: tab === key ? "#14532d" : "#374151" }}>
             {label}
           </button>
         ))}
@@ -164,7 +164,7 @@ export function SuppliersPage({
                 <span>To</span>
                 <input type="date" value={rangeTo} onChange={e => setRangeTo(e.target.value)} />
               </label>
-              <p style={{ fontSize: 12.5, color: "#6b7a70", alignSelf: "flex-end", margin: 0 }}>Double-click a supplier to see everything bought from them in this range.</p>
+              <p style={{ fontSize: 15, color: "#6b7a70", alignSelf: "flex-end", margin: 0 }}>Double-click a supplier to see everything bought from them in this range.</p>
             </div>
           </div>
           <div className="ps-table-card">
@@ -237,7 +237,7 @@ export function SuppliersPage({
           <div className="wide"><Input label="Supplier Name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required autoFocus /></div>
           <Input label="Contact (phone or email)" value={form.contact} onChange={e => setForm({ ...form, contact: e.target.value })} />
           <Input label="Country" value={form.country} onChange={e => setForm({ ...form, country: e.target.value })} />
-          {error && <p className="wide" style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{error}</p>}
+          {error && <p className="wide" style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{error}</p>}
           <div className="wide actions-row">
             <Button onClick={submitAdd} disabled={busy}>{busy ? "Adding…" : "Add Supplier"}</Button>
             <Button variant="secondary" onClick={() => setShowAdd(false)}>Cancel</Button>
@@ -251,7 +251,7 @@ export function SuppliersPage({
             <div className="wide"><Input label="Supplier Name" value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} required /></div>
             <Input label="Contact (phone or email)" value={editing.contact} onChange={e => setEditing({ ...editing, contact: e.target.value })} />
             <Input label="Country" value={editing.country} onChange={e => setEditing({ ...editing, country: e.target.value })} />
-            {error && <p className="wide" style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{error}</p>}
+            {error && <p className="wide" style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{error}</p>}
             <div className="wide actions-row">
               <Button onClick={submitEdit} disabled={busy}>{busy ? "Saving…" : "Save Changes"}</Button>
               <Button variant="secondary" onClick={() => setEditing(null)}>Cancel</Button>

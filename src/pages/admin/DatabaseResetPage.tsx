@@ -127,18 +127,18 @@ export function DatabaseResetPage() {
     <div className="stack">
       <div>
         <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Database Reset</h2>
-        <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Database Reset</h2>
+        <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
           System Developer only. Permanently clears business/transactional data — customers, invoices and their documents — to start clean. Never touches admin accounts, logins, or system settings.
         </p>
       </div>
 
       <div className="ps-table-card" style={{ padding: 20 }}>
-        <h3 style={{ margin: "0 0 8px", fontSize: 15 }}>Reset PIN</h3>
+        <h3 style={{ margin: "0 0 8px", fontSize: 17 }}>Reset PIN</h3>
         {status.pinConfigured ? (
-          <p style={{ fontSize: 13.5, color: "#15803d", marginBottom: 12 }}>Your reset PIN is configured{status.pinSetAt ? ` (set ${new Date(status.pinSetAt).toLocaleDateString("en-GB")})` : ""}.</p>
+          <p style={{ fontSize: 16, color: "#15803d", marginBottom: 12 }}>Your reset PIN is configured{status.pinSetAt ? ` (set ${new Date(status.pinSetAt).toLocaleDateString("en-GB")})` : ""}.</p>
         ) : (
-          <p style={{ fontSize: 13.5, color: "#a16207", marginBottom: 12 }}>You haven't set up a reset PIN yet — this is required before a reset can be run.</p>
+          <p style={{ fontSize: 16, color: "#a16207", marginBottom: 12 }}>You haven't set up a reset PIN yet — this is required before a reset can be run.</p>
         )}
         <div style={{ display: "flex", gap: 10, alignItems: "flex-end", flexWrap: "wrap" }}>
           <Input label={status.pinConfigured ? "New 4-digit PIN" : "Choose a 4-digit PIN"} value={pinInput} onChange={e => setPinInput(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="1234" style={{ maxWidth: 140 }} />
@@ -147,8 +147,8 @@ export function DatabaseResetPage() {
       </div>
 
       <div className="ps-table-card" style={{ padding: 20, opacity: status.pinConfigured ? 1 : 0.5, pointerEvents: status.pinConfigured ? "auto" : "none" }}>
-        <h3 style={{ margin: "0 0 8px", fontSize: 15 }}>Reset Business Data</h3>
-        <p style={{ fontSize: 13, color: "#6b7a70", marginBottom: 14 }}>
+        <h3 style={{ margin: "0 0 8px", fontSize: 17 }}>Reset Business Data</h3>
+        <p style={{ fontSize: 15.5, color: "#6b7a70", marginBottom: 14 }}>
           Clears customers, invoices and their documents through a guided, three-step verification. Admin accounts, logins and system settings are never touched.
         </p>
         <Button variant="danger" onClick={openWizard}>Start Database Reset</Button>
@@ -156,7 +156,7 @@ export function DatabaseResetPage() {
         {result && (
           <div style={{ marginTop: 16, background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 8, padding: "12px 14px" }}>
             <strong style={{ color: "#15803d" }}>Reset complete{result.testMode ? " (Test Mode sandbox)" : ""}.</strong>
-            <ul style={{ margin: "6px 0 0", paddingLeft: 18, fontSize: 13 }}>
+            <ul style={{ margin: "6px 0 0", paddingLeft: 18, fontSize: 15.5 }}>
               {Object.entries(result.counts).map(([table, count]) => <li key={table}>{TABLE_LABELS[table] ?? table}: {count} removed</li>)}
             </ul>
           </div>
@@ -186,13 +186,13 @@ export function DatabaseResetPage() {
 
           {wizardBusy && (
             <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0" }}>
-              <Spinner size={18} /><span style={{ fontSize: 13.5, color: "#6b7a70" }}>{wizardBusyLabel}</span>
+              <Spinner size={18} /><span style={{ fontSize: 16, color: "#6b7a70" }}>{wizardBusyLabel}</span>
             </div>
           )}
 
           {!wizardBusy && wizardStep === "pin" && (
             <>
-              <p style={{ fontSize: 13.5, color: "#6b7a70" }}>Enter your 4-digit reset PIN to begin.</p>
+              <p style={{ fontSize: 16, color: "#6b7a70" }}>Enter your 4-digit reset PIN to begin.</p>
               <Input label="4-digit PIN" type="password" value={wizardPin} onChange={e => setWizardPin(e.target.value.replace(/\D/g, "").slice(0, 4))} autoFocus />
               {wizardError && <p className="error-message">{wizardError}</p>}
               <div className="actions-row">
@@ -204,7 +204,7 @@ export function DatabaseResetPage() {
 
           {!wizardBusy && wizardStep === "code" && (
             <>
-              <p style={{ fontSize: 13.5, color: "#6b7a70" }}>PIN correct. A 6-digit code was sent to {wizardSentTo || "your account email"} — it expires in 10 minutes.</p>
+              <p style={{ fontSize: 16, color: "#6b7a70" }}>PIN correct. A 6-digit code was sent to {wizardSentTo || "your account email"} — it expires in 10 minutes.</p>
               <Input label="6-digit email code" value={wizardCode} onChange={e => setWizardCode(e.target.value.replace(/\D/g, "").slice(0, 6))} autoFocus />
               {wizardError && <p className="error-message">{wizardError}</p>}
               <div className="actions-row">
@@ -217,7 +217,7 @@ export function DatabaseResetPage() {
 
           {!wizardBusy && wizardStep === "confirm" && (
             <>
-              <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: "12px 14px", fontSize: 13 }}>
+              <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: "12px 14px", fontSize: 15.5 }}>
                 <strong style={{ color: "#b91c1c" }}>This permanently deletes:</strong>
                 <ul style={{ margin: "6px 0 0", paddingLeft: 18, color: "#7f1d1d" }}>
                   {status.tables.map(t => <li key={t}>{TABLE_LABELS[t] ?? t}</li>)}

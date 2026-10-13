@@ -252,10 +252,10 @@ export function EmailImportsPage({ imports, hasMore, counts, total, stats, custo
         <td>
           <span className="ps-badge" style={STATUS_COLORS[row.status]}>{STATUS_LABELS[row.status]}</span>
           {row.status === 'imported' && (
-            <div style={{ marginTop: 4, fontSize: 11.5, color: "#6b7280" }}>{row.customer_created ? "New Customer Created" : "Added to Existing Customer"}</div>
+            <div style={{ marginTop: 4, fontSize: 14, color: "#6b7280" }}>{row.customer_created ? "New Customer Created" : "Added to Existing Customer"}</div>
           )}
           {row.error_message && row.status !== 'imported' && (
-            <div style={{ marginTop: 4, fontSize: 11.5, color: "#9ca3af", maxWidth: 220 }}>{row.error_message}</div>
+            <div style={{ marginTop: 4, fontSize: 14, color: "#9ca3af", maxWidth: 220 }}>{row.error_message}</div>
           )}
           {/* Item 7: reflects the SAME invoice's live canonical-PDF state -
               never a second email-import row. Imported/Parsed are implied by
@@ -265,7 +265,7 @@ export function EmailImportsPage({ imports, hasMore, counts, total, stats, custo
             const linkedInvoice = invoiceById.get(row.invoice_id!)
             const pdfPending = Boolean(linkedInvoice?.importedMetadata?.pdfGenerationPending)
             return (
-              <div style={{ marginTop: 4, fontSize: 11.5, color: pdfPending ? '#b45309' : '#15803d' }}>
+              <div style={{ marginTop: 4, fontSize: 14, color: pdfPending ? '#b45309' : '#15803d' }}>
                 Imported ✓ · Parsed ✓ · Generated PDF {pdfPending ? '✗ (needs review)' : '✓'}
               </div>
             )
@@ -294,8 +294,8 @@ export function EmailImportsPage({ imports, hasMore, counts, total, stats, custo
     <div className="stack">
       <div>
         <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Email Imports</h2>
-        <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Email Imports</h2>
+        <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
           PDF invoices and credit notes received at receivables@punjabexoticfoods.com, imported through the same pipeline as a manual upload.
         </p>
       </div>
@@ -329,7 +329,7 @@ export function EmailImportsPage({ imports, hasMore, counts, total, stats, custo
           </div>
         </div>
 
-        <p style={{ fontSize: 12, color: "#9ca3af", padding: "10px 16px 0" }}>
+        <p style={{ fontSize: 14.5, color: "#9ca3af", padding: "10px 16px 0" }}>
           {isSearchMode
             ? `${filtered.length} match${filtered.length === 1 ? "" : "es"} across all ${total.toLocaleString()} email imports.`
             : `Showing ${imports.length.toLocaleString()} of ${total.toLocaleString()} email imports, newest first.`}
@@ -371,19 +371,19 @@ export function EmailImportsPage({ imports, hasMore, counts, total, stats, custo
           const customer = row.detected_customer_id ? customerById.get(row.detected_customer_id) : undefined
           const docLabel = row.document_type === 'invoice' ? 'Invoice' : row.document_type === 'credit_note' ? 'Credit Note' : row.document_type === 'statement' ? 'Statement' : 'Unclassified'
           const field = (label: string, value: string) => (
-            <div style={{ display: 'flex', gap: 8, fontSize: 13, padding: '4px 0', borderBottom: '1px solid #f3f4f6' }}>
+            <div style={{ display: 'flex', gap: 8, fontSize: 15.5, padding: '4px 0', borderBottom: '1px solid #f3f4f6' }}>
               <span style={{ color: '#9ca3af', minWidth: 110 }}>{label}</span><span style={{ color: '#111827', wordBreak: 'break-word' }}>{value || '—'}</span>
             </div>
           )
           const docFile = (label: string, file: typeof originalFile) => (
             <div style={{ border: '1px solid #e5e7eb', borderRadius: 10, padding: '10px 14px', flex: '1 1 220px' }}>
-              <p style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, color: '#6b7280', margin: '0 0 6px' }}>{label}</p>
-              {file === 'loading' && <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#6b7280', fontSize: 13 }}><Spinner size={13} /> Loading…</div>}
-              {file === 'missing' && <p style={{ fontSize: 12.5, color: '#9ca3af', margin: 0 }}>Not found.</p>}
-              {file === null && <p style={{ fontSize: 12.5, color: '#9ca3af', margin: 0 }}>None on file.</p>}
+              <p style={{ fontSize: 13.5, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, color: '#6b7280', margin: '0 0 6px' }}>{label}</p>
+              {file === 'loading' && <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#6b7280', fontSize: 15.5 }}><Spinner size={13} /> Loading…</div>}
+              {file === 'missing' && <p style={{ fontSize: 15, color: '#9ca3af', margin: 0 }}>Not found.</p>}
+              {file === null && <p style={{ fontSize: 15, color: '#9ca3af', margin: 0 }}>None on file.</p>}
               {file && typeof file === 'object' && (
                 <>
-                  <p style={{ fontSize: 12, color: '#374151', margin: '0 0 8px' }}>{fmt(file.uploadedAt)}</p>
+                  <p style={{ fontSize: 14.5, color: '#374151', margin: '0 0 8px' }}>{fmt(file.uploadedAt)}</p>
                   <div style={{ display: 'flex', gap: 6 }}>
                     <Button variant="secondary" className="btn-sm" onClick={() => setPreview({ name: file.name, dataUri: file.dataUri })}>View</Button>
                     <a className="btn btn-secondary btn-sm" href={file.dataUri} download={file.name}>Download</a>
@@ -405,10 +405,10 @@ export function EmailImportsPage({ imports, hasMore, counts, total, stats, custo
                 {field('Import Status', STATUS_LABELS[row.status])}
               </div>
               <div>
-                <p style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, color: '#6b7280', margin: '0 0 6px' }}>Email Body</p>
+                <p style={{ fontSize: 13.5, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, color: '#6b7280', margin: '0 0 6px' }}>Email Body</p>
                 {row.body_text
-                  ? <div style={{ whiteSpace: 'pre-wrap', fontSize: 13, color: '#374151', background: '#f9fafb', borderRadius: 8, padding: 12, maxHeight: 260, overflowY: 'auto' }}>{row.body_text}</div>
-                  : <p style={{ fontSize: 12.5, color: '#9ca3af', fontStyle: 'italic' }}>The email body was not retained for this historical import. Only metadata is available above.</p>}
+                  ? <div style={{ whiteSpace: 'pre-wrap', fontSize: 15.5, color: '#374151', background: '#f9fafb', borderRadius: 8, padding: 12, maxHeight: 260, overflowY: 'auto' }}>{row.body_text}</div>
+                  : <p style={{ fontSize: 15, color: '#9ca3af', fontStyle: 'italic' }}>The email body was not retained for this historical import. Only metadata is available above.</p>}
               </div>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 {docFile('Original ' + docLabel, originalFile)}
@@ -421,7 +421,7 @@ export function EmailImportsPage({ imports, hasMore, counts, total, stats, custo
       </Modal>
 
       <Modal open={Boolean(pickerFor)} title="Select the customer for this document" onClose={() => setPickerFor(null)}>
-        <p style={{ fontSize: 13, color: "#6b7a70", marginBottom: 10 }}>
+        <p style={{ fontSize: 15.5, color: "#6b7a70", marginBottom: 10 }}>
           {pickerFor?.error_message || "A matching customer account could not be found automatically."}
         </p>
         <label className="form-control">
@@ -489,7 +489,7 @@ export function EmailImportsPage({ imports, hasMore, counts, total, stats, custo
                 <label className="form-control"><span>Grand Total — Parsed: £{(reviewParsed.documentType === "credit_note" ? reviewParsed.creditNote.grandTotal : reviewParsed.invoice.grandTotal).toFixed(2)}</span>
                   <input type="number" step="0.01" value={reviewDoc.documentType === "credit_note" ? reviewDoc.creditNote.grandTotal : reviewDoc.invoice.grandTotal} onChange={e => updateDocField("grandTotal", Number(e.target.value))} /></label>
               </div>
-              <p style={{ fontSize: 12, color: "#6b7a70", marginTop: 4 }}>
+              <p style={{ fontSize: 14.5, color: "#6b7a70", marginTop: 4 }}>
                 Recalculated on save: Total Goods + VAT = £{((reviewDoc.documentType === "credit_note" ? reviewDoc.creditNote.totalGoods : reviewDoc.invoice.totalGoods) + (reviewDoc.documentType === "credit_note" ? reviewDoc.creditNote.vat : reviewDoc.invoice.vat)).toFixed(2)}
                 {" vs Grand Total £"}{(reviewDoc.documentType === "credit_note" ? reviewDoc.creditNote.grandTotal : reviewDoc.invoice.grandTotal).toFixed(2)}
               </p>

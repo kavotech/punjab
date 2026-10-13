@@ -40,8 +40,8 @@ export function AssignTaskPage({
     <div className="stack">
       <div>
         <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Assign Task</h2>
-        <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Assign Task</h2>
+        <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
           Tell an admin something they need to do — they get an email straight away and it shows up in their list below.
         </p>
       </div>
@@ -55,7 +55,7 @@ export function AssignTaskPage({
           <div className="wide">
             <TextArea label="Details (optional)" rows={3} value={description} onChange={e => setDescription(e.target.value)} placeholder="Anything they need to know…" />
           </div>
-          {error && <p className="wide" style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{error}</p>}
+          {error && <p className="wide" style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{error}</p>}
           <div className="wide actions-row">
             <Button onClick={submit} disabled={busy}>{busy ? "Assigning…" : "Assign Task"}</Button>
           </div>

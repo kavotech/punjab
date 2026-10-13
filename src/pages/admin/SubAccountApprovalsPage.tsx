@@ -30,8 +30,8 @@ export function SubAccountApprovalsPage({
     <div className="stack">
       <div>
         <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Sub-Account Approvals</h2>
-        <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Sub-Account Approvals</h2>
+        <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
           Employee logins customers have invited onto their own account — approve or reject before they can sign in.
         </p>
       </div>
@@ -47,7 +47,7 @@ export function SubAccountApprovalsPage({
                   <td><strong>{a.name}</strong></td>
                   <td>{a.email}</td>
                   <td>{a.customerName}</td>
-                  <td style={{ fontSize: 12.5, color: "#6b7280" }}>
+                  <td style={{ fontSize: 15, color: "#6b7280" }}>
                     {(Object.keys(a.permissions) as (keyof CustomerSubAccount["permissions"])[])
                       .filter(k => a.permissions[k]).map(k => PERM_LABELS[k]).join(", ") || "—"}
                   </td>

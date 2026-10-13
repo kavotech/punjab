@@ -16,8 +16,8 @@
           <line x1="9" y1="17" x2="12" y2="17"/>
         </svg>
       </div>
-      <div style={{ fontSize: 15, fontWeight: 700, color: "#111827", marginBottom: 6 }}>{title}</div>
-      {description && <div style={{ fontSize: 13.5, color: "#9ca3af", maxWidth: 320, lineHeight: 1.6 }}>{description}</div>}
+      <div style={{ fontSize: 17, fontWeight: 700, color: "#111827", marginBottom: 6 }}>{title}</div>
+      {description && <div style={{ fontSize: 16, color: "#9ca3af", maxWidth: 320, lineHeight: 1.6 }}>{description}</div>}
     </div>
   )
 }

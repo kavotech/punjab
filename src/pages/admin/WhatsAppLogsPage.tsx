@@ -36,8 +36,8 @@ export function WhatsAppLogsPage({ logs, onRetry }: {
     <div className="stack">
       <div>
         <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>WhatsApp Logs</h2>
-        <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>WhatsApp Logs</h2>
+        <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
           Every WhatsApp message sent from the Punjab Exotic Foods Ltd account, via UltraMsg.
         </p>
       </div>

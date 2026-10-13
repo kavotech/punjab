@@ -17,7 +17,7 @@ function parseMoney(value: string) { return Math.round((parseFloat(value) || 0) 
 
 /* Lightweight SVG line chart — same visual language as DashboardHome's AdminLine */
 function PriceLine({ points, color = "#1f7a3a", empty }: { points: number[]; color?: string; empty: string }) {
-  if (points.length < 2) return <div style={{ padding: 24, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>{empty}</div>
+  if (points.length < 2) return <div style={{ padding: 24, textAlign: "center", color: "#9ca3af", fontSize: 15.5 }}>{empty}</div>
   const W = 600, H = 160, pad = 10
   const max = Math.max(...points, 1)
   const min = Math.min(...points, 0)
@@ -310,8 +310,8 @@ export function BuyingDeskPage({
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
         <div>
           <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Produce Buying Desk</h2>
-          <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Produce Buying Desk</h2>
+          <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
             Record supplier quotations each morning, confirm orders, then set quantity &amp; selling price in Stock.
           </p>
         </div>
@@ -324,8 +324,8 @@ export function BuyingDeskPage({
       {!session ? (
         <div className="ps-table-card" style={{ padding: 32, textAlign: "center" }}>
           <p style={{ fontWeight: 700, marginBottom: 8, color: "#374151" }}>No buying session yet for {date}</p>
-          <p style={{ color: "#9ca3af", fontSize: 13.5, marginBottom: 16 }}>Start one to begin recording supplier quotations for this date.</p>
-          {startError && <p style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", marginBottom: 12 }}>{startError}</p>}
+          <p style={{ color: "#9ca3af", fontSize: 16, marginBottom: 16 }}>Start one to begin recording supplier quotations for this date.</p>
+          {startError && <p style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", marginBottom: 12 }}>{startError}</p>}
           {canEdit && <Button onClick={startSession} disabled={busy}>{busy ? "Starting…" : "Start Buying Session"}</Button>}
         </div>
       ) : (
@@ -336,7 +336,7 @@ export function BuyingDeskPage({
               ["history", "Buying History"], ["analytics", "Buying Analytics"], ["suppliers", "Supplier Analytics"],
             ] as [Tab, string][]).map(([key, label]) => (
               <button key={key} type="button" onClick={() => setTab(key)}
-                style={{ padding: "8px 14px", borderRadius: 10, cursor: "pointer", border: tab === key ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: tab === key ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 13, color: tab === key ? "#14532d" : "#374151" }}>
+                style={{ padding: "8px 14px", borderRadius: 10, cursor: "pointer", border: tab === key ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: tab === key ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 15.5, color: tab === key ? "#14532d" : "#374151" }}>
                 {label}
               </button>
             ))}
@@ -347,7 +347,7 @@ export function BuyingDeskPage({
             <div className="ps-table-card">
               <div className="ps-toolbar">
                 <div className="ps-toolbar-left">
-                  <span style={{ fontSize: 13, color: "#6b7a70" }}>{unconfirmed.length} awaiting confirmation</span>
+                  <span style={{ fontSize: 15.5, color: "#6b7a70" }}>{unconfirmed.length} awaiting confirmation</span>
                 </div>
                 {canEdit && (
                   <div className="ps-toolbar-right">
@@ -541,7 +541,7 @@ export function BuyingDeskPage({
                     <div className="ps-stat"><p className="ps-stat-label">Lowest</p><p className="ps-stat-value">£{analyticsStats.lowest.toFixed(2)}</p></div>
                   </div>
                   <div className="ps-table-card" style={{ padding: 16 }}>
-                    <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>
+                    <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>
                       Price Trend {analyticsStats.pctChange !== 0 && (
                         <span style={{ color: analyticsStats.pctChange > 0 ? "#b91c1c" : "#15803d" }}>
                           ({analyticsStats.pctChange > 0 ? "+" : ""}{analyticsStats.pctChange.toFixed(1)}%)
@@ -595,7 +595,7 @@ export function BuyingDeskPage({
                     <span>To</span>
                     <input type="date" value={rangeTo} onChange={e => setRangeTo(e.target.value)} />
                   </label>
-                  <p style={{ fontSize: 12.5, color: "#6b7a70", alignSelf: "flex-end", margin: 0 }}>Double-click a supplier to see everything bought from them in this range.</p>
+                  <p style={{ fontSize: 15, color: "#6b7a70", alignSelf: "flex-end", margin: 0 }}>Double-click a supplier to see everything bought from them in this range.</p>
                 </div>
               </div>
               <div className="ps-table-card">
@@ -639,8 +639,8 @@ export function BuyingDeskPage({
         ) : addStep === "select" ? (
           <div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
-              <h3 style={{ fontSize: 15, fontWeight: 700 }}>
-                Pick a product {savedCount > 0 && <span style={{ color: "#15803d", fontWeight: 600, fontSize: 13 }}>· {savedCount} price{savedCount !== 1 ? "s" : ""} saved so far</span>}
+              <h3 style={{ fontSize: 17, fontWeight: 700 }}>
+                Pick a product {savedCount > 0 && <span style={{ color: "#15803d", fontWeight: 600, fontSize: 15.5 }}>· {savedCount} price{savedCount !== 1 ? "s" : ""} saved so far</span>}
               </h3>
               <div className="ps-search-wrap" style={{ maxWidth: 260 }}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -683,10 +683,10 @@ export function BuyingDeskPage({
           </div>
         ) : current && (
           <div>
-            <h3 style={{ fontSize: 16, fontWeight: 800, marginBottom: 2, color: "#0d2b1e" }}>{current.name}</h3>
-            <p style={{ fontSize: 12.5, color: "#9ca3af", marginBottom: 16 }}>{current.group} · {current.category}{current.size ? ` · ${current.size}` : ""}</p>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 2, color: "#0d2b1e" }}>{current.name}</h3>
+            <p style={{ fontSize: 15, color: "#9ca3af", marginBottom: 16 }}>{current.group} · {current.category}{current.size ? ` · ${current.size}` : ""}</p>
             {suppliers.length === 0 && (
-              <p style={{ fontSize: 12.5, color: "#a16207", background: "#fef9c3", borderRadius: 8, padding: "8px 12px", marginBottom: 14 }}>
+              <p style={{ fontSize: 15, color: "#a16207", background: "#fef9c3", borderRadius: 8, padding: "8px 12px", marginBottom: 14 }}>
                 No suppliers yet — you can still type one below, or close this and use "+ Add Supplier" first.
               </p>
             )}
@@ -714,7 +714,7 @@ export function BuyingDeskPage({
               <Input label="Price (£)" type="number" min="0" step="0.01" placeholder="0.00" value={current.price}
                 onChange={e => setDraft({ price: e.target.value })} />
             </div>
-            {addError && <p style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", marginTop: 14 }}>{addError}</p>}
+            {addError && <p style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", marginTop: 14 }}>{addError}</p>}
             <div className="ss-foot">
               <Button variant="secondary" onClick={backToSelect}>← Back</Button>
               <Button onClick={submitAdd} disabled={busy}>{busy ? "Saving…" : "Save Price"}</Button>
@@ -798,7 +798,7 @@ export function BuyingDeskPage({
           <div className="wide"><Input label="Supplier Name" value={supplierForm.name} onChange={e => setSupplierForm({ ...supplierForm, name: e.target.value })} required autoFocus /></div>
           <Input label="Contact (phone or email)" value={supplierForm.contact} onChange={e => setSupplierForm({ ...supplierForm, contact: e.target.value })} />
           <Input label="Country" value={supplierForm.country} onChange={e => setSupplierForm({ ...supplierForm, country: e.target.value })} />
-          {supplierError && <p className="wide" style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{supplierError}</p>}
+          {supplierError && <p className="wide" style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{supplierError}</p>}
           <div className="wide actions-row">
             <Button onClick={submitAddSupplier} disabled={supplierBusy}>{supplierBusy ? "Adding…" : "Add Supplier"}</Button>
             <Button variant="secondary" onClick={() => setShowAddSupplier(false)}>Cancel</Button>

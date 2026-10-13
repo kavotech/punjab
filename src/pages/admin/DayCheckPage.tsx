@@ -85,8 +85,8 @@ export function DayCheckPage({ orders, products, buyingPrices }: {
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
         <div>
           <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Day Check</h2>
-          <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Day Check</h2>
+          <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
             End-of-day reconciliation — expand a date to see everything bought, what was sold, and to whom.
           </p>
         </div>
@@ -137,7 +137,7 @@ export function DayCheckPage({ orders, products, buyingPrices }: {
                   <span style={{ fontWeight: 700, color: "#0d2b1e" }}>{formatDay(date)}</span>
                   <span style={{ display: "flex", alignItems: "center", gap: 14 }}>
                     {d && (
-                      <span style={{ fontSize: 12.5, color: "#6b7a70" }}>
+                      <span style={{ fontSize: 15, color: "#6b7a70" }}>
                         Bought £{d.totalBought.toFixed(2)} · Sold £{d.totalSales.toFixed(2)} · Profit £{d.totalProfit.toFixed(2)}
                       </span>
                     )}
@@ -157,7 +157,7 @@ export function DayCheckPage({ orders, products, buyingPrices }: {
                     </div>
 
                     <div style={{ padding: "0 16px 16px" }}>
-                      <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: 0.5, margin: "0 0 8px" }}>What was bought</p>
+                      <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: 0.5, margin: "0 0 8px" }}>What was bought</p>
                       <div className="ps-table-wrap">
                         <table className="ps-table">
                           <thead><tr><th>Product</th><th>Supplier</th><th>Price</th><th>Status</th></tr></thead>
@@ -177,7 +177,7 @@ export function DayCheckPage({ orders, products, buyingPrices }: {
                     </div>
 
                     <div style={{ padding: "0 16px 16px" }}>
-                      <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: 0.5, margin: "0 0 8px" }}>What was sold, and to whom</p>
+                      <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: 0.5, margin: "0 0 8px" }}>What was sold, and to whom</p>
                       {d.customers.length === 0 ? (
                         <div className="ps-table-wrap"><div style={{ padding: "24px", textAlign: "center", color: "#9ca3af" }}>Nothing sold on this date.</div></div>
                       ) : (
@@ -186,7 +186,7 @@ export function DayCheckPage({ orders, products, buyingPrices }: {
                             <div key={c.customerId} className="ps-table-wrap" style={{ border: "1px solid #eaecf0", borderRadius: 10 }}>
                               <div style={{ padding: "10px 14px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#f9fafb", fontWeight: 700 }}>
                                 <span>{c.customerName}</span>
-                                <span style={{ fontSize: 12.5, fontWeight: 600, color: "#6b7280" }}>
+                                <span style={{ fontSize: 15, fontWeight: 600, color: "#6b7280" }}>
                                   Qty {c.qty} · Sold £{c.sales.toFixed(2)} · Profit £{c.profit.toFixed(2)}
                                 </span>
                               </div>

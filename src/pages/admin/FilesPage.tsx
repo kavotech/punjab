@@ -226,8 +226,8 @@ export function FilesPage({ customers, invoices = [], onNavigate }: { customers:
     <div className="stack">
       <div>
         <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Files &amp; Documents</h2>
-        <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Files &amp; Documents</h2>
+        <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
           Browse customers like folders — open one to add, rename, or delete their invoices and documents.
         </p>
       </div>
@@ -242,7 +242,7 @@ export function FilesPage({ customers, invoices = [], onNavigate }: { customers:
 
       {view === 'statements' ? (
         <div className="doc-content" style={{ width: '100%' }}>
-          <p style={{ fontSize: 12.5, color: "#6b7a70", margin: "0 0 12px" }}>
+          <p style={{ fontSize: 15, color: "#6b7a70", margin: "0 0 12px" }}>
             Customer statements are kept as documents and reconciliation records only — they never create invoices,
             payments or credit notes, so a statement can't double-count a customer's balance.
           </p>
@@ -268,7 +268,7 @@ export function FilesPage({ customers, invoices = [], onNavigate }: { customers:
                       <td>
                         <span className="ps-badge" style={{ background: tone.background, color: tone.color }}>{tone.label}</span>
                         {st.reconciliation_notes?.length > 0 && (
-                          <div style={{ fontSize: 11.5, color: '#9ca3af', marginTop: 3, maxWidth: 300 }}>
+                          <div style={{ fontSize: 14, color: '#9ca3af', marginTop: 3, maxWidth: 300 }}>
                             {st.reconciliation_notes.map(n => n.text).join(' ')}
                           </div>
                         )}
@@ -331,8 +331,8 @@ export function FilesPage({ customers, invoices = [], onNavigate }: { customers:
                       <tr key={f.id}>
                         <td>
                           <span className={`doc-role-badge ${f.documentRole === 'legacy_source' ? 'source' : 'generated'}`}>{pending ? 'Email Import' : documentTypeLabel(f)}</span>
-                          {subtitle && <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>{subtitle}</div>}
-                          {pdfFailed && <div style={{ fontSize: 11, color: "#b45309", marginTop: 2 }}>Basic fallback PDF - not the official template</div>}
+                          {subtitle && <div style={{ fontSize: 13.5, color: "#9ca3af", marginTop: 2 }}>{subtitle}</div>}
+                          {pdfFailed && <div style={{ fontSize: 13.5, color: "#b45309", marginTop: 2 }}>Basic fallback PDF - not the official template</div>}
                         </td>
                         <td>{f.customerName || 'Internal'}</td>
                         <td>{customer?.customerNumber || '—'}</td>
@@ -406,8 +406,8 @@ export function FilesPage({ customers, invoices = [], onNavigate }: { customers:
               )}
             </span>
             <div>
-              <h3 style={{ fontSize: 15, fontWeight: 800, color: "#111827" }}>{selectedCustomer ? selectedCustomer.companyName : "Internal Only"}</h3>
-              <p style={{ fontSize: 12, color: "#9ca3af" }}>{selectedCustomer ? `Account ${selectedCustomer.customerNumber} · ` : ''}{folderFiles.length} file{folderFiles.length !== 1 ? "s" : ""}</p>
+              <h3 style={{ fontSize: 17, fontWeight: 800, color: "#111827" }}>{selectedCustomer ? selectedCustomer.companyName : "Internal Only"}</h3>
+              <p style={{ fontSize: 14.5, color: "#9ca3af" }}>{selectedCustomer ? `Account ${selectedCustomer.customerNumber} · ` : ''}{folderFiles.length} file{folderFiles.length !== 1 ? "s" : ""}</p>
             </div>
           </div>
 
@@ -431,7 +431,7 @@ export function FilesPage({ customers, invoices = [], onNavigate }: { customers:
             </label>
             <label className="form-control" style={{ minWidth: 170 }}><span>Document category</span><select value={uploadCategory} onChange={e=>setUploadCategory(e.target.value)}>{DOCUMENT_CATEGORIES.slice(1).map(x=><option key={x}>{x}</option>)}</select></label>
           </div>
-          {error && <p style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", marginBottom: 16 }}>{error}</p>}
+          {error && <p style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", marginBottom: 16 }}>{error}</p>}
 
           {loading ? (
             <div className="db-empty">Loading files…</div>

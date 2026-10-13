@@ -33,9 +33,9 @@ export function NotificationsPage({ notifications, onMarkRead, onMarkAllRead, on
                   background: notification.read ? '#fff' : '#f0fdf4', cursor: 'pointer',
                 }}
               >
-                <div style={{ fontWeight: 700, fontSize: 13.5, color: '#111827' }}>{notification.title}</div>
-                {notification.message && <div style={{ fontSize: 13, color: '#4b5563', marginTop: 2 }}>{notification.message}</div>}
-                <div style={{ fontSize: 11.5, color: '#9ca3af', marginTop: 4 }}>{notification.createdAt.replace('T', ' ').slice(0, 16)}</div>
+                <div style={{ fontWeight: 700, fontSize: 16, color: '#111827' }}>{notification.title}</div>
+                {notification.message && <div style={{ fontSize: 15.5, color: '#4b5563', marginTop: 2 }}>{notification.message}</div>}
+                <div style={{ fontSize: 14, color: '#9ca3af', marginTop: 4 }}>{notification.createdAt.replace('T', ' ').slice(0, 16)}</div>
               </button>
             ))}
           </div>

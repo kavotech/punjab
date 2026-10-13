@@ -224,7 +224,7 @@ export function SessionPage({ onFinished }: { onFinished: () => void }) {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
         <div>
           <p className="control-centre-label">Daily Selling Session</p>
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>
             {step === 0 ? "Let's set up today's fresh stock" : step === 4 ? "Today's session is live" : "Building Today's Session"}
           </h2>
         </div>
@@ -241,8 +241,8 @@ export function SessionPage({ onFinished }: { onFinished: () => void }) {
       {/* ── Step 0: session window config ── */}
       {step === 0 && (
         <div className="ss-card ss-anim" key="step0">
-          <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 6 }}>When does your selling day run?</h3>
-          <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 16 }}>
+          <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 6 }}>When does your selling day run?</h3>
+          <p style={{ fontSize: 15.5, color: "#6b7280", marginBottom: 16 }}>
             One session covers a full selling day (default 23:00 → 09:00 UK time). Set your hours below, then walk through three quick steps to publish today's produce, prices and quantities to every customer.
             {lastSession?.startedAt && <> Last session started {new Date(lastSession.startedAt).toLocaleString("en-GB", { timeZone: LONDON_TZ })} UK time.</>}
             {carriedForward > 0 && <> We've carried forward <strong>{carriedForward}</strong> item{carriedForward !== 1 ? "s" : ""} still in stock — just confirm or adjust them in the next steps. Anything you don't reselect will be marked out of stock.</>}
@@ -265,7 +265,7 @@ export function SessionPage({ onFinished }: { onFinished: () => void }) {
       {step === 1 && (
         <div className="ss-card ss-anim" key="step1">
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
-            <h3 style={{ fontSize: 15, fontWeight: 700 }}>Select today's produce <span style={{ color: "#6b7280", fontWeight: 500 }}>({items.length} selected)</span></h3>
+            <h3 style={{ fontSize: 17, fontWeight: 700 }}>Select today's produce <span style={{ color: "#6b7280", fontWeight: 500 }}>({items.length} selected)</span></h3>
             <div className="ps-search-wrap" style={{ maxWidth: 260 }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
               <input className="ps-search" placeholder="Search produce…" value={search} onChange={e => setSearch(e.target.value)} />
@@ -320,11 +320,11 @@ export function SessionPage({ onFinished }: { onFinished: () => void }) {
       {/* ── Step 2: supplier + purchase price ── */}
       {step === 2 && (
         <div className="ss-card ss-anim" key="step2">
-          <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 4 }}>How is each item packaged, and where's it from?</h3>
-          <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 4 }}>Tell us the packaging, the supplier, and what you paid — we'll suggest a selling price next.</p>
+          <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 4 }}>How is each item packaged, and where's it from?</h3>
+          <p style={{ fontSize: 15.5, color: "#6b7280", marginBottom: 4 }}>Tell us the packaging, the supplier, and what you paid — we'll suggest a selling price next.</p>
           <div style={{ display: "flex", gap: 8, margin: "12px 0 16px", flexWrap: "wrap" }}>
             <input
-              style={{ padding: "8px 12px", border: "1.5px solid var(--border)", borderRadius: 8, fontFamily: "inherit", fontSize: 13, outline: "none", flex: 1, minWidth: 180 }}
+              style={{ padding: "8px 12px", border: "1.5px solid var(--border)", borderRadius: 8, fontFamily: "inherit", fontSize: 15.5, outline: "none", flex: 1, minWidth: 180 }}
               placeholder="Add a new supplier…" value={newSupplier}
               onChange={e => setNewSupplier(e.target.value)}
               onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); addSupplier() } }}
@@ -362,8 +362,8 @@ export function SessionPage({ onFinished }: { onFinished: () => void }) {
       {/* ── Step 3: selling prices ── */}
       {step === 3 && (
         <div className="ss-card ss-anim" key="step3">
-          <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 4 }}>Almost there — what's today's selling price?</h3>
-          <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 14 }}>We've suggested a +30% margin on your purchase price for each item — adjust anything before going live.</p>
+          <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 4 }}>Almost there — what's today's selling price?</h3>
+          <p style={{ fontSize: 15.5, color: "#6b7280", marginBottom: 14 }}>We've suggested a +30% margin on your purchase price for each item — adjust anything before going live.</p>
           <div className="ss-rows">
             {items.map(i => {
               const buy = Number(i.purchasePrice) || 0
@@ -374,13 +374,13 @@ export function SessionPage({ onFinished }: { onFinished: () => void }) {
                   <div className="ss-row-name">{i.name}<small>{i.supplier} · buy £{buy.toFixed(2)}</small></div>
                   <input type="number" min="0.01" step="0.01" placeholder="Sell £/box" value={i.sellingPrice}
                     onChange={e => setItem(i.name, { sellingPrice: e.target.value })} />
-                  <div className="ss-row-name" style={{ fontWeight: 500 }}><small style={{ fontSize: 12 }}>{i.qty} boxes</small></div>
+                  <div className="ss-row-name" style={{ fontWeight: 500 }}><small style={{ fontSize: 14.5 }}>{i.qty} boxes</small></div>
                   <span className={"ss-margin " + (margin >= 0 ? "pos" : "neg")}>{margin >= 0 ? "+" : ""}{margin.toFixed(0)}% margin</span>
                 </div>
               )
             })}
           </div>
-          {error && <p style={{ color: "#b91c1c", fontSize: 13, marginTop: 12, background: "#fef2f2", borderRadius: 8, padding: "8px 12px" }}>{error}</p>}
+          {error && <p style={{ color: "#b91c1c", fontSize: 15.5, marginTop: 12, background: "#fef2f2", borderRadius: 8, padding: "8px 12px" }}>{error}</p>}
           <div className="ss-foot">
             <Button variant="secondary" onClick={() => setStep(2)}>← Back</Button>
             <Button onClick={finishSession} disabled={!step3Valid || saving}>
@@ -396,8 +396,8 @@ export function SessionPage({ onFinished }: { onFinished: () => void }) {
           <div className="ss-done-ico po-done-pop">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
           </div>
-          <h3 style={{ fontSize: 18, fontWeight: 800, color: "#0d2b1e" }}>Today's produce is live!</h3>
-          <p style={{ fontSize: 13.5, color: "#6b7280", margin: "8px 0 20px" }}>
+          <h3 style={{ fontSize: 20, fontWeight: 800, color: "#0d2b1e" }}>Today's produce is live!</h3>
+          <p style={{ fontSize: 16, color: "#6b7280", margin: "8px 0 20px" }}>
             {items.length} product{items.length !== 1 ? "s" : ""} published with today's stock and prices.
             Customers can now browse and order this produce until {config.end} UK time.
           </p>

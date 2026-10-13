@@ -62,7 +62,7 @@ export function SendReminderModal({
       <div className="form-grid">
         {stage === '21-plus' && (
           <div className="wide" style={{ background: "#fef9c3", border: "1px solid #fde68a", borderRadius: 10, padding: "10px 14px" }}>
-            <p style={{ fontSize: 12.5, color: "#92400e", margin: 0 }}>
+            <p style={{ fontSize: 15, color: "#92400e", margin: 0 }}>
               No approved 21+ days overdue wording has been supplied yet — the message below is a placeholder.
               Please write or paste the correct letter wording before sending.
             </p>
@@ -72,17 +72,17 @@ export function SendReminderModal({
         <Input label="Phone" value={displayPhone || "No phone on file"} disabled />
         <div className="wide" style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <input type="checkbox" id="alsoWhatsApp" checked={alsoWhatsApp} disabled={!hasPhone} onChange={e => setAlsoWhatsApp(e.target.checked)} />
-          <label htmlFor="alsoWhatsApp" style={{ fontSize: 13, color: "#374151" }}>
+          <label htmlFor="alsoWhatsApp" style={{ fontSize: 15.5, color: "#374151" }}>
             Also try WhatsApp{!hasPhone ? " (no valid phone number on file)" : ""}
           </label>
         </div>
         <div className="wide"><Input label="Subject" value={subject} onChange={e => setSubject(e.target.value)} /></div>
         <div className="wide"><TextArea label="Message" rows={9} value={message} onChange={e => setMessage(e.target.value)} /></div>
         <div className="wide" style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 10, padding: "10px 14px" }}>
-          <p style={{ fontSize: 11, fontWeight: 700, color: "#15803d", textTransform: "uppercase", letterSpacing: 0.5, margin: "0 0 4px" }}>Attachment</p>
-          <p style={{ fontSize: 13.5, color: "#14532d", margin: 0 }}>{attachmentName || `Punjab Exotic Foods invoice ${invoice.invoiceNumber} (system-generated PDF)`}</p>
+          <p style={{ fontSize: 13.5, fontWeight: 700, color: "#15803d", textTransform: "uppercase", letterSpacing: 0.5, margin: "0 0 4px" }}>Attachment</p>
+          <p style={{ fontSize: 16, color: "#14532d", margin: 0 }}>{attachmentName || `Punjab Exotic Foods invoice ${invoice.invoiceNumber} (system-generated PDF)`}</p>
         </div>
-        {error && <p className="wide" style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{error}</p>}
+        {error && <p className="wide" style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{error}</p>}
         <div className="wide actions-row">
           <Button onClick={submit} disabled={busy}>{busy ? "Sending…" : "Send Reminder"}</Button>
           <Button variant="secondary" onClick={onClose} disabled={busy}>Cancel</Button>

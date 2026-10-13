@@ -208,12 +208,13 @@ export function CustomersPage({
     return 'clear'
   }
 
-  const [section, setSection] = useState<CustomerSection>('active')
+  // 'all' first so opening Customers always shows everyone.
+  const [section, setSection] = useState<CustomerSection | 'all'>('all')
   const [groupBy, setGroupBy] = useState<'recent' | 'az' | 'account' | 'balance' | 'lastInvoice'>('recent')
 
-  const sectioned = useMemo(() => filtered.filter(c => showArchived || sectionFor(c) === section), [filtered, section, showArchived, customerStats])
+  const sectioned = useMemo(() => filtered.filter(c => showArchived || section === 'all' || sectionFor(c) === section), [filtered, section, showArchived, customerStats])
   const sectionCounts = useMemo(() => {
-    const counts: Record<CustomerSection, number> = { 'needs-review': 0, overdue: 0, active: 0, clear: 0 }
+    const counts: Record<CustomerSection | 'all', number> = { all: filtered.length, 'needs-review': 0, overdue: 0, active: 0, clear: 0 }
     for (const customer of filtered) counts[sectionFor(customer)] += 1
     return counts
   }, [filtered, customerStats])
@@ -479,8 +480,8 @@ export function CustomersPage({
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap' }}>
         <div>
           <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0d2b1e' }}>Customers</h2>
-          <p style={{ fontSize: 13.5, color: '#6b7a70', marginTop: 3 }}>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: '#0d2b1e' }}>Customers</h2>
+          <p style={{ fontSize: 16, color: '#6b7a70', marginTop: 3 }}>
             Manage customer login accounts, delivery areas and payment types.
           </p>
         </div>
@@ -495,15 +496,15 @@ export function CustomersPage({
       <Modal open={showAdd} title={addMode === 'documents' ? 'Import Customer & Documents' : addMode === 'invite' ? 'Invite New Customer' : 'Create Customer Account'} onClose={() => setShowAdd(false)} wide={addMode !== 'invite'}>
         <div style={{ display: 'flex', gap: 10, marginBottom: 14 }}>
           <button type="button" onClick={() => { setAddMode('documents'); setAddError('') }}
-            style={{ flex: 1, padding: '9px 14px', borderRadius: 8, cursor: 'pointer', border: addMode === 'documents' ? '2px solid #1f7a3a' : '1.5px solid #e5e7eb', background: addMode === 'documents' ? '#f0fdf4' : '#fff', fontWeight: 700, fontSize: 13 }}>
+            style={{ flex: 1, padding: '9px 14px', borderRadius: 8, cursor: 'pointer', border: addMode === 'documents' ? '2px solid #1f7a3a' : '1.5px solid #e5e7eb', background: addMode === 'documents' ? '#f0fdf4' : '#fff', fontWeight: 700, fontSize: 15.5 }}>
             Import Documents
           </button>
           <button type="button" onClick={() => { setAddMode('invite'); setAddError('') }}
-            style={{ flex: 1, padding: '9px 14px', borderRadius: 10, cursor: 'pointer', border: addMode === 'invite' ? '2px solid #1f7a3a' : '1.5px solid #e5e7eb', background: addMode === 'invite' ? '#f0fdf4' : '#fff', fontWeight: 700, fontSize: 13, color: addMode === 'invite' ? '#14532d' : '#374151' }}>
+            style={{ flex: 1, padding: '9px 14px', borderRadius: 10, cursor: 'pointer', border: addMode === 'invite' ? '2px solid #1f7a3a' : '1.5px solid #e5e7eb', background: addMode === 'invite' ? '#f0fdf4' : '#fff', fontWeight: 700, fontSize: 15.5, color: addMode === 'invite' ? '#14532d' : '#374151' }}>
             Invite by Email
           </button>
           <button type="button" onClick={() => { setAddMode('full'); setAddError('') }}
-            style={{ flex: 1, padding: '9px 14px', borderRadius: 10, cursor: 'pointer', border: addMode === 'full' ? '2px solid #1f7a3a' : '1.5px solid #e5e7eb', background: addMode === 'full' ? '#f0fdf4' : '#fff', fontWeight: 700, fontSize: 13, color: addMode === 'full' ? '#14532d' : '#374151' }}>
+            style={{ flex: 1, padding: '9px 14px', borderRadius: 10, cursor: 'pointer', border: addMode === 'full' ? '2px solid #1f7a3a' : '1.5px solid #e5e7eb', background: addMode === 'full' ? '#f0fdf4' : '#fff', fontWeight: 700, fontSize: 15.5, color: addMode === 'full' ? '#14532d' : '#374151' }}>
             Enter Full Details
           </button>
         </div>
@@ -575,7 +576,7 @@ export function CustomersPage({
               <span>Customer Email</span>
               <input type="email" placeholder="orders@company.co.uk" value={newEmail} onChange={(e) => { setNewEmail(e.target.value); setAddError('') }} required autoFocus />
             </label>
-            {addError && <p style={{ color: '#b91c1c', fontSize: 13, background: '#fef2f2', borderRadius: 8, padding: '8px 12px', marginTop: 10 }}>{addError}</p>}
+            {addError && <p style={{ color: '#b91c1c', fontSize: 15.5, background: '#fef2f2', borderRadius: 8, padding: '8px 12px', marginTop: 10 }}>{addError}</p>}
             <div className="actions-row" style={{ marginTop: 16 }}>
               <Button type="submit" disabled={adding}>{adding ? 'Sending invite…' : 'Send Invitation'}</Button>
               <Button type="button" variant="secondary" onClick={() => setShowAdd(false)}>Cancel</Button>
@@ -583,7 +584,7 @@ export function CustomersPage({
           </form>
         ) : (
           <form className="form-grid" onSubmit={submitFullCreate}>
-            <p className="wide" style={{ fontSize: 12.5, color: '#6b7a70', margin: '0 0 -6px' }}>
+            <p className="wide" style={{ fontSize: 15, color: '#6b7a70', margin: '0 0 -6px' }}>
               Manually create the account now — the customer can log in immediately with the email and password you set below.
             </p>
             <Input label="Customer Name" value={fullForm.contactPerson} onChange={(e) => setFullForm({ ...fullForm, contactPerson: e.target.value })} required autoFocus />
@@ -608,7 +609,7 @@ export function CustomersPage({
                 <textarea rows={2} value={fullForm.notes} onChange={(e) => setFullForm({ ...fullForm, notes: e.target.value })} placeholder="Internal notes about this customer…" />
               </label>
             </div>
-            {addError && <p className="wide" style={{ color: '#b91c1c', fontSize: 13, background: '#fef2f2', borderRadius: 8, padding: '8px 12px', margin: 0 }}>{addError}</p>}
+            {addError && <p className="wide" style={{ color: '#b91c1c', fontSize: 15.5, background: '#fef2f2', borderRadius: 8, padding: '8px 12px', margin: 0 }}>{addError}</p>}
             <div className="wide actions-row">
               <Button type="submit" disabled={adding}>{adding ? 'Creating…' : 'Create Customer'}</Button>
               <Button type="button" variant="secondary" onClick={() => setShowAdd(false)}>Cancel</Button>
@@ -624,7 +625,7 @@ export function CustomersPage({
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
               <div className="invoice-tabs">
                 {([
-                  ['active', 'Active / Open'], ['overdue', 'Overdue'], ['clear', 'Clear / Paid'], ['needs-review', 'Needs Review'],
+                  ['all', 'All customers'], ['active', 'Owing money'], ['overdue', 'Overdue'], ['clear', 'Paid up'], ['needs-review', 'Needs checking'],
                 ] as const).map(([key, label]) => (
                   <button key={key} className={`invoice-tab${section === key ? ' active' : ''}`} onClick={() => setSection(key)}>
                     {label} ({sectionCounts[key]})
@@ -652,7 +653,7 @@ export function CustomersPage({
               <td>{customer.customerNumber}</td>
               <td>
                 <div style={{ fontWeight: 600 }}>{customer.companyName}</div>
-                <div style={{ fontSize: 11.5, color: '#9ca3af' }}>{customer.contactPerson}</div>
+                <div style={{ fontSize: 14, color: '#9ca3af' }}>{customer.contactPerson}</div>
               </td>
               <td>{fmtMoney(customer.balance)}</td>
               <td>{stat?.openInvoices ?? 0}</td>
@@ -740,7 +741,7 @@ export function CustomersPage({
       <Modal open={Boolean(editing)} title={editing ? `Edit ${editing.companyName || 'Customer'}` : 'Edit Customer'} onClose={() => setEditing(null)}>
         {editing ? (
           <form className="form-grid" onSubmit={submitEdit}>
-            <p className="wide" style={{ fontSize: 11.5, fontWeight: 700, color: '#6b7a70', textTransform: 'uppercase', letterSpacing: 0.5, margin: '0 0 -6px' }}>
+            <p className="wide" style={{ fontSize: 14, fontWeight: 700, color: '#6b7a70', textTransform: 'uppercase', letterSpacing: 0.5, margin: '0 0 -6px' }}>
               Company Details
             </p>
             <Input label="Company Name" value={editing.companyName} onChange={(e) => setEditing({ ...editing, companyName: e.target.value })} required />
@@ -751,7 +752,7 @@ export function CustomersPage({
             <div className="wide"><Input label="Registered Company Address" value={editing.registeredAddress ?? ''} onChange={(e) => setEditing({ ...editing, registeredAddress: e.target.value })} placeholder="Street, city, postcode" /></div>
             <div className="wide"><Input label="Delivery Address" value={editing.address} onChange={(e) => setEditing({ ...editing, address: e.target.value })} placeholder="Street, city, postcode" /></div>
 
-            <p className="wide" style={{ fontSize: 11.5, fontWeight: 700, color: '#6b7a70', textTransform: 'uppercase', letterSpacing: 0.5, margin: '10px 0 -6px' }}>
+            <p className="wide" style={{ fontSize: 14, fontWeight: 700, color: '#6b7a70', textTransform: 'uppercase', letterSpacing: 0.5, margin: '10px 0 -6px' }}>
               Delivery &amp; Account
             </p>
             <Select label="Delivery Area" options={deliveryAreas.length ? deliveryAreas.map(a => a.name) : [editing.deliveryArea || 'Unassigned']}
@@ -765,7 +766,7 @@ export function CustomersPage({
                 setEditing({ ...editing, salesmanId: sm?.id, salesmanName: sm?.name })
               }} />
 
-            <p className="wide" style={{ fontSize: 11.5, fontWeight: 700, color: '#6b7a70', textTransform: 'uppercase', letterSpacing: 0.5, margin: '10px 0 -6px' }}>
+            <p className="wide" style={{ fontSize: 14, fontWeight: 700, color: '#6b7a70', textTransform: 'uppercase', letterSpacing: 0.5, margin: '10px 0 -6px' }}>
               Credit Control
             </p>
             <Select label="Payment Terms" options={['Payment Before Order', '14 Days', '30 Days']} value={editing.paymentTerms} onChange={(value) => setEditing({ ...editing, paymentTerms: value })} />
@@ -774,11 +775,11 @@ export function CustomersPage({
               onChange={(e) => setEditing({ ...editing, creditLimit: parseFloat(e.target.value) || 0 })} />
             <Input label="Credit Days" type="number" min="1" step="1" value={String(editing.creditDays ?? 14)}
               onChange={(e) => setEditing({ ...editing, creditDays: parseInt(e.target.value) || 0 })} />
-            <p className="wide" style={{ fontSize: 12.5, color: '#6b7a70', margin: 0 }}>
+            <p className="wide" style={{ fontSize: 15, color: '#6b7a70', margin: 0 }}>
               Credit limit is the maximum outstanding balance allowed (0 = no limit). Credit days is how long each invoice can stay unpaid before it's overdue.
             </p>
 
-            <p className="wide" style={{ fontSize: 11.5, fontWeight: 700, color: '#6b7a70', textTransform: 'uppercase', letterSpacing: 0.5, margin: '10px 0 -6px' }}>
+            <p className="wide" style={{ fontSize: 14, fontWeight: 700, color: '#6b7a70', textTransform: 'uppercase', letterSpacing: 0.5, margin: '10px 0 -6px' }}>
               Notes
             </p>
             <div className="wide">
@@ -788,7 +789,7 @@ export function CustomersPage({
               </label>
             </div>
 
-            {editError && <p className="wide" style={{ color: '#b91c1c', fontSize: 13, background: '#fef2f2', borderRadius: 8, padding: '8px 12px', margin: 0 }}>{editError}</p>}
+            {editError && <p className="wide" style={{ color: '#b91c1c', fontSize: 15.5, background: '#fef2f2', borderRadius: 8, padding: '8px 12px', margin: 0 }}>{editError}</p>}
             <div className="wide actions-row">
               <Button type="submit" disabled={savingEdit}>{savingEdit ? 'Saving…' : 'Save Changes'}</Button>
               <Button type="button" variant="secondary" onClick={() => setEditing(null)}>Cancel</Button>
@@ -801,7 +802,7 @@ export function CustomersPage({
       <Modal open={Boolean(importTarget)} title={importTarget ? `Import Statement — ${importTarget.companyName}` : 'Import Statement'} onClose={() => setImportTarget(null)} wide>
         {importTarget && (
           <div>
-            <p style={{ fontSize: 13.5, color: '#6b7a70', marginBottom: 12 }}>
+            <p style={{ fontSize: 16, color: '#6b7a70', marginBottom: 12 }}>
               Upload this customer's Punjab statement PDF. Each invoice row is matched to the statement columns,
               and the customer's balance is synced to the outstanding amount that has not been paid.
               If it's a scanned statement, a photo or screenshot (JPG/PNG) usually reads more reliably than a scanned PDF.
@@ -812,9 +813,9 @@ export function CustomersPage({
               disabled={importBusy}
               style={{ marginBottom: 12 }}
             />
-            {importBusy && <p style={{ fontSize: 13, color: '#6b7a70' }}>{importProgress || 'Working…'}</p>}
-            {importMsg && <p style={{ color: '#b91c1c', fontSize: 13, background: '#fef2f2', borderRadius: 8, padding: '8px 12px' }}>{importMsg}</p>}
-            {importDone && <p style={{ color: '#15803d', fontSize: 13, background: '#f0fdf4', borderRadius: 8, padding: '8px 12px' }}>{importDone}</p>}
+            {importBusy && <p style={{ fontSize: 15.5, color: '#6b7a70' }}>{importProgress || 'Working…'}</p>}
+            {importMsg && <p style={{ color: '#b91c1c', fontSize: 15.5, background: '#fef2f2', borderRadius: 8, padding: '8px 12px' }}>{importMsg}</p>}
+            {importDone && <p style={{ color: '#15803d', fontSize: 15.5, background: '#f0fdf4', borderRadius: 8, padding: '8px 12px' }}>{importDone}</p>}
 
             {importStatement && (
               <div className="stmt-preview">
@@ -854,7 +855,7 @@ export function CustomersPage({
 
             {importRows.length > 0 && (
               <>
-                <p style={{ fontSize: 12.5, fontWeight: 700, color: '#374151', margin: '10px 0 6px' }}>
+                <p style={{ fontSize: 15, fontWeight: 700, color: '#374151', margin: '10px 0 6px' }}>
                   Found {importRows.length} invoice{importRows.length !== 1 ? 's' : ''} — untick any that shouldn't be imported:
                 </p>
                 <div style={{ maxHeight: 300, overflowY: 'auto', border: '1px solid #e5e7eb', borderRadius: 10 }}>
@@ -887,7 +888,7 @@ export function CustomersPage({
                   </table>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
-                  <span style={{ fontSize: 13.5 }}>
+                  <span style={{ fontSize: 16 }}>
                     Selected outstanding:{' '}
                     <strong>{fmtMoney(importRows.filter(r => importChecked.has(r.invoiceNumber)).reduce((s, r) => s + (r.outstandingAmount ?? r.amount), 0))}</strong>
                   </span>

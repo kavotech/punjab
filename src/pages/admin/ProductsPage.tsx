@@ -324,7 +324,7 @@ export function ProductsPage({
           <Input label="Size" value={form.size} onChange={(e) => setForm({ ...form, size: e.target.value })} placeholder="e.g. 5kg box" required />
           <Input label="SKU" value={form.sku} onChange={(e) => setForm({ ...form, sku: e.target.value })} placeholder="e.g. RED-CAP-5KG" required />
           <Input label="Boxes Per Pallet" type="number" value={form.boxesPerPallet} onChange={(e) => setForm({ ...form, boxesPerPallet: e.target.value })} required />
-          <p className="wide" style={{ fontSize: 12.5, color: "#6b7a70", margin: 0 }}>Selling price is set later, in Stock — this just creates the product for future use.</p>
+          <p className="wide" style={{ fontSize: 15, color: "#6b7a70", margin: 0 }}>Selling price is set later, in Stock — this just creates the product for future use.</p>
           <div className="wide actions-row">
             <Button type="submit">Create Product</Button>
             <Button type="button" variant="secondary" onClick={() => setShowAdd(false)}>Cancel</Button>

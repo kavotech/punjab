@@ -203,8 +203,8 @@ export function CreditNotesPage({
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
         <div>
           <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Credit Notes</h2>
-          <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Credit Notes</h2>
+          <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
             Issue credit against an order/ticket, or as account credit for future invoices.
           </p>
         </div>
@@ -282,15 +282,15 @@ export function CreditNotesPage({
         <div className="form-grid">
           <div className="wide" style={{ display: "flex", gap: 10 }}>
             <button type="button" onClick={() => setIssueMode("invoice")}
-              style={{ flex: 1, padding: "10px 14px", borderRadius: 10, cursor: "pointer", border: issueMode === "invoice" ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: issueMode === "invoice" ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 13.5, color: issueMode === "invoice" ? "#14532d" : "#374151" }}>
+              style={{ flex: 1, padding: "10px 14px", borderRadius: 10, cursor: "pointer", border: issueMode === "invoice" ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: issueMode === "invoice" ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 16, color: issueMode === "invoice" ? "#14532d" : "#374151" }}>
               Against Invoice/Ticket
             </button>
             <button type="button" onClick={() => setIssueMode("account")}
-              style={{ flex: 1, padding: "10px 14px", borderRadius: 10, cursor: "pointer", border: issueMode === "account" ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: issueMode === "account" ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 13.5, color: issueMode === "account" ? "#14532d" : "#374151" }}>
+              style={{ flex: 1, padding: "10px 14px", borderRadius: 10, cursor: "pointer", border: issueMode === "account" ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: issueMode === "account" ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 16, color: issueMode === "account" ? "#14532d" : "#374151" }}>
               Account Credit
             </button>
           </div>
-          <p className="wide" style={{ fontSize: 12.5, color: "#6b7a70", margin: 0 }}>
+          <p className="wide" style={{ fontSize: 15, color: "#6b7a70", margin: 0 }}>
             {issueMode === "invoice"
               ? "Reduces the selected invoice's balance immediately — e.g. damaged produce on a specific order."
               : "For invoices already fully paid — becomes available credit the customer can use against future invoices."}
@@ -323,7 +323,7 @@ export function CreditNotesPage({
           <Input label="Credit Amount (£)" type="number" min="0.01" step="0.01" value={issueAmount} onChange={e => setIssueAmount(e.target.value)} />
           <div className="wide"><TextArea label="Reason" value={issueReason} onChange={e => setIssueReason(e.target.value)} rows={2} placeholder="e.g. Damaged produce" /></div>
 
-          {issueError && <p className="wide" style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{issueError}</p>}
+          {issueError && <p className="wide" style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{issueError}</p>}
           <div className="wide actions-row">
             <Button onClick={submitIssue} disabled={issueBusy}>{issueBusy ? "Issuing…" : "Issue Credit Note"}</Button>
             <Button variant="secondary" onClick={() => setShowIssue(false)}>Cancel</Button>
@@ -345,30 +345,30 @@ export function CreditNotesPage({
               <div className="ord-row ord-total"><span>Remaining Balance</span><strong>£{detail.remainingBalance.toFixed(2)} / £{detail.amount.toFixed(2)}</strong></div>
             </div>
 
-            <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", margin: "16px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>Allocation History</p>
+            <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", margin: "16px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>Allocation History</p>
             <div className="ord-items">
               {allocations.filter(a => a.creditNoteId === detail.id).map(a => (
                 <div key={a.id} className="ord-item-row">
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, fontSize: 13.5, color: "#111827" }}>Applied to {invoiceNumber(a.invoiceId)}</div>
-                    <div style={{ fontSize: 12, color: "#9ca3af" }}>{a.date}</div>
+                    <div style={{ fontWeight: 600, fontSize: 16, color: "#111827" }}>Applied to {invoiceNumber(a.invoiceId)}</div>
+                    <div style={{ fontSize: 14.5, color: "#9ca3af" }}>{a.date}</div>
                   </div>
                   <strong>£{a.amount.toFixed(2)}</strong>
                 </div>
               ))}
               {allocations.filter(a => a.creditNoteId === detail.id).length === 0 && (
-                <p style={{ fontSize: 13, color: "#9ca3af" }}>Not yet applied to any invoice.</p>
+                <p style={{ fontSize: 15.5, color: "#9ca3af" }}>Not yet applied to any invoice.</p>
               )}
             </div>
 
             {canManage && detail.status === "Active" && (
               <>
-                <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", margin: "18px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>Edit</p>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", margin: "18px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>Edit</p>
                 <div className="form-grid">
                   <div className="wide"><TextArea label="Reason" value={editReason} onChange={e => setEditReason(e.target.value)} rows={2} /></div>
                   <Input label="Amount (£)" type="number" min="0.01" step="0.01" value={editAmount} onChange={e => setEditAmount(e.target.value)}
                     disabled={detail.remainingBalance !== detail.amount} />
-                  {editError && <p className="wide" style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{editError}</p>}
+                  {editError && <p className="wide" style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{editError}</p>}
                   <div className="wide actions-row">
                     <Button className="btn-sm" onClick={saveEdit} disabled={busy}>Save Changes</Button>
                     <Button className="btn-sm" variant="danger" onClick={() => voidNote(detail)} disabled={busy}>Void</Button>
@@ -377,7 +377,7 @@ export function CreditNotesPage({
 
                 {detail.remainingBalance > 0 && (
                   <>
-                    <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", margin: "18px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>Apply Credit to Invoice</p>
+                    <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", margin: "18px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>Apply Credit to Invoice</p>
                     <div className="form-grid">
                       <label className="form-control">
                         <span>Invoice</span>
@@ -389,7 +389,7 @@ export function CreditNotesPage({
                         </select>
                       </label>
                       <Input label="Amount (£)" type="number" min="0.01" step="0.01" value={applyAmount} onChange={e => setApplyAmount(e.target.value)} />
-                      {applyError && <p className="wide" style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{applyError}</p>}
+                      {applyError && <p className="wide" style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{applyError}</p>}
                       <div className="wide actions-row">
                         <Button className="btn-sm" onClick={submitApply} disabled={busy}>{busy ? "Applying…" : "Apply Credit"}</Button>
                       </div>

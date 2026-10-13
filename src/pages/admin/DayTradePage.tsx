@@ -21,8 +21,8 @@ export function DayTradePage({ dayTrades, orders, products }: {
     <div className="stack">
       <div>
         <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Day Trade</h2>
-        <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Day Trade</h2>
+        <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
           A permanent archive of every trading day closed with "Day End" in the sidebar.
         </p>
       </div>
@@ -60,7 +60,7 @@ export function DayTradePage({ dayTrades, orders, products }: {
               <div className="ps-stat"><p className="ps-stat-label">Total Profit</p><p className="ps-stat-value">£{detail.totalProfit.toFixed(2)}</p></div>
               <div className="ps-stat"><p className="ps-stat-label">Number of Sales</p><p className="ps-stat-value">{detail.saleCount}</p></div>
             </div>
-            <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", margin: "16px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>
+            <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", margin: "16px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>
               Every Sale
             </p>
             <div className="ps-table-wrap">
@@ -73,7 +73,7 @@ export function DayTradePage({ dayTrades, orders, products }: {
                       <td>{o.customerName}</td>
                       <td>{o.salesmanName || "—"}</td>
                       <td>{o.officialInvoiceNumber || "—"}</td>
-                      <td style={{ fontSize: 12.5, color: "#6b7280" }}>
+                      <td style={{ fontSize: 15, color: "#6b7280" }}>
                         {o.items.map(it => `${it.quantity}× ${productName(it.productId)}`).join(", ")}
                       </td>
                       <td>£{orderProfit(o, productsById).toFixed(2)}</td>

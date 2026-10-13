@@ -34,8 +34,8 @@ export function PaymentProofsPage({ proofs, onApprove, onReject, canRecord = tru
     <div className="stack">
       <div>
         <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Payment Proofs</h2>
-        <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Payment Proofs</h2>
+        <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
           Bank transfer screenshots uploaded by customers. Check each against your bank statement, then approve or reject.
         </p>
       </div>
@@ -90,9 +90,9 @@ export function PaymentProofsPage({ proofs, onApprove, onReject, canRecord = tru
                         <Button variant="danger" className="btn-sm" disabled={busyId === p.id} onClick={() => reject(p)}>Reject</Button>
                       </div>
                     ) : p.status === "pending" ? (
-                      <span style={{ fontSize: 12, color: "#9ca3af" }}>Awaiting review</span>
+                      <span style={{ fontSize: 14.5, color: "#9ca3af" }}>Awaiting review</span>
                     ) : (
-                      <span style={{ fontSize: 12, color: "#9ca3af" }}>
+                      <span style={{ fontSize: 14.5, color: "#9ca3af" }}>
                         {p.reviewedAt ? new Date(p.reviewedAt).toLocaleDateString("en-GB") : ""}
                       </span>
                     )}
@@ -117,14 +117,14 @@ export function PaymentProofsPage({ proofs, onApprove, onReject, canRecord = tru
               <div className="ord-row"><span>Invoice(s)</span><strong>{preview.invoiceNumbers.join(", ")}</strong></div>
               <div className="ord-row ord-total"><span>Amount</span><strong>£{preview.amount.toFixed(2)}</strong></div>
             </div>
-            {preview.note && <p style={{ fontSize: 13, color: "#374151", margin: "10px 0" }}><em>"{preview.note}"</em></p>}
+            {preview.note && <p style={{ fontSize: 15.5, color: "#374151", margin: "10px 0" }}><em>"{preview.note}"</em></p>}
             {preview.fileType.startsWith("image/") ? (
               <img src={preview.dataUri} alt="Payment proof" style={{ width: "100%", borderRadius: 10, marginTop: 10, border: "1px solid #e5e7eb" }} />
             ) : (
               <a className="btn btn-secondary" href={preview.dataUri} download={preview.fileName} style={{ marginTop: 10, display: "inline-block" }}>Download {preview.fileName}</a>
             )}
             {preview.status === "rejected" && preview.reviewNote && (
-              <p style={{ marginTop: 12, fontSize: 13, color: "#b91c1c", background: "#fef2f2", borderRadius: 8, padding: "8px 12px" }}>Rejected: {preview.reviewNote}</p>
+              <p style={{ marginTop: 12, fontSize: 15.5, color: "#b91c1c", background: "#fef2f2", borderRadius: 8, padding: "8px 12px" }}>Rejected: {preview.reviewNote}</p>
             )}
             {preview.status === "pending" && canRecord && (
               <div className="actions-row" style={{ marginTop: 16 }}>

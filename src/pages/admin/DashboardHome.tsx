@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react"
-import type { Customer, Order, Product, StockItem, ActivityLog, OrderStatus, Invoice, Payment, Expense } from "../../types"
+import type { Customer, Order, Product, StockItem, ActivityLog, OrderStatus, Invoice, Payment, Expense, User } from "../../types"
 import { exportToCsv } from "../../lib/exportCsv"
-import { GmtClock } from "../../components/GmtClock"
 import { CountUp } from "../../components/CountUp"
 import { invoiceOutstanding } from '../../lib/creditNotes'
 import { DashboardAnalyticsTab } from './DashboardAnalyticsTab'
+import { TodayView } from './TodayView'
 
 const PAGE_SIZE = 8
 
@@ -65,12 +65,15 @@ function AdminLine({ points, color = "#1f7a3a", empty }: { points: number[]; col
   )
 }
 
-type HomeTab = "analytics" | "overview" | "orders" | "customers"
+type HomeTab = "today" | "analytics" | "overview" | "orders" | "customers"
 type CustFilter = "all" | "active" | "inactive"
 
 export function DashboardHome({
-  customers, products, orders, stock = [], activity = [], invoices = [], payments = [], expenses = [], userName, onNavigate,
+  user, emailImportsToCheck = 0, customers, products, orders, stock = [], activity = [], invoices = [], payments = [], expenses = [], userName, onNavigate,
 }: {
+  user: User
+  /** Email imports still waiting for a person to look at them. */
+  emailImportsToCheck?: number
   customers: Customer[]; products: Product[]; orders: Order[]; stock?: StockItem[]; activity?: ActivityLog[]
   invoices?: Invoice[]
   payments?: Payment[]
@@ -78,7 +81,7 @@ export function DashboardHome({
   userName?: string
   onNavigate?: (page: string) => void
 }) {
-  const [tab, setTab]               = useState<HomeTab>("analytics")
+  const [tab, setTab]               = useState<HomeTab>("today")
   const [query, setQuery]           = useState("")
   const [page, setPage]             = useState(1)
   const [selected, setSelected]     = useState<Set<string>>(new Set())
@@ -90,7 +93,6 @@ export function DashboardHome({
 
   const statusFilter = STATUS_FILTERS[statusIdx]
 
-  const activeOrders  = orders.filter(o => o.status !== "Delivered" && o.status !== "Cancelled").length
   const orderRevenue  = orders.reduce((s, o) => s + o.amount, 0)
 
   const outstandingFor = (invoice: Invoice) => invoiceOutstanding(invoice)
@@ -239,48 +241,28 @@ export function DashboardHome({
 
   return (
     <div className="ps-wrap">
-      {/* ── Page head (hireus style) ── */}
-      <div className="hd-head">
-        <p className="hd-crumb">Punjab Exotic Foods Control Centre</p>
-        <div className="hd-title-row">
-          <h2 className="hd-title">Wholesale Operations</h2>
-          <span className="hd-tag">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
-            Food Wholesale
-          </span>
-          <div className="hd-right">
-            <GmtClock />
-            <button className="hd-badge" onClick={() => onNavigate?.("settings")} title="Portal settings">
-              <span className="hd-dot ok" /> Active
-            </button>
-            <button className="hd-badge" onClick={() => setTab("orders")} title="View sales">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#e07c24" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              {activeOrders} of {orders.length || 0} Orders
-            </button>
-            <button className="hd-dots" title="Settings" onClick={() => onNavigate?.("settings")}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>
-            </button>
-          </div>
-        </div>
-        <div className="hd-tabs">
-          <button className={"hd-tab" + (tab === "analytics" ? " on" : "")} onClick={() => setTab("analytics")}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-            Analytics
+      {/* Plain tab bar - "Today" is the simple everyday view; the rest are
+          the detailed reports for anyone who wants them. */}
+      <div className="home-tabs" role="tablist" aria-label="Home views">
+        {([
+          ["today", "Today"],
+          ["analytics", "Reports"],
+          ["overview", "Money overview"],
+          ["orders", `Sales${orders.length ? ` (${orders.length})` : ""}`],
+          ["customers", `Customers${customers.length ? ` (${customers.length})` : ""}`],
+        ] as const).map(([key, label]) => (
+          <button key={key} type="button" role="tab" aria-selected={tab === key} className={"home-tab" + (tab === key ? " on" : "")} onClick={() => setTab(key)}>
+            {label}
           </button>
-          <button className={"hd-tab" + (tab === "overview" ? " on" : "")} onClick={() => setTab("overview")}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
-            Overview
-          </button>
-          <button className={"hd-tab" + (tab === "orders" ? " on" : "")} onClick={() => setTab("orders")}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-            Sales {orders.length > 0 && <span className="hd-tab-count">{orders.length}</span>}
-          </button>
-          <button className={"hd-tab" + (tab === "customers" ? " on" : "")} onClick={() => setTab("customers")}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-            Customers {customers.length > 0 && <span className="hd-tab-count">{customers.length}</span>}
-          </button>
-        </div>
+        ))}
       </div>
+
+      {tab === "today" && (
+        <TodayView
+          user={user} customers={customers} invoices={invoices} payments={payments}
+          emailImportsToCheck={emailImportsToCheck} onNavigate={onNavigate}
+        />
+      )}
 
       {/* ═══ ANALYTICS TAB (real Supabase-aggregated dashboard analytics) ═══ */}
       {tab === "analytics" && (
@@ -520,18 +502,18 @@ export function DashboardHome({
                         <td>
                           <span className="ps-badge" style={{ background: sc.bg, color: sc.color }}>{order.status}</span>
                         </td>
-                        <td style={{ color: "#6b7280", fontSize: 13 }}>
+                        <td style={{ color: "#6b7280", fontSize: 15.5 }}>
                           {order.items.length} product{order.items.length !== 1 ? "s" : ""} ordered
-                          <div style={{ fontSize: 12, color: "#9ca3af" }}>Placed {order.date}</div>
+                          <div style={{ fontSize: 14.5, color: "#9ca3af" }}>Placed {order.date}</div>
                         </td>
-                        <td style={{ color: order.salesmanName ? "#374151" : "#9ca3af", fontSize: 12.5 }}>{order.salesmanName || "Unassigned"}</td>
+                        <td style={{ color: order.salesmanName ? "#374151" : "#9ca3af", fontSize: 15 }}>{order.salesmanName || "Unassigned"}</td>
                         <td><strong>£{order.amount.toFixed(2)}</strong></td>
                         <td>
                           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                             <div style={{ width: 70, height: 6, background: "#eef0f3", borderRadius: 99, overflow: "hidden" }}>
                               <div style={{ width: `${pct}%`, height: "100%", background: sc.color, borderRadius: 99 }} />
                             </div>
-                            <span style={{ fontSize: 12, color: "#9ca3af", fontWeight: 600 }}>{pct}%</span>
+                            <span style={{ fontSize: 14.5, color: "#9ca3af", fontWeight: 600 }}>{pct}%</span>
                           </div>
                         </td>
                         <td />
@@ -544,7 +526,7 @@ export function DashboardHome({
                 <div style={{ padding: "48px 24px", textAlign: "center", color: "#9ca3af" }}>
                   <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#c3c9d2" strokeWidth="1.6" style={{ marginBottom: 8 }}><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
                   <div style={{ fontWeight: 600, marginBottom: 4, color: "#374151" }}>No orders found</div>
-                  <div style={{ fontSize: 13 }}>Orders will appear here once customers start placing them.</div>
+                  <div style={{ fontSize: 15.5 }}>Orders will appear here once customers start placing them.</div>
                 </div>
               )}
             </div>

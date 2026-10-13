@@ -34,7 +34,9 @@ export function useLiveToasts<T extends { id: string }>(
 
   useEffect(() => {
     const prev = prevRef.current
-    if (prev) {
+    // An empty previous list means the first load hasn't arrived yet - don't
+    // announce every existing record as "new" when it does.
+    if (prev && prev.size > 0) {
       const fresh: Toast[] = []
       for (const item of items) {
         const t = detect(prev, item)

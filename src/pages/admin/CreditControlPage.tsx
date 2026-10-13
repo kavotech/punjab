@@ -42,8 +42,8 @@ export function CreditControlPage({ customers, invoices, onSendReminder, onToggl
     <div className="stack">
       <div>
         <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Credit Control</h2>
-        <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Credit Control</h2>
+        <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
           Customers with invoices past their credit days, or balances over their credit limit.
           Send payment reminders or block accounts until they pay.
         </p>
@@ -139,7 +139,7 @@ export function CreditControlPage({ customers, invoices, onSendReminder, onToggl
         {detail && (
           <div>
             {creditWarningLabel(detail) && (
-              <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "10px 14px", marginBottom: 14, color: "#b91c1c", fontWeight: 700, fontSize: 13.5 }}>
+              <div style={{ background: "#fef2f2", border: "1.5px solid #fca5a5", borderRadius: 10, padding: "10px 14px", marginBottom: 14, color: "#b91c1c", fontWeight: 700, fontSize: 16 }}>
                 ⚠ {creditWarningLabel(detail)}
               </div>
             )}
@@ -154,15 +154,15 @@ export function CreditControlPage({ customers, invoices, onSendReminder, onToggl
             </div>
             {detail.overdueInvoices.length > 0 && (
               <>
-                <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", margin: "16px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", margin: "16px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>
                   Overdue invoices ({detail.overdueInvoices.length})
                 </p>
                 <div className="ord-items">
                   {detail.overdueInvoices.map(inv => (
                     <div key={inv.id} className="ord-item-row">
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: 600, fontSize: 13.5, color: "#111827" }}>{inv.invoiceNumber}</div>
-                        <div style={{ fontSize: 12, color: "#b91c1c" }}>
+                        <div style={{ fontWeight: 600, fontSize: 16, color: "#111827" }}>{inv.invoiceNumber}</div>
+                        <div style={{ fontSize: 14.5, color: "#b91c1c" }}>
                           {inv.daysOverdue === 0 ? "Credit days reached today" : `${inv.daysOverdue} day${inv.daysOverdue !== 1 ? "s" : ""} overdue`}
                         </div>
                       </div>

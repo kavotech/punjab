@@ -59,8 +59,8 @@ export function SalesUsersPage({
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
         <div>
           <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Sales Users</h2>
-          <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Sales Users</h2>
+          <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
             Login accounts for the Sales module — number, username and code. Link one or more to an admin from Admin Users so they can review that salesman's orders.
           </p>
         </div>
@@ -102,7 +102,7 @@ export function SalesUsersPage({
           <Input label="Username" value={form.username} onChange={e => setForm({ ...form, username: e.target.value })} placeholder="e.g. mohsen" required />
           <Input label="Full Name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="e.g. Mohsen" required />
           <Input label="Code" value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} placeholder="e.g. 0908" required />
-          {error && <p className="wide" style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{error}</p>}
+          {error && <p className="wide" style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{error}</p>}
           <div className="wide actions-row">
             <Button onClick={submitAdd} disabled={busy}>{busy ? "Adding…" : "Add Sales User"}</Button>
             <Button variant="secondary" onClick={() => setShowAdd(false)}>Cancel</Button>
@@ -117,7 +117,7 @@ export function SalesUsersPage({
             <Input label="Username" value={editing.username} onChange={e => setEditing({ ...editing, username: e.target.value })} required />
             <Input label="Full Name" value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} required />
             <Input label="Code" value={editing.code} onChange={e => setEditing({ ...editing, code: e.target.value })} required />
-            {error && <p className="wide" style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{error}</p>}
+            {error && <p className="wide" style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{error}</p>}
             <div className="wide actions-row">
               <Button onClick={submitEdit} disabled={busy}>{busy ? "Saving…" : "Save Changes"}</Button>
               <Button variant="secondary" onClick={() => setEditing(null)}>Cancel</Button>

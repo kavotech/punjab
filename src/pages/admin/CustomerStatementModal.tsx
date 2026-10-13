@@ -130,7 +130,7 @@ export function CustomerStatementModal({
             <div className="ps-stat"><p className="ps-stat-label">Remaining Customer Credit</p><p className="ps-stat-value" style={{ color: remainingCredit > 0 ? "#15803d" : undefined }}>£{remainingCredit.toFixed(2)}</p></div>
           </div>
 
-          <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", margin: "18px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>
+          <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", margin: "18px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>
             Statement Ledger
           </p>
           <div className="ps-table-wrap">
@@ -149,7 +149,7 @@ export function CustomerStatementModal({
                     </td>
                     <td>
                       {e.ref}
-                      {e.note && <div style={{ fontSize: 11.5, color: "#9ca3af" }}>{e.note}</div>}
+                      {e.note && <div style={{ fontSize: 14, color: "#9ca3af" }}>{e.note}</div>}
                     </td>
                     <td style={{ textAlign: "right", fontWeight: 600, color: e.amount < 0 ? "#15803d" : "#111827" }}>
                       {e.amount >= 0 ? "+" : "-"}£{Math.abs(e.amount).toFixed(2)}
@@ -162,7 +162,7 @@ export function CustomerStatementModal({
             {ledger.length === 0 && <div style={{ padding: 24, textAlign: "center", color: "#9ca3af" }}>No activity yet</div>}
           </div>
 
-          <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", margin: "18px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>
+          <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", margin: "18px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>
             Invoice Detail
           </p>
           <div className="ord-items">
@@ -173,16 +173,16 @@ export function CustomerStatementModal({
               return (
                 <div key={inv.id} style={{ borderBottom: "1px solid #eef1ee", padding: "10px 0" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <strong style={{ fontSize: 13.5 }}>{inv.invoiceNumber}</strong>
+                    <strong style={{ fontSize: 16 }}>{inv.invoiceNumber}</strong>
                     <span className="ps-badge" style={inv.status === "Paid" ? { background: "#dcfce7", color: "#15803d" } : inv.status === "Part Paid" ? { background: "#dbeafe", color: "#1d4ed8" } : { background: "#fef9c3", color: "#a16207" }}>{inv.status}</span>
                   </div>
-                  <div style={{ display: "flex", gap: 18, fontSize: 12.5, color: "#374151", marginTop: 4, flexWrap: "wrap" }}>
+                  <div style={{ display: "flex", gap: 18, fontSize: 15, color: "#374151", marginTop: 4, flexWrap: "wrap" }}>
                     <span>Total: <strong>£{inv.amount.toFixed(2)}</strong></span>
                     <span>Paid: <strong style={{ color: "#15803d" }}>£{paid.toFixed(2)}</strong></span>
                     <span>Outstanding: <strong style={{ color: invoiceOutstanding(inv) > 0 ? "#b91c1c" : "#9ca3af" }}>£{invoiceOutstanding(inv).toFixed(2)}</strong></span>
                   </div>
                   {(invPayments.length > 0 || invAllocations.length > 0) && (
-                    <div style={{ marginTop: 6, fontSize: 12, color: "#6b7280" }}>
+                    <div style={{ marginTop: 6, fontSize: 14.5, color: "#6b7280" }}>
                       {invPayments.map(p => <div key={p.id}>· {p.date} — Payment {p.paymentReference} £{p.amount.toFixed(2)}</div>)}
                       {invAllocations.map(a => {
                         const note = myCreditNotes.find(c => c.id === a.creditNoteId)
@@ -197,7 +197,7 @@ export function CustomerStatementModal({
                 </div>
               )
             })}
-            {myInvoices.length === 0 && <p style={{ color: "#9ca3af", fontSize: 13 }}>No invoices yet</p>}
+            {myInvoices.length === 0 && <p style={{ color: "#9ca3af", fontSize: 15.5 }}>No invoices yet</p>}
           </div>
 
           <div className="actions-row" style={{ marginTop: 18 }}>

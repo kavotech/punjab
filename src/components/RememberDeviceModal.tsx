@@ -40,7 +40,7 @@ export function RememberDeviceModal({ open, account, onDone }: {
         <span>Confirm PIN</span>
         <input type="password" inputMode="numeric" maxLength={6} value={pin2} onChange={e => setPin2(e.target.value.replace(/\D/g, ""))} placeholder="••••••" />
       </label>
-      {err && <p style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", marginTop: 12 }}>{err}</p>}
+      {err && <p style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", marginTop: 12 }}>{err}</p>}
       <div className="actions-row" style={{ marginTop: 16 }}>
         <Button onClick={confirm} disabled={busy}>{busy ? "Saving…" : "Set up quick unlock"}</Button>
         <Button variant="secondary" onClick={onDone}>Not now</Button>

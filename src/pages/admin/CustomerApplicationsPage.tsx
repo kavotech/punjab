@@ -64,8 +64,8 @@ export function CustomerApplicationsPage({
     <div className="stack">
       <div>
         <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Customer Applications</h2>
-        <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Customer Applications</h2>
+        <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
           Review "Apply For An Account" submissions — approving creates the customer's login.
         </p>
       </div>
@@ -152,9 +152,9 @@ export function CustomerApplicationsPage({
 
             {canManage && (
               <>
-                <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", margin: "16px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>Notes</p>
+                <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", margin: "16px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>Notes</p>
                 <TextArea label="Notes" value={notes} onChange={e => setNotes(e.target.value)} rows={3} placeholder="Internal notes about this application…" />
-                {error && <p style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: "10px 0 0" }}>{error}</p>}
+                {error && <p style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: "10px 0 0" }}>{error}</p>}
                 <div className="actions-row" style={{ marginTop: 14 }}>
                   <Button className="btn-sm" variant="secondary" onClick={saveNotes} disabled={busy}>Save Notes</Button>
                   {detail.status === "Pending" && (

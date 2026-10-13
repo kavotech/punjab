@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { AppLayout } from '../../components/layout/AppLayout'
 import { ToastStack } from '../../components/ToastStack'
 import { useUnseenCount, useLiveToasts, usePoll } from '../../lib/notifications'
+import { can } from '../../lib/permissions'
 import { sendEmail, welcomeEmailHtml, paymentReceivedEmailHtml, overdueEmailHtml, orderPaymentRequiredEmailHtml, paymentApprovedEmailHtml, paymentRejectedEmailHtml } from '../../lib/emailService'
 import { getCreditStatus } from '../../lib/creditControl'
 import { APPROVED_INVOICE_TEMPLATE_ID, uploadFile } from '../../lib/fileService'
@@ -695,10 +696,29 @@ export function AdminPortal({ user, onLogout }: { user: User; onLogout: () => vo
     showSuccess('Payment recorded successfully')
   }
 
+  /* One strip linking every reminder stage, shown at the top of each of
+     those pages so they read as one "Reminders" place in the menu. */
+  const reminderTabs = (
+    <nav className="subtabs" aria-label="Reminder stages">
+      {([
+        ['reminders-due-today', 'Due today', 'invoicesSendReminders'],
+        ['reminders-14-day', 'At 14 days', 'invoicesSendReminders'],
+        ['reminders-21-day', 'At 21 days', 'invoicesSendReminders'],
+        ['outstanding', 'Over 21 days', 'invoicesView'],
+      ] as const).filter(([, , permission]) => can(user, permission)).map(([key, label]) => (
+        <button key={key} type="button" className={`subtab${current === key ? ' active' : ''}`} aria-current={current === key ? 'page' : undefined} onClick={() => navigate(key)}>
+          {label}
+        </button>
+      ))}
+    </nav>
+  )
+
   const page = () => {
     if (current === 'dashboard') {
       return (
         <DashboardHome
+          user={user}
+          emailImportsToCheck={(emailImportsCounts.needs_review ?? 0) + (emailImportsCounts.failed ?? 0)}
           customers={customers}
           products={products}
           orders={orders}
@@ -1202,7 +1222,12 @@ export function AdminPortal({ user, onLogout }: { user: User; onLogout: () => vo
     }
 
     if (current === 'outstanding') {
-      return <OutstandingInvoicesPage invoices={invoices} customers={customers} notificationLogs={notificationLogs} onSendReminder={(invoice, customer) => requestReminder(invoice, customer, '21-plus')} onRecordPayment={recordInvoicePayment} />
+      return (
+        <>
+          {reminderTabs}
+          <OutstandingInvoicesPage invoices={invoices} customers={customers} notificationLogs={notificationLogs} onSendReminder={(invoice, customer) => requestReminder(invoice, customer, '21-plus')} onRecordPayment={recordInvoicePayment} />
+        </>
+      )
     }
 
     if (current === 'create-invoice') {
@@ -1441,6 +1466,8 @@ export function AdminPortal({ user, onLogout }: { user: User; onLogout: () => vo
     if (current === 'reminders-due-today' || current === 'reminders-14-day' || current === 'reminders-21-day') {
       const view = current === 'reminders-due-today' ? 'due-today' : current === 'reminders-14-day' ? 'day-14' : 'day-21'
       return (
+        <>
+        {reminderTabs}
         <RemindersPage
           view={view}
           invoices={invoices}
@@ -1450,6 +1477,7 @@ export function AdminPortal({ user, onLogout }: { user: User; onLogout: () => vo
           onSendReminder={requestReminder}
           onOpenCustomer={customerId => { setInvoicesCustomerFilter(customerId); navigate('invoices') }}
         />
+        </>
       )
     }
 

@@ -180,8 +180,8 @@ export function AdminsPage({
       {/* Page header */}
       <div>
         <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#111827" }}>Admin Users</h2>
-        <p style={{ fontSize: 13.5, color: "#6b7280", marginTop: 3 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#111827" }}>Admin Users</h2>
+        <p style={{ fontSize: 16, color: "#6b7280", marginTop: 3 }}>
           Invite and manage staff accounts through secure, one-time setup links.
         </p>
       </div>
@@ -208,7 +208,6 @@ export function AdminsPage({
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Email</th>
                   <th>Job Title</th>
                   <th>Role</th>
                   <th>Permissions</th>
@@ -229,8 +228,11 @@ export function AdminsPage({
                         <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
                           <div className="adm-avatar">{admin.name.slice(0,2).toUpperCase()}</div>
                           <div>
-                            <div style={{ fontWeight: 600, color: "#111827", fontSize: 13.5 }}>{admin.name}</div>
-                            {admin.isSuperAdmin && (
+                            <div style={{ fontWeight: 600, color: "#111827", fontSize: 16 }}>{admin.name}</div>
+                            <small className="cell-sub">{admin.email}</small>
+                            {/* The Role column already says "Super Admin" - only flag
+                                full access here when the role name doesn't. */}
+                            {admin.isSuperAdmin && admin.role !== 'Super Admin' && (
                               <span className="adm-super-badge">
                                 <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: 3, verticalAlign: "-1px" }}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                                 Super Admin
@@ -239,7 +241,6 @@ export function AdminsPage({
                           </div>
                         </div>
                       </td>
-                      <td style={{ color: "#6b7280" }}>{admin.email}</td>
                       <td style={{ color: "#6b7280" }}>{admin.jobTitle || "—"}</td>
                       <td>
                         <span className="badge badge-blue">{admin.role}</span>
@@ -249,7 +250,7 @@ export function AdminsPage({
                           <div className="adm-perm-bar">
                             <div className="adm-perm-fill" style={{ width: `${(permCount/ALL_PERMISSIONS.length)*100}%` }} />
                           </div>
-                          <span style={{ fontSize: 12, color: "#6b7280" }}>{permCount}/{ALL_PERMISSIONS.length}</span>
+                          <span style={{ fontSize: 14.5, color: "#6b7280" }}>{permCount}/{ALL_PERMISSIONS.length}</span>
                         </div>
                       </td>
                       <td>
@@ -275,7 +276,7 @@ export function AdminsPage({
                             <div className={"adm-toggle" + (admin.active !== false ? " on" : "")}>
                               <div className="adm-toggle-knob" />
                             </div>
-                            <span style={{ fontSize: 12, color: admin.active !== false ? "#15803d" : "#9ca3af" }}>
+                            <span style={{ fontSize: 14.5, color: admin.active !== false ? "#15803d" : "#9ca3af" }}>
                               {admin.active !== false ? "Active" : "Disabled"}
                             </span>
                           </label>
@@ -309,7 +310,7 @@ export function AdminsPage({
                             </>
                           )}
                           {admin.isSuperAdmin && (
-                            <span style={{ fontSize: 11.5, color: "#9ca3af", padding: "6px 0" }}>Protected</span>
+                            <span style={{ fontSize: 14, color: "#9ca3af", padding: "6px 0" }}>Protected</span>
                           )}
                         </div>
                       </td>
@@ -340,7 +341,7 @@ export function AdminsPage({
             </label>
           </div>
           <PermGrid perms={perms} onChange={setPerms} />
-          {formError && <p className="wide" style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{formError}</p>}
+          {formError && <p className="wide" style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{formError}</p>}
           <div className="wide actions-row">
             <Button type="submit">Review Invitation</Button>
             <Button type="button" variant="secondary" onClick={() => setShowCreate(false)}>Cancel</Button>
@@ -352,14 +353,14 @@ export function AdminsPage({
       <Modal open={reviewOpen} title="Review Invitation" onClose={() => setReviewOpen(false)}>
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 8, background: "#f9fafb", border: "1px solid #eef1ef", borderRadius: 10, padding: "12px 14px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 12, fontSize: 13.5 }}><span style={{ color: "#6b7280" }}>Email</span><strong style={{ color: "#111827" }}>{email.trim()}</strong></div>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 12, fontSize: 13.5 }}><span style={{ color: "#6b7280" }}>Role</span><strong style={{ color: "#111827" }}>{role}</strong></div>
-            {jobTitle.trim() && <div style={{ display: "flex", justifyContent: "space-between", gap: 12, fontSize: 13.5 }}><span style={{ color: "#6b7280" }}>Job Title</span><strong style={{ color: "#111827" }}>{jobTitle.trim()}</strong></div>}
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 12, fontSize: 16 }}><span style={{ color: "#6b7280" }}>Email</span><strong style={{ color: "#111827" }}>{email.trim()}</strong></div>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 12, fontSize: 16 }}><span style={{ color: "#6b7280" }}>Role</span><strong style={{ color: "#111827" }}>{role}</strong></div>
+            {jobTitle.trim() && <div style={{ display: "flex", justifyContent: "space-between", gap: 12, fontSize: 16 }}><span style={{ color: "#6b7280" }}>Job Title</span><strong style={{ color: "#111827" }}>{jobTitle.trim()}</strong></div>}
           </div>
           <div>
-            <p style={{ fontSize: 12.5, fontWeight: 700, color: "#374151", textTransform: "uppercase", letterSpacing: 0.5, margin: "0 0 8px" }}>Permissions granted</p>
+            <p style={{ fontSize: 15, fontWeight: 700, color: "#374151", textTransform: "uppercase", letterSpacing: 0.5, margin: "0 0 8px" }}>Permissions granted</p>
             {ALL_PERMISSIONS.every(k => !perms[k]) ? (
-              <p style={{ fontSize: 13, color: "#9ca3af", margin: 0 }}>No extra permissions - this account will only be able to sign in.</p>
+              <p style={{ fontSize: 15.5, color: "#9ca3af", margin: 0 }}>No extra permissions - this account will only be able to sign in.</p>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {PERM_GROUPS.map(group => {
@@ -367,10 +368,10 @@ export function AdminsPage({
                   if (!granted.length) return null
                   return (
                     <div key={group.label}>
-                      <p style={{ fontSize: 11.5, fontWeight: 800, color: "#9ca3af", textTransform: "uppercase", letterSpacing: 0.5, margin: "0 0 4px" }}>{group.label}</p>
+                      <p style={{ fontSize: 14, fontWeight: 800, color: "#9ca3af", textTransform: "uppercase", letterSpacing: 0.5, margin: "0 0 4px" }}>{group.label}</p>
                       <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 3 }}>
                         {granted.map(k => (
-                          <li key={k} style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 13, color: "#14532d" }}>
+                          <li key={k} style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 15.5, color: "#14532d" }}>
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22913f" strokeWidth="3" style={{ flexShrink: 0 }}><polyline points="20 6 9 17 4 12"/></svg>
                             {PERMISSION_LABELS[k]}
                           </li>
@@ -383,7 +384,7 @@ export function AdminsPage({
             )}
           </div>
           <p className="invite-explainer" style={{ margin: 0 }}>A secure one-time setup link will be emailed to {email.trim() || "this address"}. No password will be created or sent by you.</p>
-          {formError && <p style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{formError}</p>}
+          {formError && <p style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{formError}</p>}
           <div className="actions-row">
             <Button onClick={confirmSend} disabled={creating}>
               {creating ? "Sending Invitation…" : isSensitiveAdminGrant(role, perms) ? "Continue to Verification" : "Send Invite"}

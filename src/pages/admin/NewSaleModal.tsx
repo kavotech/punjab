@@ -62,8 +62,8 @@ export function NewSaleModal({
             }}
           >
             <span>
-              <strong style={{ display: "block", fontSize: 13.5 }}>{c.companyName}</strong>
-              <span style={{ fontSize: 12, color: "#9ca3af" }}>{c.customerNumber}{c.deliveryArea ? ` · ${c.deliveryArea}` : ""}</span>
+              <strong style={{ display: "block", fontSize: 16 }}>{c.companyName}</strong>
+              <span style={{ fontSize: 14.5, color: "#9ca3af" }}>{c.customerNumber}{c.deliveryArea ? ` · ${c.deliveryArea}` : ""}</span>
             </span>
             {c.blocked && <span className="ps-badge" style={{ background: "#111827", color: "#fff" }}>Blocked</span>}
           </button>

@@ -46,8 +46,8 @@ export function DeliveryAreasPage({
     <div className="stack">
       <div>
         <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#111827" }}>Delivery Areas</h2>
-        <p style={{ fontSize: 13.5, color: "#6b7280", marginTop: 3 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#111827" }}>Delivery Areas</h2>
+        <p style={{ fontSize: 16, color: "#6b7280", marginTop: 3 }}>
           Manage delivery zones and per-pallet charges.
         </p>
       </div>

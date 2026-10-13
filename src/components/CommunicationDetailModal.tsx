@@ -36,32 +36,32 @@ export function CommunicationDetailModal({ log, customers, invoices, onClose }: 
     <Modal open={Boolean(log)} title={log ? (log.subject || 'Communication') : 'Communication'} onClose={onClose} wide>
       {log && (
         <div className="stack" style={{ gap: 10 }}>
-          <div className="form-grid" style={{ fontSize: 13.5 }}>
+          <div className="form-grid" style={{ fontSize: 16 }}>
             <div><strong>Recipient</strong><div style={{ color: '#4b5563' }}>{log.recipient || '—'}</div></div>
             <div><strong>Sender</strong><div style={{ color: '#4b5563' }}>{log.senderEmail || '—'}</div></div>
             <div><strong>Date/Time</strong><div style={{ color: '#4b5563' }}>{(log.sentAt || log.createdAt || '').replace('T', ' ').slice(0, 19)}</div></div>
             <div><strong>Status</strong><div style={{ color: log.status === 'Sent' ? '#15803d' : log.status === 'Failed' ? '#b91c1c' : '#a16207' }}>{log.status}{log.error ? ` — ${log.error}` : ''}</div></div>
             <div><strong>Related Customer</strong><div style={{ color: '#4b5563' }}>{customer?.companyName || '—'}</div></div>
             <div><strong>Related Invoice</strong><div style={{ color: '#4b5563' }}>{invoice?.invoiceNumber || '—'}</div></div>
-            {log.providerMessageId && <div><strong>Provider Message ID</strong><div style={{ color: '#4b5563', fontSize: 12 }}>{log.providerMessageId}</div></div>}
+            {log.providerMessageId && <div><strong>Provider Message ID</strong><div style={{ color: '#4b5563', fontSize: 14.5 }}>{log.providerMessageId}</div></div>}
           </div>
 
           <div>
-            <strong style={{ fontSize: 12.5, textTransform: 'uppercase', letterSpacing: 0.4, color: '#6b7280' }}>Message</strong>
+            <strong style={{ fontSize: 15, textTransform: 'uppercase', letterSpacing: 0.4, color: '#6b7280' }}>Message</strong>
             {log.html ? (
               <div style={{ border: '1px solid #e5e7eb', borderRadius: 10, marginTop: 6, overflow: 'hidden' }}>
                 <iframe title="Message body" srcDoc={log.html} style={{ width: '100%', height: 360, border: 'none', background: '#fff' }} />
               </div>
             ) : (
-              <p style={{ color: '#9ca3af', fontSize: 13, marginTop: 6 }}>No message body was stored for this send (sent before message content was recorded).</p>
+              <p style={{ color: '#9ca3af', fontSize: 15.5, marginTop: 6 }}>No message body was stored for this send (sent before message content was recorded).</p>
             )}
           </div>
 
           {log.attachmentNames.length > 0 && (
             <div>
-              <strong style={{ fontSize: 12.5, textTransform: 'uppercase', letterSpacing: 0.4, color: '#6b7280' }}>Attachment</strong>
+              <strong style={{ fontSize: 15, textTransform: 'uppercase', letterSpacing: 0.4, color: '#6b7280' }}>Attachment</strong>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 6 }}>
-                <span style={{ fontSize: 13.5 }}>{log.attachmentNames.join(', ')}</span>
+                <span style={{ fontSize: 16 }}>{log.attachmentNames.join(', ')}</span>
                 {attachment && <Button variant="secondary" className="btn-sm" onClick={downloadAttachment}>Download</Button>}
               </div>
             </div>

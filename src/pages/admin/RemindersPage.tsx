@@ -102,7 +102,7 @@ export function RemindersPage({ view, invoices, customers, notificationLogs, del
         <td><strong>{money(invoiceOutstanding(invoice))}</strong></td>
         <td>{currentStage === stage
           ? <ReminderStatusButton invoice={invoice} onSend={() => onSendReminder(invoice, customer, stage)} />
-          : <span style={{ color: '#9ca3af', fontSize: 12 }}>{currentStage ? 'Escalated' : 'Not yet due'}</span>}</td>
+          : <span style={{ color: '#9ca3af', fontSize: 14.5 }}>{currentStage ? 'Escalated' : 'Not yet due'}</span>}</td>
       </tr>
     )
   }

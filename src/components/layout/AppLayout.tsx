@@ -7,23 +7,6 @@ import { URGENT_SUPPORT_PHONE } from '../../lib/emailService'
 import { getSystemMode } from '../../lib/secureAdminApi'
 import { isRuntimeTestMode, setRuntimeTestMode } from '../../lib/runtimeMode'
 
-const SIDEBAR_COLLAPSE_KEY = 'punjab-sidebar-collapsed'
-// 14-inch class laptops commonly report a logical width somewhere in the
-// 1366-1536px range (e.g. a 14" MacBook Pro is 1512px). The expanded
-// sidebar is 324px - over a fifth of that - so default it collapsed on
-// first visit at these widths rather than making every 14" user discover
-// the collapse button themselves. A later manual choice always wins.
-const LAPTOP_WIDTH_THRESHOLD = 1536
-
-function initialSidebarCollapsed(): boolean {
-  try {
-    const stored = localStorage.getItem(SIDEBAR_COLLAPSE_KEY)
-    if (stored === 'true') return true
-    if (stored === 'false') return false
-  } catch { /* ignore */ }
-  return typeof window !== 'undefined' && window.innerWidth <= LAPTOP_WIDTH_THRESHOLD
-}
-
 export function AppLayout({
   role,
   user,
@@ -59,11 +42,6 @@ export function AppLayout({
   onDayEnd?: () => void
 }) {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [sidebarCollapsed, setSidebarCollapsedState] = useState(initialSidebarCollapsed)
-  const setSidebarCollapsed = (value: boolean) => {
-    setSidebarCollapsedState(value)
-    try { localStorage.setItem(SIDEBAR_COLLAPSE_KEY, String(value)) } catch { /* ignore */ }
-  }
   const [testMode, setTestMode] = useState(isRuntimeTestMode())
   const [simulationNotice, setSimulationNotice] = useState('')
 
@@ -99,15 +77,13 @@ export function AppLayout({
   }
 
   return (
-    <div className={sidebarCollapsed ? "app-layout sidebar-is-collapsed" : "app-layout"}>
+    <div className="app-layout">
       {mobileOpen && <div className="sidebar-overlay" onClick={() => setMobileOpen(false)} />}
       <Sidebar
         user={user}
         current={current}
         onNavigate={handleNavigate}
         mobileOpen={mobileOpen}
-        collapsed={sidebarCollapsed}
-        onCollapsedChange={setSidebarCollapsed}
         onMobileClose={() => setMobileOpen(false)}
         badges={badges}
         onDayEnd={role === 'admin' ? onDayEnd : undefined}
@@ -127,9 +103,9 @@ export function AppLayout({
           onSearch={onSearch}
         />
         <main className="content">{children}</main>
-        <div style={{ padding: '8px 24px', fontSize: 11.5, color: '#9ca3af', textAlign: 'right', borderTop: '1px solid #eef1ee' }}>
-          Urgent Support: <strong style={{ color: '#4d7c5f' }}>{URGENT_SUPPORT_PHONE}</strong>
-        </div>
+        <footer className="app-footer">
+          Need urgent help? Call <strong>{URGENT_SUPPORT_PHONE}</strong>
+        </footer>
       </div>
     </div>
   )

@@ -10,7 +10,7 @@ type Tab = "sales" | "profit" | "products" | "customers" | "salesmen" | "general
 function todayIso() { return new Date().toISOString().slice(0, 10) }
 
 function TrendChart({ points, color = "#1f7a3a", empty }: { points: number[]; color?: string; empty: string }) {
-  if (points.length < 2) return <div style={{ padding: 24, textAlign: "center", color: "#9ca3af", fontSize: 13 }}>{empty}</div>
+  if (points.length < 2) return <div style={{ padding: 24, textAlign: "center", color: "#9ca3af", fontSize: 15.5 }}>{empty}</div>
   const W = 600, H = 160, pad = 10
   const max = Math.max(...points, 1)
   const min = Math.min(...points, 0)
@@ -79,8 +79,8 @@ export function AnalyticsPage({ orders, products }: { orders: Order[]; products:
     <div className="stack">
       <div>
         <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Analytics</h2>
-        <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Analytics</h2>
+        <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
           Sales, profit, products, customers and salesman performance — filterable by any date range.
         </p>
       </div>
@@ -89,7 +89,7 @@ export function AnalyticsPage({ orders, products }: { orders: Order[]; products:
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
           {PRESETS.map(p => (
             <button key={p.key} type="button" onClick={() => setPreset(p.key)}
-              style={{ padding: "7px 12px", borderRadius: 8, cursor: "pointer", border: preset === p.key ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: preset === p.key ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 12.5, color: preset === p.key ? "#14532d" : "#374151" }}>
+              style={{ padding: "7px 12px", borderRadius: 8, cursor: "pointer", border: preset === p.key ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: preset === p.key ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 15, color: preset === p.key ? "#14532d" : "#374151" }}>
               {p.label}
             </button>
           ))}
@@ -109,7 +109,7 @@ export function AnalyticsPage({ orders, products }: { orders: Order[]; products:
           ["customers", "Customers"], ["salesmen", "Salesmen"], ["general", "General"],
         ] as [Tab, string][]).map(([key, label]) => (
           <button key={key} type="button" onClick={() => setTab(key)}
-            style={{ padding: "8px 14px", borderRadius: 10, cursor: "pointer", border: tab === key ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: tab === key ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 13, color: tab === key ? "#14532d" : "#374151" }}>
+            style={{ padding: "8px 14px", borderRadius: 10, cursor: "pointer", border: tab === key ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: tab === key ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 15.5, color: tab === key ? "#14532d" : "#374151" }}>
             {label}
           </button>
         ))}
@@ -125,7 +125,7 @@ export function AnalyticsPage({ orders, products }: { orders: Order[]; products:
             <div className="ps-stat"><p className="ps-stat-label">Sales This Month</p><p className="ps-stat-value">£{monthTotal.toFixed(2)}</p></div>
           </div>
           <div className="ps-table-card" style={{ padding: 16 }}>
-            <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>
+            <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>
               Sales in selected range ({from} → {to}): £{salesTotal.toFixed(2)} across {rangeOrders.length} sale{rangeOrders.length !== 1 ? "s" : ""}
             </p>
             <TrendChart points={series.map(s => s.sales)} empty="Not enough data in this range to chart a trend." />
@@ -142,11 +142,11 @@ export function AnalyticsPage({ orders, products }: { orders: Order[]; products:
             <div className="ps-stat"><p className="ps-stat-label">Profit In Range</p><p className="ps-stat-value">£{profitTotal.toFixed(2)}</p></div>
             <div className="ps-stat"><p className="ps-stat-label">Profit Margin %</p><p className="ps-stat-value">{margin.toFixed(1)}%</p></div>
           </div>
-          <p style={{ fontSize: 12, color: "#9ca3af" }}>
+          <p style={{ fontSize: 14.5, color: "#9ca3af" }}>
             Profit uses each product's cost price (set in Products) — items without a cost price set are treated as £0 cost until an admin fills it in.
           </p>
           <div className="ps-table-card" style={{ padding: 16 }}>
-            <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>Profit Trend</p>
+            <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>Profit Trend</p>
             <TrendChart points={series.map(s => s.profit)} color="#f2790f" empty="Not enough data in this range to chart a trend." />
           </div>
         </div>
@@ -244,17 +244,17 @@ export function AnalyticsPage({ orders, products }: { orders: Order[]; products:
           </div>
           {salesmen_.length > 1 && (
             <div className="ps-table-card" style={{ padding: 16 }}>
-              <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>Revenue Comparison</p>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.5 }}>Revenue Comparison</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {salesmen_.map(s => {
                   const max = Math.max(...salesmen_.map(x => x.sales), 1)
                   return (
                     <div key={s.salesmanId} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <span style={{ width: 100, fontSize: 12.5, fontWeight: 600 }}>{s.name}</span>
+                      <span style={{ width: 100, fontSize: 15, fontWeight: 600 }}>{s.name}</span>
                       <div style={{ flex: 1, background: "#f3f4f6", borderRadius: 6, height: 18, overflow: "hidden" }}>
                         <div style={{ width: `${(s.sales / max) * 100}%`, background: "#1f7a3a", height: "100%" }} />
                       </div>
-                      <span style={{ fontSize: 12.5, fontWeight: 700, width: 80, textAlign: "right" }}>£{s.sales.toFixed(0)}</span>
+                      <span style={{ fontSize: 15, fontWeight: 700, width: 80, textAlign: "right" }}>£{s.sales.toFixed(0)}</span>
                     </div>
                   )
                 })}
@@ -269,11 +269,11 @@ export function AnalyticsPage({ orders, products }: { orders: Order[]; products:
         <div className="stack">
           <div className="ps-table-card" style={{ padding: 16 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, flexWrap: "wrap", gap: 10 }}>
-              <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: 0.5, margin: 0 }}>Sales &amp; Profit Trend</p>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: 0.5, margin: 0 }}>Sales &amp; Profit Trend</p>
               <div style={{ display: "flex", gap: 6 }}>
                 {(["day", "week", "month", "year"] as const).map(p => (
                   <button key={p} type="button" onClick={() => setPeriod(p)}
-                    style={{ padding: "5px 10px", borderRadius: 6, cursor: "pointer", border: period === p ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: period === p ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 11.5, color: period === p ? "#14532d" : "#374151", textTransform: "capitalize" }}>
+                    style={{ padding: "5px 10px", borderRadius: 6, cursor: "pointer", border: period === p ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: period === p ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 14, color: period === p ? "#14532d" : "#374151", textTransform: "capitalize" }}>
                     {p}
                   </button>
                 ))}

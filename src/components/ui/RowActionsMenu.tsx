@@ -35,7 +35,7 @@ export function RowActionsMenu({ actions, label = "More actions" }: { actions: R
               onClick={() => { setOpen(false); action.onClick() }}
               style={{
                 display: "block", width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 7, border: "none",
-                background: "transparent", fontSize: 13, color: action.danger ? "#b91c1c" : "#111827",
+                background: "transparent", fontSize: 15.5, color: action.danger ? "#b91c1c" : "#111827",
                 cursor: action.disabled ? "default" : "pointer", opacity: action.disabled ? 0.5 : 1,
               }}
               onMouseEnter={e => { if (!action.disabled) e.currentTarget.style.background = "#f3f4f6" }}

@@ -109,8 +109,8 @@ export function OrdersPage({ orders, products, invoices = [], customers, stock, 
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
         <div>
           <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0d2b1e" }}>Sales</h2>
-          <p style={{ fontSize: 13.5, color: "#6b7a70", marginTop: 3 }}>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0d2b1e" }}>Sales</h2>
+          <p style={{ fontSize: 16, color: "#6b7a70", marginTop: 3 }}>
             Once confirmed, a sale is an invoice. It stays editable until Day End closes the trading day.
           </p>
         </div>
@@ -119,12 +119,12 @@ export function OrdersPage({ orders, products, invoices = [], customers, stock, 
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         {canPlaceSale && (
           <button type="button" onClick={() => setTab("make-sale")}
-            style={{ padding: "8px 14px", borderRadius: 10, cursor: "pointer", border: tab === "make-sale" ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: tab === "make-sale" ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 13, color: tab === "make-sale" ? "#14532d" : "#374151" }}>
+            style={{ padding: "8px 14px", borderRadius: 10, cursor: "pointer", border: tab === "make-sale" ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: tab === "make-sale" ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 15.5, color: tab === "make-sale" ? "#14532d" : "#374151" }}>
             Make Sale
           </button>
         )}
         <button type="button" onClick={() => setTab("tickets")}
-          style={{ padding: "8px 14px", borderRadius: 10, cursor: "pointer", border: tab === "tickets" ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: tab === "tickets" ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 13, color: tab === "tickets" ? "#14532d" : "#374151" }}>
+          style={{ padding: "8px 14px", borderRadius: 10, cursor: "pointer", border: tab === "tickets" ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb", background: tab === "tickets" ? "#f0fdf4" : "#fff", fontWeight: 700, fontSize: 15.5, color: tab === "tickets" ? "#14532d" : "#374151" }}>
           Tickets {orders.length > 0 && <span style={{ marginLeft: 4, color: "#9ca3af" }}>({orders.length})</span>}
         </button>
       </div>
@@ -132,8 +132,8 @@ export function OrdersPage({ orders, products, invoices = [], customers, stock, 
       {tab === "make-sale" && canPlaceSale && (
         <div className="ps-table-card" style={{ padding: 40, textAlign: "center" }}>
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1f7a3a" strokeWidth="1.6" style={{ marginBottom: 12 }}><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
-          <p style={{ fontWeight: 700, fontSize: 16, color: "#0d2b1e", marginBottom: 6 }}>Start a new sale</p>
-          <p style={{ color: "#6b7a70", fontSize: 13.5, marginBottom: 18 }}>Pick a customer, then add products just like they would themselves.</p>
+          <p style={{ fontWeight: 700, fontSize: 18, color: "#0d2b1e", marginBottom: 6 }}>Start a new sale</p>
+          <p style={{ color: "#6b7a70", fontSize: 16, marginBottom: 18 }}>Pick a customer, then add products just like they would themselves.</p>
           <Button onClick={() => setShowNewSale(true)}>+ New Sale</Button>
         </div>
       )}
@@ -177,8 +177,8 @@ export function OrdersPage({ orders, products, invoices = [], customers, stock, 
                       <tr key={order.id} className="ps-row cd-row-clickable" onDoubleClick={() => setDetail(order)} title="Double-click to view">
                         <td>
                           <strong>{order.orderNumber}</strong>
-                          {isInvoice && <div style={{ fontSize: 11, color: "#1d4ed8", fontWeight: 700 }}>INV-{order.orderNumber}</div>}
-                          {order.officialInvoiceNumber && <div style={{ fontSize: 11, color: "#6b7280" }}>{order.officialInvoiceNumber}</div>}
+                          {isInvoice && <div style={{ fontSize: 13.5, color: "#1d4ed8", fontWeight: 700 }}>INV-{order.orderNumber}</div>}
+                          {order.officialInvoiceNumber && <div style={{ fontSize: 13.5, color: "#6b7280" }}>{order.officialInvoiceNumber}</div>}
                         </td>
                         <td>
                           <div className="ps-product-cell">
@@ -214,7 +214,7 @@ export function OrdersPage({ orders, products, invoices = [], customers, stock, 
                 <div style={{ padding: "48px 24px", textAlign: "center", color: "#9ca3af" }}>
                   <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#c3c9d2" strokeWidth="1.6" style={{ marginBottom: 8 }}><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
                   <div style={{ fontWeight: 600, marginBottom: 4, color: "#374151" }}>No tickets found</div>
-                  <div style={{ fontSize: 13 }}>Sales placed by customers, or made here, will appear here.</div>
+                  <div style={{ fontSize: 15.5 }}>Sales placed by customers, or made here, will appear here.</div>
                 </div>
               )}
             </div>
@@ -255,8 +255,8 @@ export function OrdersPage({ orders, products, invoices = [], customers, stock, 
               </div>
 
               {o.fulfilment === "Collection" && (
-                <div style={{ margin: "12px 0", border: "1.5px dashed #f2790f", borderRadius: 10, padding: "12px 16px", background: "#fff8ef", fontSize: 13, color: "#374151", lineHeight: 1.6 }}>
-                  <p style={{ margin: "0 0 4px", fontSize: 11, textTransform: "uppercase", letterSpacing: 0.5, color: "#b25c0a", fontWeight: 700 }}>Customer is collecting from</p>
+                <div style={{ margin: "12px 0", border: "1.5px dashed #f2790f", borderRadius: 10, padding: "12px 16px", background: "#fff8ef", fontSize: 15.5, color: "#374151", lineHeight: 1.6 }}>
+                  <p style={{ margin: "0 0 4px", fontSize: 13.5, textTransform: "uppercase", letterSpacing: 0.5, color: "#b25c0a", fontWeight: 700 }}>Customer is collecting from</p>
                   <strong style={{ color: "#111827" }}>{COLLECTION_ADDRESS.line1}</strong><br />
                   {COLLECTION_ADDRESS.line2}<br />
                   {COLLECTION_ADDRESS.line3}<br />
@@ -266,8 +266,8 @@ export function OrdersPage({ orders, products, invoices = [], customers, stock, 
               )}
 
               {o.fulfilment !== "Collection" && o.deliveryAddress && (
-                <div style={{ margin: "12px 0", border: "1.5px dashed #1d4ed8", borderRadius: 10, padding: "12px 16px", background: "#eff6ff", fontSize: 13, color: "#374151", lineHeight: 1.6 }}>
-                  <p style={{ margin: "0 0 4px", fontSize: 11, textTransform: "uppercase", letterSpacing: 0.5, color: "#1d4ed8", fontWeight: 700 }}>Deliver to</p>
+                <div style={{ margin: "12px 0", border: "1.5px dashed #1d4ed8", borderRadius: 10, padding: "12px 16px", background: "#eff6ff", fontSize: 15.5, color: "#374151", lineHeight: 1.6 }}>
+                  <p style={{ margin: "0 0 4px", fontSize: 13.5, textTransform: "uppercase", letterSpacing: 0.5, color: "#1d4ed8", fontWeight: 700 }}>Deliver to</p>
                   {o.deliveryAddress}
                 </div>
               )}
@@ -289,18 +289,18 @@ export function OrdersPage({ orders, products, invoices = [], customers, stock, 
                 </div>
               )}
               {!editable && o.status !== "Cancelled" && o.date !== tradingDate && (
-                <p style={{ fontSize: 12, color: "#9ca3af", marginTop: 10 }}>This ticket's trading day has closed (Day End), so it's locked and can't be edited.</p>
+                <p style={{ fontSize: 14.5, color: "#9ca3af", marginTop: 10 }}>This ticket's trading day has closed (Day End), so it's locked and can't be edited.</p>
               )}
 
-              <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", margin: "18px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", margin: "18px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>
                 Items ({o.items.length})
               </p>
               <div className="ord-items">
                 {o.items.map((it, i) => (
                   <div key={i} className="ord-item-row">
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontWeight: 600, fontSize: 13.5, color: "#111827" }}>{productName(it.productId)}</div>
-                      <div style={{ fontSize: 12, color: "#9ca3af" }}>{it.quantity} × £{it.unitPrice.toFixed(2)}</div>
+                      <div style={{ fontWeight: 600, fontSize: 16, color: "#111827" }}>{productName(it.productId)}</div>
+                      <div style={{ fontSize: 14.5, color: "#9ca3af" }}>{it.quantity} × £{it.unitPrice.toFixed(2)}</div>
                     </div>
                     <strong>£{(it.quantity * it.unitPrice).toFixed(2)}</strong>
                   </div>

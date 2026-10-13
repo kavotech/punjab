@@ -47,15 +47,15 @@ export function EditSaleModal({
     <Modal open={open} title={order ? `Edit Sale ${order.orderNumber}` : "Edit Sale"} onClose={onClose}>
       {order && (
         <div>
-          <p style={{ fontSize: 12.5, color: "#6b7a70", marginBottom: 12 }}>
+          <p style={{ fontSize: 15, color: "#6b7a70", marginBottom: 12 }}>
             Changes only apply while this sale is still today's trading day — once Day End runs, sales are locked.
           </p>
           <div className="ord-items">
             {items.map((it, i) => (
               <div key={it.productId} className="ord-item-row">
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 600, fontSize: 13.5, color: "#111827" }}>{productName(it.productId)}</div>
-                  <div style={{ fontSize: 12, color: "#9ca3af" }}>£{it.unitPrice.toFixed(2)} / box</div>
+                  <div style={{ fontWeight: 600, fontSize: 16, color: "#111827" }}>{productName(it.productId)}</div>
+                  <div style={{ fontSize: 14.5, color: "#9ca3af" }}>£{it.unitPrice.toFixed(2)} / box</div>
                 </div>
                 <input type="number" min="0" step="0.1" value={it.quantity}
                   onChange={e => setQty(i, parseFloat(e.target.value) || 0)}
@@ -66,7 +66,7 @@ export function EditSaleModal({
                 </button>
               </div>
             ))}
-            {items.length === 0 && <p style={{ color: "#9ca3af", fontSize: 13, padding: "12px 0" }}>No items left — add one below or cancel the sale instead.</p>}
+            {items.length === 0 && <p style={{ color: "#9ca3af", fontSize: 15.5, padding: "12px 0" }}>No items left — add one below or cancel the sale instead.</p>}
           </div>
 
           {availableToAdd.length > 0 && (

@@ -43,12 +43,12 @@ export function InvoiceDocumentsModal({ invoice, onClose, onRegenerate, regenera
 
   const section = (title: string, state: StoredFile | null | 'loading', emptyReason: string) => (
     <div style={{ border: '1px solid #e5e7eb', borderRadius: 10, padding: '12px 16px' }}>
-      <p style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, color: '#6b7280', margin: '0 0 6px' }}>{title}</p>
-      {state === 'loading' && <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#6b7280', fontSize: 13 }}><Spinner size={14} /> Loading…</div>}
-      {state === null && <p style={{ fontSize: 13, color: '#9ca3af', margin: 0 }}>{emptyReason}</p>}
+      <p style={{ fontSize: 13.5, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, color: '#6b7280', margin: '0 0 6px' }}>{title}</p>
+      {state === 'loading' && <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#6b7280', fontSize: 15.5 }}><Spinner size={14} /> Loading…</div>}
+      {state === null && <p style={{ fontSize: 15.5, color: '#9ca3af', margin: 0 }}>{emptyReason}</p>}
       {state && state !== 'loading' && (
         <div>
-          <p style={{ fontSize: 13, color: '#374151', margin: '0 0 8px' }}>
+          <p style={{ fontSize: 15.5, color: '#374151', margin: '0 0 8px' }}>
             {title.startsWith('Original') ? 'Received' : 'Generated'}: <strong>{fmtDateTime(state.uploadedAt)}</strong>
           </p>
           <div style={{ display: 'flex', gap: 6 }}>
@@ -66,8 +66,8 @@ export function InvoiceDocumentsModal({ invoice, onClose, onRegenerate, regenera
         <div className="stack" style={{ gap: 12 }}>
           {pdfGenerationPending && (
             <div style={{ background: '#fef9c3', border: '1px solid #fde68a', borderRadius: 10, padding: '10px 14px' }}>
-              <p style={{ fontSize: 12.5, fontWeight: 700, color: '#854d0e', margin: '0 0 3px' }}>Generated PDF: Failed — Needs Review</p>
-              <p style={{ fontSize: 12.5, color: '#854d0e', margin: 0 }}>{pdfGenerationError || 'The official PDF could not be generated. A basic fallback version is shown below if one exists.'}</p>
+              <p style={{ fontSize: 15, fontWeight: 700, color: '#854d0e', margin: '0 0 3px' }}>Generated PDF: Failed — Needs Review</p>
+              <p style={{ fontSize: 15, color: '#854d0e', margin: 0 }}>{pdfGenerationError || 'The official PDF could not be generated. A basic fallback version is shown below if one exists.'}</p>
             </div>
           )}
           {section('Original Invoice', original, 'No original document on file for this invoice.')}

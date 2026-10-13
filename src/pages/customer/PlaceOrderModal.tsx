@@ -201,7 +201,7 @@ export function PlaceOrderModal({
                     <div className="po-card-name">{p.productName}</div>
                     <div className="po-card-meta">{p.size || p.variety || p.category}</div>
                     <div className="po-card-price">£{s.price.toFixed(2)}<span>/ box</span></div>
-                    {p.boxesPerPallet > 0 && <div className="po-card-stock" style={{ fontSize: 10.5 }}>{p.boxesPerPallet} boxes per pallet</div>}
+                    {p.boxesPerPallet > 0 && <div className="po-card-stock" style={{ fontSize: 13 }}>{p.boxesPerPallet} boxes per pallet</div>}
                     {inCart > 0 ? (
                       <div className="po-stepper">
                         <button onClick={() => setQty(p.id, Math.max(0, inCart - 1))} aria-label="Decrease">−</button>
@@ -268,12 +268,12 @@ export function PlaceOrderModal({
           <div className="ord-items">
             {cartLines.map(l => (
               <div key={l.product.id} className="ord-item-row">
-                <div className="po-card-av" style={{ background: catColor(l.product.category) + "1f", color: catColor(l.product.category), width: 34, height: 34, fontSize: 11 }}>
+                <div className="po-card-av" style={{ background: catColor(l.product.category) + "1f", color: catColor(l.product.category), width: 34, height: 34, fontSize: 13.5 }}>
                   {l.product.productName.slice(0, 2).toUpperCase()}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 600, fontSize: 13.5, color: "#111827" }}>{l.product.productName}</div>
-                  <div style={{ fontSize: 12, color: "#9ca3af" }}>{l.qty} × £{l.stock.price.toFixed(2)}</div>
+                  <div style={{ fontWeight: 600, fontSize: 16, color: "#111827" }}>{l.product.productName}</div>
+                  <div style={{ fontSize: 14.5, color: "#9ca3af" }}>{l.qty} × £{l.stock.price.toFixed(2)}</div>
                 </div>
                 <strong>£{(l.qty * l.stock.price).toFixed(2)}</strong>
               </div>
@@ -285,7 +285,7 @@ export function PlaceOrderModal({
           </div>
 
           <div style={{ margin: "16px 0" }}>
-            <div style={{ fontSize: 12.5, fontWeight: 700, color: "#374151", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>
+            <div style={{ fontSize: 15, fontWeight: 700, color: "#374151", marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>
               Delivery or Collection?
             </div>
             <div style={{ display: "flex", gap: 10 }}>
@@ -299,7 +299,7 @@ export function PlaceOrderModal({
                     border: fulfilment === f ? "2px solid #1f7a3a" : "1.5px solid #e5e7eb",
                     background: fulfilment === f ? "#f0fdf4" : "#fff",
                     color: fulfilment === f ? "#14532d" : "#374151",
-                    fontWeight: fulfilment === f ? 700 : 500, fontSize: 13.5,
+                    fontWeight: fulfilment === f ? 700 : 500, fontSize: 16,
                   }}
                 >
                   {f}
@@ -307,7 +307,7 @@ export function PlaceOrderModal({
               ))}
             </div>
             {fulfilment === "Collection" && (
-              <div style={{ marginTop: 10, border: "1.5px dashed #f2790f", borderRadius: 10, padding: "12px 16px", background: "#fff8ef", fontSize: 13, color: "#374151", lineHeight: 1.6 }}>
+              <div style={{ marginTop: 10, border: "1.5px dashed #f2790f", borderRadius: 10, padding: "12px 16px", background: "#fff8ef", fontSize: 15.5, color: "#374151", lineHeight: 1.6 }}>
                 <strong style={{ color: "#111827" }}>{COLLECTION_ADDRESS.line1}</strong><br />
                 {COLLECTION_ADDRESS.line2}<br />
                 {COLLECTION_ADDRESS.line3}<br />
@@ -322,7 +322,7 @@ export function PlaceOrderModal({
                     placeholder="Enter your postcode, e.g. E10 5SQ"
                     value={postcode}
                     onChange={e => { setPostcode(e.target.value); setPostcodeStatus("idle") }}
-                    style={{ flex: 1, padding: "9px 12px", borderRadius: 8, border: "1.5px solid #e5e7eb", fontSize: 13.5 }}
+                    style={{ flex: 1, padding: "9px 12px", borderRadius: 8, border: "1.5px solid #e5e7eb", fontSize: 16 }}
                   />
                   <Button variant="secondary" disabled={!postcode.trim() || checkingPostcode} onClick={checkPostcode}>
                     {checkingPostcode ? "Checking…" : "Find address"}
@@ -331,61 +331,61 @@ export function PlaceOrderModal({
 
                 {postcodeStatus === "failed" && (
                   <div style={{ marginTop: 10 }}>
-                    <p style={{ fontSize: 12.5, color: "#b91c1c", marginBottom: 6 }}>{postcodeError} Please enter your address manually.</p>
+                    <p style={{ fontSize: 15, color: "#b91c1c", marginBottom: 6 }}>{postcodeError} Please enter your address manually.</p>
                     <textarea
                       placeholder="Full delivery address (house/flat number, street, city, postcode)"
                       value={manualAddress}
                       onChange={e => setManualAddress(e.target.value)}
                       rows={3}
-                      style={{ width: "100%", padding: "9px 12px", borderRadius: 8, border: "1.5px solid #e5e7eb", fontSize: 13.5, resize: "vertical" }}
+                      style={{ width: "100%", padding: "9px 12px", borderRadius: 8, border: "1.5px solid #e5e7eb", fontSize: 16, resize: "vertical" }}
                     />
                   </div>
                 )}
 
                 {postcodeStatus === "found" && (
                   <div style={{ marginTop: 10 }}>
-                    <p style={{ fontSize: 12.5, color: deliveryArea ? "#15803d" : "#b45309", marginBottom: 8 }}>
+                    <p style={{ fontSize: 15, color: deliveryArea ? "#15803d" : "#b45309", marginBottom: 8 }}>
                       {deliveryArea
                         ? `${resolvedPostcode} is within our ${deliveryArea} delivery zone.`
                         : `${resolvedPostcode} is a valid UK postcode, outside our standard zones — our team will confirm delivery availability directly.`}
                     </p>
                     {realAddresses.length > 0 ? (
                       <>
-                        <label style={{ fontSize: 11.5, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: 0.5 }}>Select your address</label>
+                        <label style={{ fontSize: 14, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: 0.5 }}>Select your address</label>
                         <select
                           value={selectedRealAddress}
                           onChange={e => setSelectedRealAddress(e.target.value)}
-                          style={{ width: "100%", padding: "9px 12px", borderRadius: 8, border: "1.5px solid #e5e7eb", fontSize: 13.5, marginTop: 4 }}
+                          style={{ width: "100%", padding: "9px 12px", borderRadius: 8, border: "1.5px solid #e5e7eb", fontSize: 16, marginTop: 4 }}
                         >
                           {realAddresses.map(a => <option key={a} value={a}>{a}</option>)}
                         </select>
                       </>
                     ) : (
                       <>
-                        <p style={{ fontSize: 12, color: "#9ca3af", marginBottom: 8 }}>We couldn't find a full address list for this postcode — please enter your address manually.</p>
+                        <p style={{ fontSize: 14.5, color: "#9ca3af", marginBottom: 8 }}>We couldn't find a full address list for this postcode — please enter your address manually.</p>
                         {addressCandidates.length > 0 && (
                           <>
-                            <label style={{ fontSize: 11.5, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: 0.5 }}>Select your area</label>
+                            <label style={{ fontSize: 14, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: 0.5 }}>Select your area</label>
                             <select
                               value={selectedLocality}
                               onChange={e => setSelectedLocality(e.target.value)}
-                              style={{ width: "100%", padding: "9px 12px", borderRadius: 8, border: "1.5px solid #e5e7eb", fontSize: 13.5, marginTop: 4, marginBottom: 8 }}
+                              style={{ width: "100%", padding: "9px 12px", borderRadius: 8, border: "1.5px solid #e5e7eb", fontSize: 16, marginTop: 4, marginBottom: 8 }}
                             >
                               {addressCandidates.map(c => <option key={c} value={c}>{c}</option>)}
                             </select>
                           </>
                         )}
-                        <label style={{ fontSize: 11.5, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: 0.5 }}>House/flat number & street</label>
+                        <label style={{ fontSize: 14, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: 0.5 }}>House/flat number & street</label>
                         <input
                           placeholder="e.g. 14 Orchard Road"
                           value={houseAndStreet}
                           onChange={e => setHouseAndStreet(e.target.value)}
-                          style={{ width: "100%", padding: "9px 12px", borderRadius: 8, border: "1.5px solid #e5e7eb", fontSize: 13.5, marginTop: 4 }}
+                          style={{ width: "100%", padding: "9px 12px", borderRadius: 8, border: "1.5px solid #e5e7eb", fontSize: 16, marginTop: 4 }}
                         />
                       </>
                     )}
                     {fullDeliveryAddress && (
-                      <p style={{ marginTop: 8, fontSize: 12, color: "#6b7280" }}>Full address to be sent: <strong style={{ color: "#374151" }}>{fullDeliveryAddress}</strong></p>
+                      <p style={{ marginTop: 8, fontSize: 14.5, color: "#6b7280" }}>Full address to be sent: <strong style={{ color: "#374151" }}>{fullDeliveryAddress}</strong></p>
                     )}
                   </div>
                 )}
@@ -394,8 +394,8 @@ export function PlaceOrderModal({
           </div>
 
           <p className="ord-note">Please double-check your order — once confirmed, it's sent to Punjab Exotic Foods for processing.</p>
-          <p style={{ fontSize: 12, color: "#9ca3af", marginTop: -6, marginBottom: 12 }}>Urgent Support: <strong style={{ color: "#4d7c5f" }}>{URGENT_SUPPORT_PHONE}</strong></p>
-          {error && <p style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", marginBottom: 12 }}>{error}</p>}
+          <p style={{ fontSize: 14.5, color: "#9ca3af", marginTop: -6, marginBottom: 12 }}>Urgent Support: <strong style={{ color: "#4d7c5f" }}>{URGENT_SUPPORT_PHONE}</strong></p>
+          {error && <p style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", marginBottom: 12 }}>{error}</p>}
           <div className="actions-row">
             <Button disabled={placing || isOrderingClosed()} onClick={confirmOrder}>{placing ? "Placing order…" : `Confirm Order — £${cartTotal.toFixed(2)}`}</Button>
             <Button variant="secondary" onClick={() => setStep("browse")}>← Back to Shopping</Button>
@@ -411,7 +411,7 @@ export function PlaceOrderModal({
           <h3>Thank you — order {placedNumber} received!</h3>
           <p>We'll confirm it shortly. You can track its progress any time in <strong>My Orders</strong>.</p>
           {fulfilment === "Collection" ? (
-            <div style={{ margin: "0 auto 14px", maxWidth: 280, border: "1.5px dashed #f2790f", borderRadius: 10, padding: "12px 16px", background: "#fff8ef", fontSize: 13, color: "#374151", lineHeight: 1.6, textAlign: "left" }}>
+            <div style={{ margin: "0 auto 14px", maxWidth: 280, border: "1.5px dashed #f2790f", borderRadius: 10, padding: "12px 16px", background: "#fff8ef", fontSize: 15.5, color: "#374151", lineHeight: 1.6, textAlign: "left" }}>
               <strong style={{ color: "#111827" }}>{COLLECTION_ADDRESS.line1}</strong><br />
               {COLLECTION_ADDRESS.line2}<br />
               {COLLECTION_ADDRESS.line3}<br />
@@ -419,7 +419,7 @@ export function PlaceOrderModal({
               {COLLECTION_ADDRESS.city} {COLLECTION_ADDRESS.postcode}
             </div>
           ) : null}
-          <p style={{ fontSize: 12, color: "#9ca3af" }}>Urgent Support: <strong style={{ color: "#4d7c5f" }}>{URGENT_SUPPORT_PHONE}</strong></p>
+          <p style={{ fontSize: 14.5, color: "#9ca3af" }}>Urgent Support: <strong style={{ color: "#4d7c5f" }}>{URGENT_SUPPORT_PHONE}</strong></p>
           <div className="actions-row" style={{ justifyContent: "center" }}>
             <Button onClick={() => { reset(); onClose() }}>Done</Button>
             <Button variant="secondary" onClick={reset}>Place Another Order</Button>

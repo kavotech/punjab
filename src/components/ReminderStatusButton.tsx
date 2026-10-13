@@ -28,7 +28,7 @@ export function ReminderStatusButton({ invoice, onSend, size = 'sm' }: { invoice
       <Button className={size === 'sm' ? 'btn-sm' : undefined} variant="secondary" disabled title={`Next reminder available ${formatNextReminderAt(nextAllowedAt)}`}>
         Reminder Sent
       </Button>
-      <small style={{ fontSize: 10.5, color: '#9ca3af' }}>
+      <small style={{ fontSize: 13, color: '#9ca3af' }}>
         Available in {formatCooldownRemaining(nextAllowedAt, now)} · {formatNextReminderAt(nextAllowedAt)}
       </small>
     </div>

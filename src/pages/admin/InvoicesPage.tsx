@@ -8,6 +8,7 @@ import { ReminderStatusButton } from '../../components/ReminderStatusButton'
 import { classifyInvoice, invoiceDisplayStatus, invoiceOutstanding } from '../../lib/creditNotes'
 import { groupByDate } from '../../lib/dateGrouping'
 import { isReminderDueToday, reminderStageFor, type ReminderStage } from '../../lib/reminderTemplates'
+import { displayDate } from '../../lib/displayDate'
 
 type DueFilter = 'all' | 'overdue' | 'yesterday' | 'today' | 'tomorrow' | 'this_week' | 'next_week'
 type SortDirection = 'desc' | 'asc'
@@ -129,31 +130,33 @@ export function InvoicesPage({ invoices, customers, creditNotes = [], allocation
     const notes = notesByInvoiceId.get(invoice.id) ?? []
     return (
       <tr key={invoice.id}>
-        <td>{customer?.companyName ?? invoice.customerId}</td>
-        <td>{customer?.customerNumber ?? '—'}</td>
+        <td>
+          {customer?.companyName ?? invoice.customerId}
+          {customer?.customerNumber && <small className="cell-sub">Account {customer.customerNumber}</small>}
+        </td>
         <td>{invoice.invoiceNumber}</td>
-        <td>{invoice.date || '—'}</td>
+        <td style={{ whiteSpace: 'nowrap' }}>{displayDate(invoice.date)}</td>
         <td>{money(invoice.amount)}</td>
         <td>{money(invoiceOutstanding(invoice))}</td>
         <td>
           <span className={`ps-badge ${kind === 'overdue' ? 'ps-badge-red' : kind === 'paid' ? 'ps-badge-green' : ''}`}>{kind === 'overdue' ? 'Overdue' : invoiceDisplayStatus(invoice)}</span>
           {notes.length > 0 && <div style={{ marginTop: 4 }}>{notes.map(note => (
             <button key={note.id} type="button" onClick={() => onOpenCreditNote?.(note.id)}
-              style={{ background: 'none', border: 'none', padding: 0, textAlign: 'left', cursor: onOpenCreditNote ? 'pointer' : 'default', color: '#1d4ed8', fontSize: 11.5, textDecoration: 'underline', display: 'block' }}>
+              style={{ background: 'none', border: 'none', padding: 0, textAlign: 'left', cursor: onOpenCreditNote ? 'pointer' : 'default', color: '#1d4ed8', fontSize: 14, textDecoration: 'underline', display: 'block' }}>
               Credited by {note.creditNumber}
             </button>
           ))}</div>}
         </td>
         <td>{(() => {
-          if (kind === 'paid') return <span style={{ color: '#9ca3af', fontSize: 12 }}>—</span>
+          if (kind === 'paid') return <span style={{ color: '#9ca3af', fontSize: 14.5 }}>—</span>
           const stage = reminderStageFor(invoice)
-          if (!customer || !onSendReminder || !stage) return <span style={{ color: '#9ca3af', fontSize: 12 }}>Not yet due</span>
+          if (!customer || !onSendReminder || !stage) return <span style={{ color: '#9ca3af', fontSize: 14.5 }}>Not yet due</span>
           return <ReminderStatusButton invoice={invoice} onSend={() => onSendReminder(invoice, customer, stage)} />
         })()}</td>
         <td>
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
             <Button className="btn-sm" variant="secondary" onClick={() => setViewInvoice(invoice)}>View Invoice</Button>
-            {kind !== 'paid' && onRecordPayment && <label style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11.5 }}>
+            {kind !== 'paid' && onRecordPayment && <label style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 14 }}>
               <input type="checkbox" checked={false} disabled={payingId === invoice.id} onChange={() => markPaid(invoice)} />
               {payingId === invoice.id ? 'Saving…' : 'Paid'}
             </label>}
@@ -192,10 +195,10 @@ export function InvoicesPage({ invoices, customers, creditNotes = [], allocation
               {(Object.keys(DUE_FILTER_LABELS) as DueFilter[]).map(key => <option key={key} value={key}>{DUE_FILTER_LABELS[key]}</option>)}
             </select>
           )}
-          <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, color: '#4b5563' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 15, color: '#4b5563' }}>
             From <input type="date" className="search-input" style={{ minWidth: 140 }} value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
           </label>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, color: '#4b5563' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 15, color: '#4b5563' }}>
             To <input type="date" className="search-input" style={{ minWidth: 140 }} value={dateTo} onChange={e => setDateTo(e.target.value)} />
           </label>
           <select className="search-input" style={{ minWidth: 130 }} value={sortDirection} onChange={e => setSortDirection(e.target.value as SortDirection)} aria-label="Sort by date">
@@ -203,7 +206,7 @@ export function InvoicesPage({ invoices, customers, creditNotes = [], allocation
             <option value="asc">Oldest First</option>
           </select>
           {tab === 'open' && (
-            <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, color: '#4b5563' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 15, color: '#4b5563' }}>
               <input type="checkbox" checked={reminderDueOnly} onChange={e => setReminderDueOnly(e.target.checked)} />
               Reminder due today
             </label>
@@ -219,8 +222,8 @@ export function InvoicesPage({ invoices, customers, creditNotes = [], allocation
             <table>
               <thead>
                 <tr>
-                  <th>Customer</th><th>Account</th><th>Invoice No</th><th>Invoice Date</th><th>Amount</th>
-                  <th>Outstanding</th><th>Status</th><th>Reminder Status</th><th>Actions</th>
+                  <th>Customer</th><th>Invoice</th><th>Invoice Date</th><th>Amount</th>
+                  <th>Still owed</th><th>Status</th><th>Reminder</th><th>Actions</th>
                 </tr>
               </thead>
               <tbody>

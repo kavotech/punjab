@@ -46,7 +46,7 @@ const STATUS_TABS = ["All", "Pending", "Confirmed", "Preparing", "Delivered", "C
 function Avatar({ name, color }: { name: string; color?: string }) {
   const bg = color ?? "#1f7a3a"
   return (
-    <div style={{ width: 34, height: 34, borderRadius: 9, background: bg, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 700, fontSize: 12, flexShrink: 0 }}>
+    <div style={{ width: 34, height: 34, borderRadius: 9, background: bg, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 700, fontSize: 14.5, flexShrink: 0 }}>
       {name.slice(0, 2).toUpperCase()}
     </div>
   )
@@ -550,13 +550,13 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
                           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                             <Avatar name={order.orderNumber} />
                             <div>
-                              <div style={{ fontWeight: 600, color: "#111827", fontSize: 13.5 }}>{order.orderNumber}</div>
-                              <div style={{ fontSize: 12, color: "#9ca3af" }}>{order.date}</div>
+                              <div style={{ fontWeight: 600, color: "#111827", fontSize: 16 }}>{order.orderNumber}</div>
+                              <div style={{ fontSize: 14.5, color: "#9ca3af" }}>{order.date}</div>
                             </div>
                           </div>
                         </td>
                         <td><span className="cd-status-badge" style={{ background: STATUS_COLORS[order.status] + "20", color: STATUS_COLORS[order.status] }}>{order.status}</span></td>
-                        <td style={{ fontSize: 13, color: "#6b7280" }}>{order.items.length} product{order.items.length !== 1 ? "s" : ""}</td>
+                        <td style={{ fontSize: 15.5, color: "#6b7280" }}>{order.items.length} product{order.items.length !== 1 ? "s" : ""}</td>
                         <td><strong>£{order.amount.toFixed(2)}</strong></td>
                         <td><ProgressBar pct={pct} color={STATUS_COLORS[order.status]} /></td>
                       </tr>
@@ -566,7 +566,7 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
               </table>
             </div>
             {filteredOrders.length === 0 && (
-              <div style={{ padding: "36px 24px", textAlign: "center", color: "#9ca3af", fontSize: 14 }}>
+              <div style={{ padding: "36px 24px", textAlign: "center", color: "#9ca3af", fontSize: 16 }}>
                 <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#c3c9d2" strokeWidth="1.6" style={{ marginBottom: 8 }}><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
                 <div>No orders yet — hit “+ Place Order” to get started.</div>
               </div>
@@ -614,16 +614,16 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
                         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                           <Avatar name={p.productName} color={STOCK_COLORS[s.status] + "cc"} />
                           <div>
-                            <div style={{ fontWeight: 600, color: "#111827", fontSize: 13.5 }}>{p.productName}</div>
-                            <div style={{ fontSize: 12, color: "#9ca3af" }}>{p.sku}</div>
+                            <div style={{ fontWeight: 600, color: "#111827", fontSize: 16 }}>{p.productName}</div>
+                            <div style={{ fontSize: 14.5, color: "#9ca3af" }}>{p.sku}</div>
                           </div>
                         </div>
                       </td>
-                      <td style={{ fontSize: 13 }}>
+                      <td style={{ fontSize: 15.5 }}>
                         {p.variety}<br/><span style={{ color: "#9ca3af" }}>{p.size}</span>
-                        {p.boxesPerPallet > 0 && <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>{p.boxesPerPallet} boxes per pallet</div>}
+                        {p.boxesPerPallet > 0 && <div style={{ fontSize: 13.5, color: "#9ca3af", marginTop: 2 }}>{p.boxesPerPallet} boxes per pallet</div>}
                       </td>
-                      <td><strong>£{s.price.toFixed(2)}</strong> <span style={{ fontSize: 11.5, color: "#9ca3af" }}>/ box</span></td>
+                      <td><strong>£{s.price.toFixed(2)}</strong> <span style={{ fontSize: 14, color: "#9ca3af" }}>/ box</span></td>
                       <td><span className="cd-status-badge" style={{ background: STOCK_COLORS[s.status] + "18", color: STOCK_COLORS[s.status] }}>{s.status === "available" ? "Good Stock" : s.status === "low" ? "Low Stock" : "Out of Stock"}</span></td>
                     </tr>
                   )
@@ -641,7 +641,7 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
         <div className="cd-content">
           <div className="cd-table-card">
             <div style={{ padding: "14px 20px", borderBottom: "1px solid #eaecf0", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <span style={{ fontWeight: 700, fontSize: 14, color: "#111827" }}>All Orders ({myOrders.length})</span>
+              <span style={{ fontWeight: 700, fontSize: 16, color: "#111827" }}>All Orders ({myOrders.length})</span>
               <Button onClick={() => setShowOrder(true)} disabled={Boolean(me?.blocked) || orderingClosed}
             title={me?.blocked ? "Ordering is paused until your balance is settled" : orderingClosed ? "Ordering reopens at 08:00 UK time" : undefined}>+ Place Order</Button>
             </div>
@@ -675,7 +675,7 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
         <div className="cd-content">
           <div className="cd-table-card">
             <div style={{ padding: "14px 20px", borderBottom: "1px solid #eaecf0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontWeight: 700, fontSize: 14, color: "#111827" }}>Support Tickets</span>
+              <span style={{ fontWeight: 700, fontSize: 16, color: "#111827" }}>Support Tickets</span>
               <Button onClick={() => setShowTicket(true)}>+ New Ticket</Button>
             </div>
             <div className="cd-table-scroll">
@@ -684,9 +684,9 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
               <tbody>
                 {myTickets.map(t => (
                   <tr key={t.id} className="cd-row cd-row-clickable" onClick={() => setTicketDetail(t)}>
-                    <td><strong>{t.subject}</strong><br/><span style={{ fontSize: 12, color: "#9ca3af" }}>{t.message.slice(0, 60)}…</span></td>
+                    <td><strong>{t.subject}</strong><br/><span style={{ fontSize: 14.5, color: "#9ca3af" }}>{t.message.slice(0, 60)}…</span></td>
                     <td><span className="cd-status-badge" style={{ background: t.status === "Open" ? "#fef9c3" : "#f3f4f6", color: t.status === "Open" ? "#a16207" : "#6b7280" }}>{t.status}</span></td>
-                    <td style={{ color: "#6b7280", fontSize: 13 }}>{t.createdAt}</td>
+                    <td style={{ color: "#6b7280", fontSize: 15.5 }}>{t.createdAt}</td>
                   </tr>
                 ))}
               </tbody>
@@ -706,13 +706,13 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
         return (
         <div className="cd-content">
           {payMsg && (
-            <div style={{ padding: "10px 16px", borderRadius: 10, fontSize: 13.5, marginBottom: 4,
+            <div style={{ padding: "10px 16px", borderRadius: 10, fontSize: 16, marginBottom: 4,
               background: payMsg.ok ? "#f0fdf4" : "#fef2f2", color: payMsg.ok ? "#15803d" : "#b91c1c" }}>
               {payMsg.text}
             </div>
           )}
           {credit && credit.minimumDue > 0 && (
-            <div style={{ padding: "12px 16px", borderRadius: 10, fontSize: 13.5, marginBottom: 4, background: "#fef2f2", color: "#b91c1c" }}>
+            <div style={{ padding: "12px 16px", borderRadius: 10, fontSize: 16, marginBottom: 4, background: "#fef2f2", color: "#b91c1c" }}>
               <strong>Payment required:</strong> please pay at least <strong>£{credit.minimumDue.toFixed(2)}</strong> now
               {credit.overdueInvoices.length > 0 && <> — {credit.overdueInvoices.length} invoice{credit.overdueInvoices.length !== 1 ? "s are" : " is"} past your {me?.creditDays ?? 14}-day terms</>}
               {credit.overLimitBy > 0 && <> — your balance is £{credit.overLimitBy.toFixed(2)} over your £{(me?.creditLimit ?? 0).toFixed(2)} credit limit</>}.
@@ -734,17 +734,17 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
           </div>
           <div className="cd-table-card">
             <div style={{ padding: "14px 20px", borderBottom: "1px solid #eaecf0", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
-              <span style={{ fontWeight: 700, fontSize: 14 }}>Invoices</span>
+              <span style={{ fontWeight: 700, fontSize: 16 }}>Invoices</span>
               {unpaid.length > 0 && (
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  {paySel.size > 0 && <span style={{ fontSize: 13.5 }}>Selected: <strong>£{selTotal.toFixed(2)}</strong></span>}
+                  {paySel.size > 0 && <span style={{ fontSize: 16 }}>Selected: <strong>£{selTotal.toFixed(2)}</strong></span>}
                   <Button className="btn-sm" disabled={paySel.size === 0} onClick={openProofUpload}>
                     {paySel.size > 0 ? `Upload Payment Proof for ${paySel.size} Invoice${paySel.size !== 1 ? "s" : ""}` : "Select invoices to pay"}
                   </Button>
                 </div>
               )}
             </div>
-            <p style={{ padding: "0 20px 14px", margin: 0, fontSize: 12.5, color: "#6b7a70" }}>
+            <p style={{ padding: "0 20px 14px", margin: 0, fontSize: 15, color: "#6b7a70" }}>
               Pay by bank transfer to Punjab Exotic Foods, then upload a screenshot of the transfer here — we'll confirm it once reviewed.
             </p>
             <div className="cd-table-scroll">
@@ -797,8 +797,8 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
 
           <div className="cd-table-card">
             <div style={{ padding: "14px 20px", borderBottom: "1px solid #eaecf0" }}>
-              <span style={{ fontWeight: 700, fontSize: 14 }}>Credit Notes</span>
-              <span style={{ marginLeft: 8, fontSize: 12.5, color: "#9ca3af" }}>Credit issued to your account, e.g. for returns or adjustments</span>
+              <span style={{ fontWeight: 700, fontSize: 16 }}>Credit Notes</span>
+              <span style={{ marginLeft: 8, fontSize: 15, color: "#9ca3af" }}>Credit issued to your account, e.g. for returns or adjustments</span>
             </div>
             <div className="cd-table-scroll">
             <table className="cd-table">
@@ -821,7 +821,7 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
             </div>
             {myCreditNotes.length === 0 && <div style={{ padding: 32, textAlign: "center", color: "#9ca3af" }}>No credit notes yet</div>}
             {totalCreditApplied > 0 && (
-              <p style={{ padding: "0 20px 14px", margin: 0, fontSize: 12.5, color: "#6b7a70" }}>
+              <p style={{ padding: "0 20px 14px", margin: 0, fontSize: 15, color: "#6b7a70" }}>
                 Credit Applied to invoices so far: <strong>£{totalCreditApplied.toFixed(2)}</strong>
               </p>
             )}
@@ -835,13 +835,13 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
         <div className="cd-content">
           <div className="cd-table-card">
             <div style={{ padding: "14px 20px", borderBottom: "1px solid #eaecf0" }}>
-              <span style={{ fontWeight: 700, fontSize: 14, color: "#111827" }}>My Documents</span>
-              <span style={{ marginLeft: 8, fontSize: 12.5, color: "#9ca3af" }}>Invoices and files shared with you by Punjab Exotic Foods</span>
+              <span style={{ fontWeight: 700, fontSize: 16, color: "#111827" }}>My Documents</span>
+              <span style={{ marginLeft: 8, fontSize: 15, color: "#9ca3af" }}>Invoices and files shared with you by Punjab Exotic Foods</span>
             </div>
             {filesLoading ? (
               <div style={{ padding: 32, textAlign: "center", color: "#9ca3af" }}>Loading your documents…</div>
             ) : myFiles.length === 0 ? (
-              <div style={{ padding: "36px 24px", textAlign: "center", color: "#9ca3af", fontSize: 14 }}>
+              <div style={{ padding: "36px 24px", textAlign: "center", color: "#9ca3af", fontSize: 16 }}>
                 <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#c3c9d2" strokeWidth="1.6" style={{ marginBottom: 8 }}><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M13 2v7h7"/></svg>
                 <div>No documents shared with you yet.</div>
               </div>
@@ -887,8 +887,8 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
               <div className="cd-table-card" style={{ marginBottom: 16 }}>
                 <div style={{ padding: "14px 20px", borderBottom: "1px solid #eaecf0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
-                    <span style={{ fontWeight: 700, fontSize: 14 }}>Team Logins</span>
-                    <span style={{ marginLeft: 8, fontSize: 12.5, color: "#9ca3af" }}>Employee accounts — need super-admin approval before they can sign in</span>
+                    <span style={{ fontWeight: 700, fontSize: 16 }}>Team Logins</span>
+                    <span style={{ marginLeft: 8, fontSize: 15, color: "#9ca3af" }}>Employee accounts — need super-admin approval before they can sign in</span>
                   </div>
                   <Button className="btn-sm" onClick={() => setShowAddSubAccount(true)}>+ Invite Team Member</Button>
                 </div>
@@ -900,7 +900,7 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
                         <tr key={a.id} className="cd-row">
                           <td><strong>{a.name}</strong></td>
                           <td>{a.email}</td>
-                          <td style={{ fontSize: 12, color: "#6b7280" }}>
+                          <td style={{ fontSize: 14.5, color: "#6b7280" }}>
                             {(Object.keys(a.permissions) as (keyof typeof EMPTY_SUB_PERMS)[]).filter(k => a.permissions[k]).map(k => SUB_PERM_LABELS[k]).join(", ") || "—"}
                           </td>
                           <td>
@@ -940,7 +940,7 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
                   })}
                 </div>
               </div>
-              {subError && <p className="wide" style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{subError}</p>}
+              {subError && <p className="wide" style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{subError}</p>}
               <div className="wide actions-row">
                 <Button onClick={submitAddSubAccount} disabled={subBusy}>{subBusy ? "Sending…" : "Send for Approval"}</Button>
                 <Button variant="secondary" onClick={() => setShowAddSubAccount(false)}>Cancel</Button>
@@ -978,7 +978,7 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
 
       {/* Account blocked — payment required before any new orders */}
       {me?.blocked && (
-        <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 18px", margin: "0 0 4px", borderRadius: 12, background: "#7f1d1d", color: "#fff", fontSize: 13.5 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 18px", margin: "0 0 4px", borderRadius: 12, background: "#7f1d1d", color: "#fff", fontSize: 16 }}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" style={{ flexShrink: 0 }}><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
           <div style={{ flex: 1 }}>
             <strong>Payment needed to continue — your account is on hold until this is paid.</strong>{" "}
@@ -1040,18 +1040,18 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
       {/* Upload bank-transfer payment proof */}
       <Modal open={showProofModal} title="Upload Payment Proof" onClose={() => setShowProofModal(false)}>
         <div>
-          <p style={{ fontSize: 13.5, color: "#6b7a70", marginBottom: 14 }}>
+          <p style={{ fontSize: 16, color: "#6b7a70", marginBottom: 14 }}>
             Once you've paid by bank transfer, upload a screenshot of the transfer confirmation. An admin will check it
             and mark your invoice{paySel.size !== 1 ? "s" : ""} as paid once confirmed.
           </p>
           <div style={{ marginBottom: 14 }}>
             {myInvoices.filter(i => paySel.has(i.id)).map(i => (
-              <div key={i.id} style={{ display: "flex", justifyContent: "space-between", fontSize: 13.5, padding: "4px 0", color: "#374151" }}>
+              <div key={i.id} style={{ display: "flex", justifyContent: "space-between", fontSize: 16, padding: "4px 0", color: "#374151" }}>
                 <span>{i.invoiceNumber}</span>
                 <strong>£{i.amount.toFixed(2)}</strong>
               </div>
             ))}
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 15, fontWeight: 800, color: "#14532d", marginTop: 8, paddingTop: 8, borderTop: "1px solid #eef1ee" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 17, fontWeight: 800, color: "#14532d", marginTop: 8, paddingTop: 8, borderTop: "1px solid #eef1ee" }}>
               <span>Total</span>
               <span>£{myInvoices.filter(i => paySel.has(i.id)).reduce((s, i) => s + i.amount, 0).toFixed(2)}</span>
             </div>
@@ -1063,7 +1063,7 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
           <div style={{ marginTop: 10 }}>
             <TextArea label="Note (optional)" value={proofNote} onChange={e => setProofNote(e.target.value)} rows={2} placeholder="e.g. reference number used" />
           </div>
-          {proofError && <p style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", marginTop: 10 }}>{proofError}</p>}
+          {proofError && <p style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", marginTop: 10 }}>{proofError}</p>}
           <div className="actions-row" style={{ marginTop: 16 }}>
             <Button onClick={submitProof} disabled={proofBusy}>{proofBusy ? "Uploading…" : "Submit for Review"}</Button>
             <Button variant="secondary" onClick={() => setShowProofModal(false)} disabled={proofBusy}>Cancel</Button>
@@ -1122,8 +1122,8 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
                 if (!o.deliveryConfirmation && windowOpen) {
                   return (
                     <div style={{ margin: "16px 0", padding: 14, borderRadius: 10, background: "#fafbfc", border: "1px solid var(--border-light)" }}>
-                      <p style={{ fontSize: 13, fontWeight: 700, color: "#111827", marginBottom: 4 }}>How was this delivery?</p>
-                      <p style={{ fontSize: 12, color: "#9ca3af", marginBottom: 10 }}>
+                      <p style={{ fontSize: 15.5, fontWeight: 700, color: "#111827", marginBottom: 4 }}>How was this delivery?</p>
+                      <p style={{ fontSize: 14.5, color: "#9ca3af", marginBottom: 10 }}>
                         You have {Math.max(1, Math.round(hoursLeft))} hour{Math.round(hoursLeft) !== 1 ? "s" : ""} left to let us know.
                       </p>
                       <div style={{ display: "flex", gap: 8 }}>
@@ -1135,14 +1135,14 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
                 }
                 if (!o.deliveryConfirmation && !windowOpen) {
                   return (
-                    <p style={{ margin: "16px 0", fontSize: 12.5, color: "#9ca3af", background: "#fafbfc", border: "1px solid var(--border-light)", borderRadius: 10, padding: 12 }}>
+                    <p style={{ margin: "16px 0", fontSize: 15, color: "#9ca3af", background: "#fafbfc", border: "1px solid var(--border-light)", borderRadius: 10, padding: 12 }}>
                       The {DELIVERY_COMPLAINT_WINDOW_HOURS}-hour window to report a quality issue for this delivery has closed.
                     </p>
                   )
                 }
                 if (o.deliveryConfirmation === "ok") {
                   return (
-                    <p style={{ margin: "16px 0", fontSize: 12.5, color: "#15803d", background: "#f0fdf4", borderRadius: 10, padding: 12 }}>
+                    <p style={{ margin: "16px 0", fontSize: 15, color: "#15803d", background: "#f0fdf4", borderRadius: 10, padding: 12 }}>
                       ✓ You confirmed this delivery had no quality issues.
                     </p>
                   )
@@ -1152,7 +1152,7 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
 
               {o.status === "Delivered" && (o.deliveryConfirmation === "issue" || wantsToReportIssue) && (
                 <>
-                  <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", margin: "18px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                  <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", margin: "18px 0 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>
                     Items ({o.items.length})
                   </p>
               <div className="ord-items">
@@ -1165,22 +1165,22 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
                       <div className="ord-item-row" style={{ border: "none", padding: 0 }}>
                         <Avatar name={p?.productName ?? it.productId} />
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ fontWeight: 600, fontSize: 13.5, color: "#111827" }}>{p?.productName ?? "Product"}</div>
-                          <div style={{ fontSize: 12, color: "#9ca3af" }}>{it.quantity} × £{it.unitPrice.toFixed(2)}</div>
+                          <div style={{ fontWeight: 600, fontSize: 16, color: "#111827" }}>{p?.productName ?? "Product"}</div>
+                          <div style={{ fontSize: 14.5, color: "#9ca3af" }}>{it.quantity} × £{it.unitPrice.toFixed(2)}</div>
                         </div>
                         <strong>£{(it.quantity * it.unitPrice).toFixed(2)}</strong>
                       </div>
                       {sent ? (
-                        <p style={{ fontSize: 12, color: "#15803d", margin: "6px 0 0 42px" }}>✓ Issue reported — we'll be in touch.</p>
+                        <p style={{ fontSize: 14.5, color: "#15803d", margin: "6px 0 0 42px" }}>✓ Issue reported — we'll be in touch.</p>
                       ) : isComplaintWindowOpen(o) ? (
-                        <label style={{ display: "flex", alignItems: "center", gap: 6, margin: "6px 0 0 42px", fontSize: 12.5, color: "#374151", cursor: "pointer" }}>
+                        <label style={{ display: "flex", alignItems: "center", gap: 6, margin: "6px 0 0 42px", fontSize: 15, color: "#374151", cursor: "pointer" }}>
                           <input type="checkbox" checked={flagged} onChange={e => {
                             setIssueFlagged(prev => { const next = new Set(prev); if (e.target.checked) next.add(i); else next.delete(i); return next })
                           }} />
                           Report an issue with this product
                         </label>
                       ) : (
-                        <p style={{ fontSize: 12, color: "#9ca3af", margin: "6px 0 0 42px" }}>The window to report an issue with this item has closed.</p>
+                        <p style={{ fontSize: 14.5, color: "#9ca3af", margin: "6px 0 0 42px" }}>The window to report an issue with this item has closed.</p>
                       )}
                       {flagged && !sent && (
                         <div style={{ margin: "8px 0 0 42px", display: "flex", flexDirection: "column", gap: 6 }}>
@@ -1189,9 +1189,9 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
                             value={issueText[i] ?? ""}
                             onChange={e => setIssueText(prev => ({ ...prev, [i]: e.target.value }))}
                             rows={2}
-                            style={{ padding: "8px 10px", borderRadius: 8, border: "1.5px solid #e5e7eb", fontSize: 13, fontFamily: "inherit", resize: "vertical" }}
+                            style={{ padding: "8px 10px", borderRadius: 8, border: "1.5px solid #e5e7eb", fontSize: 15.5, fontFamily: "inherit", resize: "vertical" }}
                           />
-                          <input type="file" accept="image/*" onChange={e => setIssuePhoto(prev => ({ ...prev, [i]: e.target.files?.[0] ?? null }))} style={{ fontSize: 12 }} />
+                          <input type="file" accept="image/*" onChange={e => setIssuePhoto(prev => ({ ...prev, [i]: e.target.files?.[0] ?? null }))} style={{ fontSize: 14.5 }} />
                           <div>
                             <Button
                               className="btn-sm"
@@ -1225,8 +1225,8 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
               <span>Status</span>
               <span className="cd-status-badge" style={{ background: ticketDetail.status === "Open" ? "#fef9c3" : "#f3f4f6", color: ticketDetail.status === "Open" ? "#a16207" : "#6b7280" }}>{ticketDetail.status}</span>
             </div>
-            <p style={{ fontSize: 12, color: "#9ca3af", marginBottom: 6 }}>Submitted {ticketDetail.createdAt}</p>
-            <p style={{ fontSize: 13.5, color: "#374151", lineHeight: 1.6, background: "#fafbfc", border: "1px solid var(--border-light)", borderRadius: 10, padding: 14 }}>
+            <p style={{ fontSize: 14.5, color: "#9ca3af", marginBottom: 6 }}>Submitted {ticketDetail.createdAt}</p>
+            <p style={{ fontSize: 16, color: "#374151", lineHeight: 1.6, background: "#fafbfc", border: "1px solid var(--border-light)", borderRadius: 10, padding: 14 }}>
               {ticketDetail.message || "No message provided."}
             </p>
             <div className="actions-row" style={{ marginTop: 16 }}>
@@ -1253,18 +1253,18 @@ export function CustomerPortal({ user, onLogout }: { user: User; onLogout: () =>
               if (invPayments.length === 0 && invAllocations.length === 0) return null
               return (
                 <div style={{ marginTop: 12 }}>
-                  <p style={{ fontSize: 12.5, fontWeight: 700, color: "#6b7280", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 0.5 }}>Payment History</p>
+                  <p style={{ fontSize: 15, fontWeight: 700, color: "#6b7280", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 0.5 }}>Payment History</p>
                   {invPayments.map(p => (
-                    <div key={p.id} style={{ fontSize: 12.5, color: "#374151", padding: "4px 0" }}>· {p.date} — Payment {p.paymentReference} £{p.amount.toFixed(2)}</div>
+                    <div key={p.id} style={{ fontSize: 15, color: "#374151", padding: "4px 0" }}>· {p.date} — Payment {p.paymentReference} £{p.amount.toFixed(2)}</div>
                   ))}
                   {invAllocations.map(a => {
                     const note = myCreditNotes.find(c => c.id === a.creditNoteId)
-                    return <div key={a.id} style={{ fontSize: 12.5, color: "#1d4ed8", padding: "4px 0" }}>· {a.date} — This invoice has been credited by Credit Note {note?.creditNumber ?? ""} (£{a.amount.toFixed(2)})</div>
+                    return <div key={a.id} style={{ fontSize: 15, color: "#1d4ed8", padding: "4px 0" }}>· {a.date} — This invoice has been credited by Credit Note {note?.creditNumber ?? ""} (£{a.amount.toFixed(2)})</div>
                   })}
                 </div>
               )
             })()}
-            <p style={{ fontSize: 12.5, color: "#9ca3af", margin: "14px 2px" }}>
+            <p style={{ fontSize: 15, color: "#9ca3af", margin: "14px 2px" }}>
               Looking for the PDF? Check <strong>Documents</strong> in the sidebar — your admin may have uploaded it there.
             </p>
             <div className="actions-row">

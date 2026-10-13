@@ -120,8 +120,8 @@ export function StockPage({
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
         <div>
           <p className="control-centre-label">Punjab Exotic Foods Control Centre</p>
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0d2b1e' }}>Stock Management</h2>
-          <p style={{ fontSize: 13.5, color: '#6b7a70', marginTop: 3 }}>Set quantities and prices here — customers only see them once released.</p>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: '#0d2b1e' }}>Stock Management</h2>
+          <p style={{ fontSize: 16, color: '#6b7a70', marginTop: 3 }}>Set quantities and prices here — customers only see them once released.</p>
         </div>
         <GmtClock />
       </div>
@@ -160,8 +160,8 @@ export function StockPage({
         <div className="ps-table-card">
           <div className="ps-toolbar">
             <div className="ps-toolbar-left">
-              <strong style={{ fontSize: 14 }}>Needs Pricing & Quantity ({pending.length})</strong>
-              <span style={{ fontSize: 12.5, color: '#6b7a70', marginLeft: 8 }}>Everything bought that hasn't gone live yet</span>
+              <strong style={{ fontSize: 16 }}>Needs Pricing & Quantity ({pending.length})</strong>
+              <span style={{ fontSize: 15, color: '#6b7a70', marginLeft: 8 }}>Everything bought that hasn't gone live yet</span>
             </div>
             <div className="ps-toolbar-right">
               <Button disabled={readyCount === 0 || releasing} onClick={releasePrices}>
@@ -198,7 +198,7 @@ export function StockPage({
                           onChange={ev => setEntry(item.id, item.productId, { itemsPerPallet: ev.target.value, done: false })}
                           style={{ width: 70, padding: '6px 8px', borderRadius: 6, border: '1.5px solid #e5e7eb' }} />
                       </td>
-                      <td style={{ color: '#6b7280', fontSize: 13 }}>{totalBoxes || '—'}</td>
+                      <td style={{ color: '#6b7280', fontSize: 15.5 }}>{totalBoxes || '—'}</td>
                       <td>
                         <input type="number" min="0" step="0.01" value={e.price} placeholder="0.00"
                           onChange={ev => setEntry(item.id, item.productId, { price: ev.target.value, done: false })}
@@ -222,8 +222,8 @@ export function StockPage({
       <div className="ps-table-card">
         <div className="ps-toolbar">
           <div className="ps-toolbar-left">
-            <strong style={{ fontSize: 14 }}>Published Stock ({active.length})</strong>
-            <span style={{ fontSize: 12.5, color: '#6b7a70', marginLeft: 8 }}>Live now — customers can see and buy this. Edit price or quantity any time.</span>
+            <strong style={{ fontSize: 16 }}>Published Stock ({active.length})</strong>
+            <span style={{ fontSize: 15, color: '#6b7a70', marginLeft: 8 }}>Live now — customers can see and buy this. Edit price or quantity any time.</span>
           </div>
         </div>
         <div className="ps-table-wrap">
@@ -253,12 +253,12 @@ export function StockPage({
                         </div>
                       </div>
                     </td>
-                    <td style={{ color: '#6b7280', fontSize: 13 }}>{item.packaging || '—'}</td>
+                    <td style={{ color: '#6b7280', fontSize: 15.5 }}>{item.packaging || '—'}</td>
                     <td><strong>£{item.price.toFixed(2)}</strong></td>
                     <td>
                       {inCycle(item)
                         ? <span className="stk-today">Today {isNaN(t.getTime()) ? '' : formatLondonTime(t)}</span>
-                        : <span style={{ color: '#9ca3af', fontSize: 12.5 }}>{isNaN(t.getTime()) ? item.lastUpdated || '—' : t.toLocaleDateString('en-GB', { timeZone: 'Europe/London' })}</span>}
+                        : <span style={{ color: '#9ca3af', fontSize: 15 }}>{isNaN(t.getTime()) ? item.lastUpdated || '—' : t.toLocaleDateString('en-GB', { timeZone: 'Europe/London' })}</span>}
                     </td>
                     <td><span className="ps-badge" style={{ background: meta.bg, color: meta.color }}>{meta.label}</span></td>
                     <td>
@@ -273,7 +273,7 @@ export function StockPage({
             <div style={{ padding: '42px 24px', textAlign: 'center', color: '#9ca3af' }}>
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#c3c9d2" strokeWidth="1.6" style={{ marginBottom: 8 }}><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
               <div style={{ fontWeight: 600, marginBottom: 4, color: '#374151' }}>{stock.length === 0 ? 'No stock lines yet' : 'Nothing live yet'}</div>
-              <div style={{ fontSize: 13 }}>Add products, then confirm and end daily buying to bring them here for pricing.</div>
+              <div style={{ fontSize: 15.5 }}>Add products, then confirm and end daily buying to bring them here for pricing.</div>
             </div>
           )}
         </div>
@@ -297,7 +297,7 @@ export function StockPage({
                 onChange={(e) => setEditForm({ ...editForm, itemsPerPallet: e.target.value })} />
             </div>
           </div>
-          <p style={{ fontSize: 12, color: '#9ca3af', margin: 0 }}>
+          <p style={{ fontSize: 14.5, color: '#9ca3af', margin: 0 }}>
             Total: {(parseFloat(editForm.pallets) || 0) * (parseFloat(editForm.itemsPerPallet) || 0)} boxes
           </p>
           <Input label="Selling Price (£ per box)" type="number" step="0.01" min="0" value={editForm.price}

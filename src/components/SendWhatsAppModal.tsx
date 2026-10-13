@@ -69,20 +69,20 @@ export function SendWhatsAppModal({
         <div className="wide"><TextArea label="Message" rows={4} value={message} onChange={e => setMessage(e.target.value)} placeholder="Type your message…" /></div>
         {message.trim() && (
           <div className="wide" style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 10, padding: "10px 14px" }}>
-            <p style={{ fontSize: 11, fontWeight: 700, color: "#15803d", textTransform: "uppercase", letterSpacing: 0.5, margin: "0 0 4px" }}>Preview</p>
-            <p style={{ fontSize: 13.5, color: "#14532d", whiteSpace: "pre-wrap", margin: 0 }}>{message}</p>
+            <p style={{ fontSize: 13.5, fontWeight: 700, color: "#15803d", textTransform: "uppercase", letterSpacing: 0.5, margin: "0 0 4px" }}>Preview</p>
+            <p style={{ fontSize: 16, color: "#14532d", whiteSpace: "pre-wrap", margin: 0 }}>{message}</p>
           </div>
         )}
         {onSaveTemplate && (
           <div className="wide" style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <input type="checkbox" id="saveAsTemplate" checked={saveAsTemplate} onChange={e => setSaveAsTemplate(e.target.checked)} />
-            <label htmlFor="saveAsTemplate" style={{ fontSize: 13, color: "#374151" }}>Save this message as a reusable template</label>
+            <label htmlFor="saveAsTemplate" style={{ fontSize: 15.5, color: "#374151" }}>Save this message as a reusable template</label>
           </div>
         )}
         {saveAsTemplate && (
           <div className="wide"><Input label="Template Name" value={templateName} onChange={e => setTemplateName(e.target.value)} placeholder="e.g. Christmas Closure Notice" /></div>
         )}
-        {error && <p className="wide" style={{ color: "#b91c1c", fontSize: 13, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{error}</p>}
+        {error && <p className="wide" style={{ color: "#b91c1c", fontSize: 15.5, background: "#fef2f2", borderRadius: 8, padding: "8px 12px", margin: 0 }}>{error}</p>}
         <div className="wide actions-row">
           <Button onClick={submit} disabled={busy}>{busy ? "Sending…" : "Send WhatsApp"}</Button>
           <Button variant="secondary" onClick={onClose}>Cancel</Button>

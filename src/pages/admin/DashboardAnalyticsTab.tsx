@@ -49,7 +49,7 @@ function StatCard({ icon, label, value, delta, deltaTone }: {
   )
 }
 
-export function DashboardAnalyticsTab({ customers = [], invoices = [], activity = [], userName, onNavigate }: {
+export function DashboardAnalyticsTab({ customers = [], invoices = [], activity = [], onNavigate }: {
   customers?: Customer[]
   invoices?: Invoice[]
   activity?: ActivityLog[]
@@ -152,7 +152,7 @@ export function DashboardAnalyticsTab({ customers = [], invoices = [], activity 
     <div className="fp">
       {/* ── Greeting + range filter ── */}
       <div className="fp-head">
-        <h2 className="fp-greeting">Hey {userName?.split(" ")[0] || "there"}, welcome back! <span>👋</span></h2>
+        <h2 className="fp-greeting">Business reports</h2>
         <div className="fp-head-right">
           {rangeKey === "custom" && (
             <div className="fp-dates">

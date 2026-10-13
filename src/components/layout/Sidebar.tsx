@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import type { PermissionSet, SubAccountPermissions, User } from "../../types"
-import { ChartNoAxesCombined, ChevronRight, CircleHelp, ClipboardList, Clock3, DollarSign, FileText, LayoutDashboard, LogOut, MessageSquare, Package, PanelLeftClose, Search, Settings, UserRound, UserRoundCog, UsersRound, X, type LucideIcon } from "lucide-react"
+import {
+  BarChart3, Bell, Boxes, CalendarClock, ChevronDown, CircleHelp, ClipboardList, CreditCard, FileText, FolderOpen,
+  Home, Inbox, LogOut, Mail, MessageSquare, Moon, PoundSterling, Search, Settings, ShieldCheck, ShoppingBasket,
+  UserPlus, Users, UsersRound, Wrench, X, type LucideIcon,
+} from "lucide-react"
 
 const CUSTOMER_NAV_PERMISSION_KEY: Partial<Record<string, keyof SubAccountPermissions>> = {
   "place-order": "placeOrders", orders: "viewOrders", payments: "viewInvoicesBalance",
@@ -18,134 +22,148 @@ const NAV_PERMISSION_KEY: Partial<Record<string, keyof PermissionSet>> = {
   "email-imports": "emailImportsView", files: "filesView", "communication-history": "communicationsView",
 }
 
-const ICONS = {
-  dashboard: LayoutDashboard, customers: UsersRound, invoices: FileText, finance: DollarSign,
-  stock: Package, sales: ChartNoAxesCombined, communications: MessageSquare, documents: FileText,
-  admin: UserRoundCog, search: Search, help: CircleHelp, settings: Settings, clock: Clock3,
-  logout: LogOut, order: ClipboardList, team: UserRound,
-} satisfies Record<string, LucideIcon>
+type NavItem = {
+  key: string; label: string; icon: LucideIcon; hint?: string; badgeKey?: string
+  access?: "users" | "superAdmin" | "systemDeveloper"
+  /** Other page keys that should light this item up as "where you are". */
+  alsoActive?: string[]
+}
+type NavSection = { label: string; items: NavItem[] }
 
-type IconName = keyof typeof ICONS
-type NavigationItem = { key: string; label: string; icon: IconName; badgeKey?: string; access?: "users" | "superAdmin" | "systemDeveloper" }
-type NavigationGroup = { key: string; label: string; icon: IconName; children: NavigationItem[] }
+/* The everyday jobs - always on screen, always labelled, one click each.
+   Everything else lives under "More options" so the main list stays short. */
+const ADMIN_MAIN: NavItem[] = [
+  { key: "dashboard", label: "Home", icon: Home, hint: "Today at a glance" },
+  { key: "customers", label: "Customers", icon: UsersRound, hint: "Find a customer" },
+  { key: "invoices", label: "Invoices", icon: FileText, hint: "Paid and unpaid" },
+  { key: "reminders-due-today", label: "Reminders", icon: CalendarClock, hint: "Who to chase today", alsoActive: ["reminders-14-day", "reminders-21-day", "outstanding"] },
+  { key: "payments", label: "Payments", icon: PoundSterling, hint: "Money received" },
+  { key: "files", label: "Documents", icon: FolderOpen, hint: "Invoice PDFs and files" },
+  { key: "email-imports", label: "Email Imports", icon: Inbox, hint: "Invoices sent by email" },
+  { key: "communication-history", label: "Sent Messages", icon: Mail, hint: "Emails and reminders sent" },
+]
 
-const adminNavigation: NavigationGroup[] = [
-  { key: "customers-group", label: "Customers", icon: "customers", children: [
-    { key: "customers", label: "All Customers", icon: "customers" }, { key: "add-customer", label: "Add Customer", icon: "customers" },
-    { key: "customer-applications", label: "Customer Applications", icon: "customers" }, { key: "outstanding", label: "21+ Days Overdue", icon: "clock" },
-    { key: "credit-control", label: "Credit Control", icon: "finance" },
+const ADMIN_MORE: NavSection[] = [
+  { label: "Customers", items: [
+    { key: "add-customer", label: "Add a Customer", icon: UserPlus },
+    { key: "customer-applications", label: "Customer Applications", icon: ClipboardList },
+    { key: "outstanding", label: "21+ Days Overdue", icon: CalendarClock },
+    { key: "credit-control", label: "Credit Control", icon: CreditCard },
   ] },
-  { key: "invoices-group", label: "Invoices", icon: "invoices", children: [
-    { key: "invoices", label: "Invoices", icon: "invoices" }, { key: "create-invoice", label: "Create Invoice", icon: "invoices" },
-    { key: "invoice-numbers", label: "Invoice Numbers", icon: "invoices" },
+  { label: "Invoices & Money", items: [
+    { key: "create-invoice", label: "Create an Invoice", icon: FileText },
+    { key: "invoice-numbers", label: "Invoice Numbers", icon: FileText },
+    { key: "credit-notes", label: "Credit Notes", icon: FileText },
+    { key: "payment-proofs", label: "Payment Proofs", icon: PoundSterling, badgeKey: "payment-proofs" },
+    { key: "expenses", label: "Expenses", icon: PoundSterling },
+    { key: "day-trade", label: "Day Trades", icon: CalendarClock },
+    { key: "day-check", label: "Day Check", icon: CalendarClock },
+    { key: "stats", label: "Sales Reports", icon: BarChart3 },
   ] },
-  { key: "payments-group", label: "Payments", icon: "finance", children: [
-    { key: "payments", label: "Payments", icon: "finance" }, { key: "payment-proofs", label: "Payment Proofs", icon: "documents" },
-    { key: "expenses", label: "Expenses", icon: "finance" }, { key: "day-trade", label: "Day Trades", icon: "clock" },
-    { key: "day-check", label: "Day Check", icon: "clock" }, { key: "stats", label: "Analytics", icon: "sales" },
+  { label: "Messages", items: [
+    { key: "tickets", label: "Customer Messages", icon: MessageSquare, badgeKey: "tickets" },
+    { key: "notifications", label: "Notifications", icon: Bell },
   ] },
-  { key: "credit-notes-group", label: "Credit Notes", icon: "documents", children: [
-    { key: "credit-notes", label: "Credit Notes", icon: "documents" },
+  { label: "Stock & Orders", items: [
+    { key: "orders", label: "Sales & Orders", icon: ShoppingBasket, badgeKey: "orders" },
+    { key: "stock", label: "Stock", icon: Boxes },
+    { key: "session", label: "Buying Desk", icon: PoundSterling },
+    { key: "products", label: "Products", icon: Boxes },
+    { key: "suppliers", label: "Suppliers", icon: UsersRound },
+    { key: "enquiries", label: "Enquiries", icon: MessageSquare },
+    { key: "data-extract", label: "Integration", icon: FolderOpen },
   ] },
-  { key: "documents-group", label: "Documents / Email Imports", icon: "documents", children: [
-    { key: "files", label: "Files", icon: "documents" }, { key: "email-imports", label: "Email Imports", icon: "documents" },
-    { key: "data-extract", label: "Integration", icon: "documents" },
-  ] },
-  { key: "communications-group", label: "Communications", icon: "communications", children: [
-    { key: "tickets", label: "Messages", icon: "communications", badgeKey: "tickets" }, { key: "communication-history", label: "Communication History", icon: "clock" },
-  ] },
-  { key: "reminders-group", label: "Reminders", icon: "clock", children: [
-    { key: "reminders-due-today", label: "Due Today", icon: "clock" },
-    { key: "reminders-14-day", label: "14-Day Reminders", icon: "clock" },
-    { key: "reminders-21-day", label: "21-Day Reminders", icon: "clock" },
-  ] },
-  { key: "notifications-group", label: "Notifications", icon: "communications", children: [
-    { key: "notifications", label: "Notifications", icon: "communications" },
-  ] },
-  { key: "stock-orders-group", label: "Stock & Orders", icon: "stock", children: [
-    { key: "stock", label: "Stock", icon: "stock" }, { key: "session", label: "Buying Desk", icon: "finance" },
-    { key: "products", label: "Products", icon: "stock" }, { key: "suppliers", label: "Suppliers", icon: "customers" },
-    { key: "orders", label: "Sales & Orders", icon: "order", badgeKey: "orders" }, { key: "enquiries", label: "Enquiries", icon: "communications" },
-  ] },
-  { key: "admin-group", label: "Administration", icon: "admin", children: [
-    { key: "admins", label: "Admin Users", icon: "admin", access: "users" }, { key: "sales-users", label: "Sales Users", icon: "team", access: "users" },
-    { key: "assign-task", label: "Assign Task", icon: "order", access: "users" }, { key: "sub-accounts", label: "Sub-Account Approvals", icon: "team", access: "superAdmin" },
-    { key: "system-overview", label: "System Overview", icon: "dashboard", access: "systemDeveloper" },
-    { key: "system-users", label: "Users", icon: "admin", access: "systemDeveloper" },
+  { label: "Team", items: [
+    { key: "admins", label: "Users & Team", icon: Users, access: "users" },
+    { key: "sales-users", label: "Sales Users", icon: Users, access: "users" },
+    { key: "assign-task", label: "Assign a Task", icon: ClipboardList, access: "users" },
+    { key: "sub-accounts", label: "Sub-Account Approvals", icon: Users, access: "superAdmin" },
     // Visible to every active admin (no `access` gate) so an admin can audit
     // security activity on their own account - the endpoint and RLS behind
     // it allow the same, and the log contains no secrets.
-    { key: "login-activity", label: "Login Activity", icon: "clock" },
-    { key: "audit-logs", label: "Audit Logs", icon: "documents", access: "systemDeveloper" },
-    { key: "error-log", label: "Error Log", icon: "documents", access: "systemDeveloper" },
-    { key: "test-mode", label: "Test Mode", icon: "settings", access: "systemDeveloper" },
-    { key: "backup-recovery", label: "Backup & Recovery", icon: "documents", access: "systemDeveloper" },
-    { key: "database-reset", label: "Database Reset", icon: "settings", access: "systemDeveloper" },
-    { key: "system-health", label: "Integrations & Health", icon: "communications", access: "systemDeveloper" },
-    { key: "security", label: "Security", icon: "help", access: "systemDeveloper" },
+    { key: "login-activity", label: "Login Activity", icon: ShieldCheck },
+  ] },
+  { label: "System Developer", items: [
+    { key: "system-overview", label: "System Overview", icon: Wrench, access: "systemDeveloper" },
+    { key: "system-users", label: "Users", icon: Users, access: "systemDeveloper" },
+    { key: "audit-logs", label: "Audit Logs", icon: FileText, access: "systemDeveloper" },
+    { key: "error-log", label: "Error Log", icon: FileText, access: "systemDeveloper" },
+    { key: "test-mode", label: "Test Mode", icon: Wrench, access: "systemDeveloper" },
+    { key: "backup-recovery", label: "Backup & Recovery", icon: FolderOpen, access: "systemDeveloper" },
+    { key: "database-reset", label: "Database Reset", icon: Wrench, access: "systemDeveloper" },
+    { key: "system-health", label: "Integrations & Health", icon: Wrench, access: "systemDeveloper" },
+    { key: "security", label: "Security", icon: ShieldCheck, access: "systemDeveloper" },
   ] },
 ]
 
-const customerNavigation: NavigationGroup[] = [
-  { key: "ordering-group", label: "Orders", icon: "order", children: [
-    { key: "stock", label: "Daily Stock", icon: "stock" }, { key: "place-order", label: "Place Order", icon: "order" },
-    { key: "orders", label: "My Orders", icon: "invoices", badgeKey: "orders" },
+const CUSTOMER_SECTIONS: NavSection[] = [
+  { label: "Orders", items: [
+    { key: "dashboard", label: "Home", icon: Home },
+    { key: "stock", label: "Today's Stock", icon: Boxes },
+    { key: "place-order", label: "Place an Order", icon: ShoppingBasket },
+    { key: "orders", label: "My Orders", icon: ClipboardList, badgeKey: "orders" },
   ] },
-  { key: "account-group", label: "Account", icon: "customers", children: [
-    { key: "payments", label: "Balance", icon: "finance" }, { key: "documents", label: "Documents", icon: "documents" },
-    { key: "team", label: "Team", icon: "team" },
+  { label: "My Account", items: [
+    { key: "payments", label: "My Balance", icon: PoundSterling },
+    { key: "documents", label: "My Documents", icon: FolderOpen },
+    { key: "team", label: "My Team", icon: Users },
   ] },
-  { key: "support-group", label: "Support", icon: "communications", children: [
-    { key: "tickets", label: "Messages", icon: "communications", badgeKey: "tickets" }, { key: "complaints", label: "Complaints", icon: "help" },
+  { label: "Help", items: [
+    { key: "tickets", label: "Messages", icon: MessageSquare, badgeKey: "tickets" },
+    { key: "complaints", label: "Report a Problem", icon: CircleHelp },
   ] },
 ]
 
-function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
-  const Component = ICONS[name]
-  return <Component size={size} strokeWidth={1.8} aria-hidden="true" />
-}
+const MORE_OPEN_KEY = "punjab-nav-more-open"
 
-function Chevron({ open }: { open: boolean }) {
-  return <ChevronRight className={open ? "pn-chevron open" : "pn-chevron"} size={15} strokeWidth={2} aria-hidden="true" />
-}
-
-export function Sidebar({ user, current, onNavigate, mobileOpen, collapsed, onCollapsedChange, onMobileClose, badges, onDayEnd, onLogout }: {
-  user: User; current: string; onNavigate: (key: string) => void; mobileOpen?: boolean; collapsed: boolean
-  onCollapsedChange: (collapsed: boolean) => void; onMobileClose: () => void; badges?: Record<string, number>
+export function Sidebar({ user, current, onNavigate, mobileOpen, onMobileClose, badges, onDayEnd, onLogout }: {
+  user: User; current: string; onNavigate: (key: string) => void; mobileOpen?: boolean
+  onMobileClose: () => void; badges?: Record<string, number>
   onDayEnd?: () => void; onLogout: () => void
 }) {
   const isAdmin = user.role === "admin"
-  const [openGroup, setOpenGroup] = useState<string | null>(null)
-  const [profileOpen, setProfileOpen] = useState(false)
-  const profileRef = useRef<HTMLDivElement>(null)
 
-  const groups = useMemo(() => {
-    const source = isAdmin ? adminNavigation : customerNavigation
-    return source.map(group => ({ ...group, children: group.children.filter(item => {
-      if (isAdmin) {
-        if (item.access === "superAdmin" && !user.isSuperAdmin) return false
-        if (item.access === "users" && !user.isSuperAdmin && !user.permissions?.usersManage) return false
-        if (item.access === "systemDeveloper" && !user.isSystemDeveloper) return false
-        if (user.isSuperAdmin) return true
-        const permission = NAV_PERMISSION_KEY[item.key]
-        return !permission || Boolean(user.permissions?.[permission])
-      }
-      if (!user.subAccount) return true
-      if (item.key === "team") return false
-      const permission = CUSTOMER_NAV_PERMISSION_KEY[item.key]
-      return !permission || Boolean(user.subAccount.permissions[permission])
-    }) })).filter(group => group.children.length > 0)
+  const allowed = useMemo(() => (item: NavItem) => {
+    if (isAdmin) {
+      if (item.access === "superAdmin" && !user.isSuperAdmin) return false
+      if (item.access === "users" && !user.isSuperAdmin && !user.permissions?.usersManage) return false
+      if (item.access === "systemDeveloper" && !user.isSystemDeveloper) return false
+      if (user.isSuperAdmin) return true
+      const permission = NAV_PERMISSION_KEY[item.key]
+      return !permission || Boolean(user.permissions?.[permission])
+    }
+    if (!user.subAccount) return true
+    if (item.key === "team") return false
+    const permission = CUSTOMER_NAV_PERMISSION_KEY[item.key]
+    return !permission || Boolean(user.subAccount.permissions[permission])
   }, [isAdmin, user.isSuperAdmin, user.isSystemDeveloper, user.permissions, user.subAccount])
 
-  const activeGroup = groups.find(group => group.children.some(item => item.key === current))
-  const activeGroupKey = activeGroup?.key
-  useEffect(() => { if (activeGroupKey) setOpenGroup(activeGroupKey) }, [activeGroupKey])
+  const mainItems = useMemo(() => isAdmin ? ADMIN_MAIN.filter(allowed) : [], [isAdmin, allowed])
+  const sections = useMemo(() => (isAdmin ? ADMIN_MORE : CUSTOMER_SECTIONS)
+    .map(section => ({ ...section, items: section.items.filter(allowed) }))
+    .filter(section => section.items.length > 0), [isAdmin, allowed])
 
-  useEffect(() => {
-    const close = (event: MouseEvent) => { if (!profileRef.current?.contains(event.target as Node)) setProfileOpen(false) }
-    document.addEventListener("mousedown", close)
-    return () => document.removeEventListener("mousedown", close)
-  }, [])
+  const currentInMore = isAdmin && sections.some(s => s.items.some(i => i.key === current)) && !mainItems.some(i => i.key === current || i.alsoActive?.includes(current))
+  const [moreOpen, setMoreOpen] = useState(() => {
+    try { return localStorage.getItem(MORE_OPEN_KEY) === "true" } catch { return false }
+  })
+  // Opening a page that lives under "More options" opens the list so the
+  // highlighted item is visible; the person can still close it again.
+  const [lastCurrentInMore, setLastCurrentInMore] = useState(currentInMore)
+  if (currentInMore !== lastCurrentInMore) {
+    setLastCurrentInMore(currentInMore)
+    if (currentInMore) setMoreOpen(true)
+  }
+  const showMore = moreOpen
+  const moreRef = useRef<HTMLButtonElement>(null)
+  const toggleMore = () => {
+    const next = !showMore
+    setMoreOpen(next)
+    try { localStorage.setItem(MORE_OPEN_KEY, String(next)) } catch { /* ignore */ }
+    // Bring the newly shown options into view - on a laptop they would
+    // otherwise open below the bottom of the menu and look like nothing happened.
+    if (next) requestAnimationFrame(() => moreRef.current?.scrollIntoView({ block: "start", behavior: "smooth" }))
+  }
 
   useEffect(() => {
     const keydown = (event: KeyboardEvent) => {
@@ -157,67 +175,99 @@ export function Sidebar({ user, current, onNavigate, mobileOpen, collapsed, onCo
   }, [isAdmin, mobileOpen, onMobileClose, onNavigate])
 
   const badgeFor = (key?: string) => { const count = key ? badges?.[key] ?? 0 : 0; return count > 0 ? (count > 99 ? "99+" : String(count)) : undefined }
-  const selectGroup = (group: NavigationGroup) => { if (collapsed) onCollapsedChange(false); setOpenGroup(openGroup === group.key && !collapsed ? null : group.key) }
-  const navigate = (key: string) => { setProfileOpen(false); onNavigate(key) }
-  const asideClass = ["sidebar", "pn-sidebar", collapsed ? "pn-collapsed" : "", mobileOpen ? "sidebar-mobile-open" : ""].filter(Boolean).join(" ")
+  const moreHasBadge = sections.some(s => s.items.some(i => badgeFor(i.badgeKey)))
+  const isActive = (item: NavItem) => current === item.key || Boolean(item.alsoActive?.includes(current))
+
+  const renderItem = (item: NavItem, big: boolean) => {
+    const Icon = item.icon
+    const badge = badgeFor(item.badgeKey)
+    const active = isActive(item)
+    return (
+      <button
+        key={item.key} type="button" className={`snav-item${big ? " snav-item-main" : ""}${active ? " active" : ""}`}
+        onClick={() => onNavigate(item.key)} aria-current={active ? "page" : undefined}
+      >
+        <Icon className="snav-icon" size={big ? 22 : 20} strokeWidth={2} aria-hidden="true" />
+        <span className="snav-label">{item.label}</span>
+        {badge && <span className="snav-badge" aria-label={`${badge} new`}>{badge}</span>}
+      </button>
+    )
+  }
+
   const initials = user.displayName.trim().split(/\s+/).map(part => part[0]).join("").slice(0, 2).toUpperCase() || "PF"
+  const roleLabel = isAdmin ? (user.isSystemDeveloper ? "System Developer" : user.isSuperAdmin ? "Super Admin" : "Team Member") : "Customer account"
 
-  return <aside className={asideClass} aria-label="Primary navigation">
-    <div className="pn-rail">
-      <button className="pn-rail-brand" type="button" onClick={() => onCollapsedChange(false)} aria-label="Open Punjab Exotic Foods navigation" data-tooltip="Punjab Exotic Foods"><img src="/logo.png" alt="" /></button>
-      <div className="pn-rail-nav">
-        <button className={current === "dashboard" ? "pn-rail-button active" : "pn-rail-button"} type="button" onClick={() => navigate("dashboard")} aria-label="Dashboard" data-tooltip="Dashboard"><Icon name="dashboard" /></button>
-        {isAdmin && <button className={current === "global-search" ? "pn-rail-button active" : "pn-rail-button"} type="button" onClick={() => navigate("global-search")} aria-label="Global Search" data-tooltip="Global Search"><Icon name="search" /></button>}
-        <div className="pn-rail-divider" />
-        {groups.map(group => <button key={group.key} className={activeGroup?.key === group.key ? "pn-rail-button active" : "pn-rail-button"} type="button" onClick={() => selectGroup(group)} aria-label={group.label} aria-expanded={!collapsed && openGroup === group.key} data-tooltip={group.label}><Icon name={group.icon} /></button>)}
+  return (
+    <aside className={`snav${mobileOpen ? " snav-open" : ""}`} aria-label="Main menu">
+      <div className="snav-top">
+        <div className="snav-brand">
+          <img src="/logo.png" alt="" />
+          <span><strong>Punjab Exotic Foods</strong><small>{isAdmin ? "Business Dashboard" : "Customer Portal"}</small></span>
+        </div>
+        <button className="snav-close" type="button" onClick={onMobileClose} aria-label="Close menu"><X size={24} strokeWidth={2} /></button>
       </div>
-      <div className="pn-rail-utilities">
-        {isAdmin && <button className={current === "complaints" ? "pn-rail-button active" : "pn-rail-button"} type="button" onClick={() => navigate("complaints")} aria-label="Help Centre" data-tooltip="Help Centre"><Icon name="help" /></button>}
-        {isAdmin && <button className={current === "settings" ? "pn-rail-button active" : "pn-rail-button"} type="button" onClick={() => navigate("settings")} aria-label="Settings" data-tooltip="Settings"><Icon name="settings" /></button>}
-        {onDayEnd && <button className="pn-rail-button pn-day-end" type="button" onClick={onDayEnd} aria-label="Day End" data-tooltip="Day End"><Icon name="clock" /></button>}
-        <button className="pn-rail-avatar" type="button" onClick={() => { onCollapsedChange(false); setProfileOpen(value => !value) }} aria-label={`Account menu for ${user.displayName}`} data-tooltip={user.displayName}>{initials}</button>
-      </div>
-    </div>
 
-    <div className="pn-panel">
-      <div className="pn-header">
-        <div className="pn-brand-copy"><strong>Punjab Exotic Foods</strong><span>{isAdmin ? "Admin dashboard" : "Customer portal"}</span></div>
-        <button className="pn-collapse-control" type="button" onClick={() => onCollapsedChange(true)} aria-label="Collapse navigation" title="Collapse navigation"><PanelLeftClose size={18} strokeWidth={1.8} /></button>
-        <button className="pn-mobile-close" type="button" onClick={onMobileClose} aria-label="Close navigation"><X size={19} strokeWidth={2} /></button>
-      </div>
-      {isAdmin && <button className={current === "global-search" ? "pn-search active" : "pn-search"} type="button" onClick={() => navigate("global-search")}><Icon name="search" size={19} /><span>Global Search</span><kbd>Ctrl K</kbd></button>}
-      <nav className="pn-menu" aria-label="Dashboard sections">
-        <span className="pn-menu-label">Menu</span>
-        <button className={current === "dashboard" ? "pn-parent active" : "pn-parent"} type="button" onClick={() => navigate("dashboard")}><Icon name="dashboard" /><span>Dashboard</span></button>
-        {groups.map(group => {
-          const isOpen = openGroup === group.key
-          const isActive = activeGroup?.key === group.key
-          return <div className="pn-group" key={group.key}>
-            <button className={isActive ? "pn-parent active" : "pn-parent"} type="button" onClick={() => selectGroup(group)} aria-expanded={isOpen}><Icon name={group.icon} /><span>{group.label}</span><Chevron open={isOpen} /></button>
-            <div className={isOpen ? "pn-children open" : "pn-children"} aria-hidden={!isOpen}>
-              {group.children.map(item => {
-                const badge = badgeFor(item.badgeKey)
-                return <button key={item.key} className={current === item.key ? "pn-child active" : "pn-child"} type="button" tabIndex={isOpen ? 0 : -1} onClick={() => navigate(item.key)} aria-current={current === item.key ? "page" : undefined}><span className="pn-child-line" /><span>{item.label}</span>{badge && <span className="pn-badge">{badge}</span>}</button>
-              })}
-            </div>
-          </div>
-        })}
-      </nav>
-      {isAdmin && <div className="pn-utilities">
-        <button className={current === "complaints" ? "pn-utility active" : "pn-utility"} type="button" onClick={() => navigate("complaints")}><Icon name="help" /><span>Help Centre</span></button>
-        <button className={current === "settings" ? "pn-utility active" : "pn-utility"} type="button" onClick={() => navigate("settings")}><Icon name="settings" /><span>Settings</span></button>
-        {onDayEnd && <button className="pn-utility pn-day-end" type="button" onClick={onDayEnd}><Icon name="clock" /><span>Day End</span></button>}
-      </div>}
-      <div className="pn-profile" ref={profileRef}>
-        {profileOpen && <div className="pn-profile-menu" role="menu">
-          <button type="button" role="menuitem" onClick={() => navigate(isAdmin ? "settings" : "dashboard")}><Icon name="customers" size={16} />Profile</button>
-          {isAdmin && <button type="button" role="menuitem" onClick={() => navigate("settings")}><Icon name="settings" size={16} />Settings</button>}
-          <button type="button" role="menuitem" className="danger" onClick={onLogout}><Icon name="logout" size={16} />Sign Out</button>
-        </div>}
-        <button className="pn-profile-button" type="button" onClick={() => setProfileOpen(value => !value)} aria-expanded={profileOpen} aria-haspopup="menu">
-          <span className="pn-avatar">{initials}</span><span className="pn-profile-copy"><strong>{user.displayName}</strong><small>{isAdmin ? (user.isSystemDeveloper ? "System Developer" : user.isSuperAdmin ? "System administrator" : "Administrator") : "Customer account"}</small></span><Chevron open={profileOpen} />
+      {isAdmin && (
+        <button className={`snav-search${current === "global-search" ? " active" : ""}`} type="button" onClick={() => onNavigate("global-search")}>
+          <Search size={20} strokeWidth={2} aria-hidden="true" />
+          <span>Search</span>
         </button>
+      )}
+
+      <nav className="snav-scroll" aria-label="Dashboard sections">
+        {isAdmin ? (
+          <>
+            <div className="snav-list">{mainItems.map(item => renderItem(item, true))}</div>
+            {sections.length > 0 && (
+              <>
+                <button ref={moreRef} type="button" className={`snav-more${showMore ? " open" : ""}`} onClick={toggleMore} aria-expanded={showMore}>
+                  <span>{showMore ? "Fewer options" : "More options"}</span>
+                  {moreHasBadge && !showMore && <span className="snav-dot" aria-label="New items inside" />}
+                  <ChevronDown size={20} strokeWidth={2} aria-hidden="true" />
+                </button>
+                {showMore && sections.map(section => (
+                  <div key={section.label} className="snav-section">
+                    <p className="snav-heading">{section.label}</p>
+                    <div className="snav-list">{section.items.map(item => renderItem(item, false))}</div>
+                  </div>
+                ))}
+              </>
+            )}
+          </>
+        ) : sections.map(section => (
+          <div key={section.label} className="snav-section">
+            <p className="snav-heading">{section.label}</p>
+            <div className="snav-list">{section.items.map(item => renderItem(item, true))}</div>
+          </div>
+        ))}
+      </nav>
+
+      <div className="snav-foot">
+        <div className="snav-user">
+          <span className="snav-avatar" aria-hidden="true">{initials}</span>
+          <span className="snav-user-text"><strong>{user.displayName}</strong><small>{roleLabel}</small></span>
+        </div>
+        <div className="snav-tools">
+          {isAdmin && (
+            <>
+              <button type="button" className={`snav-tool${current === "settings" ? " active" : ""}`} onClick={() => onNavigate("settings")}>
+                <Settings size={20} strokeWidth={2} aria-hidden="true" /><span>Settings</span>
+              </button>
+              <button type="button" className={`snav-tool${current === "complaints" ? " active" : ""}`} onClick={() => onNavigate("complaints")}>
+                <CircleHelp size={20} strokeWidth={2} aria-hidden="true" /><span>Help</span>
+              </button>
+              {onDayEnd && (
+                <button type="button" className="snav-tool" onClick={onDayEnd}>
+                  <Moon size={20} strokeWidth={2} aria-hidden="true" /><span>End of Day</span>
+                </button>
+              )}
+            </>
+          )}
+          <button type="button" className="snav-tool snav-signout" onClick={onLogout}>
+            <LogOut size={20} strokeWidth={2} aria-hidden="true" /><span>Sign out</span>
+          </button>
+        </div>
       </div>
-    </div>
-  </aside>
+    </aside>
+  )
 }

@@ -25,7 +25,7 @@ export function PaymentsPage({ payments, customers = [], invoices = [], onOpenCu
           <p className="metric">{payments.length}</p>
         </Card>
         <Card title="Total Received">
-          <p className="metric">£{totalValue.toFixed(2)}</p>
+          <p className="metric">£{totalValue.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
         </Card>
       </div>
 
