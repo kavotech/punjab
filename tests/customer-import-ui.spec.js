@@ -11,6 +11,7 @@ for (const scenario of [
       id: `import-${scenario.name}`, role: 'admin', username: 'admin', email: 'admin@example.test', displayName: 'Admin',
       isSuperAdmin: scenario.superAdmin, isSystemDeveloper: scenario.systemDeveloper,
       permissions: { customers: true, customersCreate: true, creditNotesIssue: true },
+      tutorialCompletedAt: '2026-01-01T00:00:00Z',
     }
     const session = {
       access_token: 'ui-test-token', refresh_token: 'ui-test-refresh', token_type: 'bearer', expires_in: 3600, expires_at: 4102444800,
@@ -39,16 +40,17 @@ for (const scenario of [
     })
     await page.route('**/api/admin-security?action=system-mode', route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ testMode: false, changedAt: null }) }))
     await page.goto(origin, { waitUntil: 'domcontentloaded' })
+    const menu = page.getByRole('navigation', { name: 'Dashboard sections' })
     if (scenario.width < 600) await page.getByRole('button', { name: 'Open menu' }).click()
-    await page.locator('.pn-parent').filter({ hasText: 'Customers' }).click()
-    await page.getByRole('navigation', { name: 'Dashboard sections' }).getByRole('button', { name: 'Add Customer', exact: true }).click()
+    await menu.getByRole('button', { name: /^More options/ }).click()
+    await menu.getByRole('button', { name: 'Add a Customer', exact: true }).click()
     await expect(page.getByText('Upload Invoice', { exact: true })).toBeVisible()
     await expect(page.getByRole('button', { name: 'Credit Note', exact: true })).toHaveCount(0)
     await page.locator('.modal-close').click()
 
     if (scenario.width < 600) await page.getByRole('button', { name: 'Open menu' }).click()
-    await page.getByRole('navigation', { name: 'Dashboard sections' }).getByRole('button', { name: 'All Customers', exact: true }).click()
-    await page.getByRole('button', { name: 'Open Account', exact: true }).click()
+    await menu.getByRole('button', { name: 'Customers', exact: true }).click()
+    await page.getByRole('button', { name: 'View Customer', exact: true }).click()
     await page.getByRole('button', { name: '+ Add Credit Note', exact: true }).click()
     await expect(page.getByText('Upload Credit Note', { exact: true })).toBeVisible()
     await expect(page.getByLabel('Credit Note Number')).toHaveCount(0)

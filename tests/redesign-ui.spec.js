@@ -5,6 +5,8 @@ const user = {
   id: 'visual-system-developer', role: 'admin', username: 'system.developer',
   email: 'developer@example.test', displayName: 'System Developer',
   isSuperAdmin: true, isSystemDeveloper: true, permissions: { usersManage: true },
+  // Already finished the first-time guided tour, so it doesn't cover the page.
+  tutorialCompletedAt: '2026-01-01T00:00:00Z',
 }
 const session = {
   access_token: 'visual-test-token', refresh_token: 'visual-test-refresh',
@@ -33,7 +35,7 @@ for (const viewport of [{ name: 'desktop', width: 1440, height: 900 }, { name: '
     await page.setViewportSize(viewport)
     await page.addInitScript(() => localStorage.setItem('punjab-cookie-consent', JSON.stringify({ necessary: true })))
     await page.goto(origin, { waitUntil: 'domcontentloaded' })
-    await expect(page.getByRole('heading', { name: 'Welcome back' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: /Hi, Welcome/ })).toBeVisible()
     await expect(page.getByRole('button', { name: 'Log in', exact: true })).toBeVisible()
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)
     expect(overflow).toBeLessThanOrEqual(1)
@@ -63,8 +65,9 @@ for (const viewport of [{ name: 'desktop', width: 1440, height: 900 }, { name: '
     await page.goto(origin, { waitUntil: 'domcontentloaded' })
 
     if (viewport.name === 'mobile') await page.getByRole('button', { name: 'Open menu' }).click()
-    await page.locator('.pn-parent').filter({ hasText: 'System Management' }).click()
-    await page.getByRole('button', { name: 'System Overview', exact: true }).click()
+    const menu = page.getByRole('navigation', { name: 'Dashboard sections' })
+    await menu.getByRole('button', { name: /^More options/ }).click()
+    await menu.getByRole('button', { name: 'System Overview', exact: true }).click()
     await expect(page.getByRole('heading', { name: 'System Overview', level: 2 })).toBeVisible()
     await expect(page.getByText('Production systems operational')).toBeVisible()
     await page.waitForTimeout(350)
@@ -88,11 +91,13 @@ test('tablet invoice table controls and responsive layout', async ({ page }) => 
   await prepareSession(page)
   await page.route('**/rest/v1/**', route => route.fulfill({ status: 200, contentType: 'application/json', body: '[]', headers: { 'content-range': '0-0/0' } }))
   await page.goto(origin, { waitUntil: 'domcontentloaded' })
-  await page.locator('.pn-parent').filter({ hasText: 'Invoices' }).click()
-  await page.getByRole('button', { name: 'Invoice History', exact: true }).click()
-  await expect(page.getByRole('heading', { name: 'Invoices', exact: true })).toBeVisible()
-  await expect(page.getByRole('textbox', { name: 'Search table' })).toBeVisible()
-  await expect(page.getByText('Rows per page')).toBeVisible()
+  // Below 1100px the menu slides out from the "Menu" button.
+  await page.getByRole('button', { name: 'Open menu' }).click()
+  await page.getByRole('navigation', { name: 'Dashboard sections' }).getByRole('button', { name: 'Invoices', exact: true }).click()
+  await expect(page.locator('.topbar-title')).toHaveText('Invoices')
+  await expect(page.getByRole('button', { name: 'Unpaid Invoices (0)' })).toBeVisible()
+  await expect(page.getByPlaceholder(/Search customer, account number or invoice number/)).toBeVisible()
+  await expect(page.getByText('No unpaid invoices match these filters.')).toBeVisible()
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)
   expect(overflow).toBeLessThanOrEqual(1)
   await page.screenshot({ path: 'test-results/tablet-invoice-table.png', fullPage: true })
@@ -103,7 +108,8 @@ test('settings centre is responsive and keeps category controls aligned', async 
   await prepareSession(page)
   await page.route('**/rest/v1/**', route => route.fulfill({ status: 200, contentType: 'application/json', body: '[]', headers: { 'content-range': '0-0/0' } }))
   await page.goto(origin, { waitUntil: 'domcontentloaded' })
-  await page.locator('.pn-utility').filter({ hasText: 'Settings' }).click()
+  await page.getByRole('button', { name: 'Open menu' }).click()
+  await page.locator('.snav-tool').filter({ hasText: 'Settings' }).click()
   await expect(page.getByRole('heading', { name: 'Settings Centre' })).toBeVisible()
   await expect(page.getByRole('navigation', { name: 'Settings sections' })).toBeVisible()
   const settingsNav = page.getByRole('navigation', { name: 'Settings sections' })

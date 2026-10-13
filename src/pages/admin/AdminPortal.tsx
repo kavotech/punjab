@@ -290,7 +290,7 @@ export function AdminPortal({ user, onLogout }: { user: User; onLogout: () => vo
     setCommunicationLogs(communicationLogsData)
     setEmailImports(emailImportsData.imports)
     setEmailImportsHasMore(emailImportsData.hasMore)
-    setEmailImportsCounts(emailImportsData.counts)
+    setEmailImportsCounts(emailImportsData.counts ?? {})
     setEmailImportsTotal(emailImportsData.total)
     setEmailImportsStats(emailImportsData.stats)
     setNotifications(notificationsData)
@@ -890,14 +890,14 @@ export function AdminPortal({ user, onLogout }: { user: User; onLogout: () => vo
           invoices={invoices}
           onRefresh={async () => {
             const page = await getEmailImports()
-            setEmailImports(page.imports); setEmailImportsHasMore(page.hasMore); setEmailImportsCounts(page.counts); setEmailImportsTotal(page.total); setEmailImportsStats(page.stats)
+            setEmailImports(page.imports); setEmailImportsHasMore(page.hasMore); setEmailImportsCounts(page.counts ?? {}); setEmailImportsTotal(page.total); setEmailImportsStats(page.stats)
           }}
           onLoadMore={async () => {
             const last = emailImports[emailImports.length - 1]
             const cursor = last?.received_at ?? last?.created_at
             if (!cursor || !last) return
             const page = await getEmailImports({ before: cursor, beforeId: last.id })
-            setEmailImports(prev => [...prev, ...page.imports]); setEmailImportsHasMore(page.hasMore); setEmailImportsCounts(page.counts); setEmailImportsTotal(page.total); setEmailImportsStats(page.stats)
+            setEmailImports(prev => [...prev, ...page.imports]); setEmailImportsHasMore(page.hasMore); setEmailImportsCounts(page.counts ?? {}); setEmailImportsTotal(page.total); setEmailImportsStats(page.stats)
           }}
           onOpenCustomer={(customerId) => { setInvoicesCustomerFilter(customerId); navigate('invoices') }}
         />
